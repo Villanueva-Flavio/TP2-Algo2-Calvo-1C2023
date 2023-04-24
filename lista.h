@@ -12,7 +12,6 @@ private:
 	Nodo<T>* iterador;
 	int size;
 	int iteracion;
-
 public: 
 
 	// Constructor de lista vacia.

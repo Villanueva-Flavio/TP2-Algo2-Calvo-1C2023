@@ -1,7 +1,10 @@
 #include "tablero.h"
-
+#include <typeinfo>
+#include <iostream>
+using namespace std;
 int main(){
-    Tablero<int*>* poronga = new Tablero<int*>(20, 20, 20);
+    Tablero<char*>* poronga = new Tablero<char*>(200, 200, 200);
+    cout << typeid(poronga).name();
     delete poronga;
     return 0;
 }
