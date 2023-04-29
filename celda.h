@@ -1,3 +1,6 @@
+#ifndef __CELDA_H__
+#define __CELDA_H__
+
 enum TipoCelda {TIERRA, AGUA, AIRE};
 enum TipoContenido {SOLDADO, ARMAMENTO, MINA, CARTA, VACIO};
 
@@ -53,3 +56,5 @@ void Celda::setEntidad(TipoContenido entidad) {
 void Celda::setJugadorOwner(int jugadorOwner) {
     this->jugadorOwner = jugadorOwner;
 }
+
+#endif
