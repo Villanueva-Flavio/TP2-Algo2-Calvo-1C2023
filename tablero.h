@@ -32,7 +32,6 @@ template <class T> class Tablero {
         bool inRange(int n, int m, int l);
 };
 
-
 template <class T> Tablero<T>::Tablero(int n, int m, int l) {
     this->x = n, this->y = m, this->z = l;
     cubo = new Lista<Lista<Lista<T>*>*>();
