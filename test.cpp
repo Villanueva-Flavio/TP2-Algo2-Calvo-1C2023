@@ -1,10 +1,11 @@
 #include "tablero.h"
+#include "celda.h"
 #include <typeinfo>
 #include <iostream>
+
 using namespace std;
 int main(){
-    Tablero<char*>* falo = new Tablero<char*>(50, 50, 50);
-    cout << typeid(falo).name() << endl;
-    delete falo;
+    Tablero<Celda*>* batallaDigital = new Tablero<Celda*>(50, 50, 50);
+    delete batallaDigital;
     return 0;
 }
