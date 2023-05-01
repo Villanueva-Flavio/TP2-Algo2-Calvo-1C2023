@@ -3,8 +3,7 @@
 #include <iostream>
 #include "nodo.h"
 
-#define LAST true
-#define NEXT false
+enum Iteracion {SIGUIENTE, FINAL, ANTERIOR};
 
 template <class T> class Lista {
 private:
@@ -26,7 +25,7 @@ public:
 
 	// Recibe el tipo de iteracion
 	// Itera la lista una vez, o hasta el final
-	void iterar(bool loop);
+	void iterar(Iteracion iteracion);
 
 	// Reinicia el iterador en la primer posicion
 	void resetIter();
@@ -63,17 +62,19 @@ template <class T> Lista<T>::~Lista() {
 	}
 }
 
-
 template <class T> void Lista<T>::assign(T data){
 	this->iterador->setNData(data);
 }
 
-template <class T> void Lista<T>::iterar(bool loop){
+template <class T> void Lista<T>::iterar(Iteracion iteracion){
 	if(this->getSize() > 0){
-		if(loop == NEXT){
+		if(iteracion == SIGUIENTE){
 			this->iterador = this->iterador->next();
 			this->iteracion++;
-		}else{
+		} else if (iteracion == ANTERIOR) {
+			this->iterador = this->iterador->prev();
+			this->iteracion--;
+		} else {
 			while (this->iteracion < this->getSize() -1){
 				this->iterador = this->iterador->next();
 				this->iteracion++;
@@ -94,11 +95,12 @@ template <class T> T Lista<T>::getLData(int x) {
 
 template <class T> void Lista<T>::add(T data) {
 	Nodo<T>* nuevo = new Nodo<T>(data);
-	iterar(LAST);
+	iterar(FINAL);
 	if(this->getSize() == 0){
 		this->primero = nuevo;
 		this->iterador = this->primero;
 	}else{
+		nuevo->setAnt(this->iterador);
 		this->iterador->setSig(nuevo);
 	}
 	this->size++;
@@ -112,14 +114,25 @@ template <class T> int Lista<T>::getSize() {
 	return this->size;
 }
 
+// EDITAR esta aberracion
 template <class T> void Lista<T>::irANodo(int x){
-    if(x > this->getIter()){
-        this->resetIter();
-    }
-
-    for(int i = this->getIter(); i < x; i++){
-        this->iterar(NEXT);
-    }
+	bool inicioMasCerca = (this->getIter() / 2 < x);
+    if(x < this->getIter()){
+		if(inicioMasCerca){
+        	this->resetIter();
+			for(int i = this->getIter(); i < x; i++){
+				this->iterar(SIGUIENTE);
+			}
+		} else {
+			for(int i = this->getIter(); i > x; i--){
+				this->iterar(ANTERIOR);
+			}
+		}
+    } else {
+		for(int i = this->getIter(); i < x; i++){
+				this->iterar(SIGUIENTE);
+		}
+	}
 }
 
 #endif
