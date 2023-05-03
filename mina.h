@@ -1,8 +1,13 @@
+#ifndef MINA_H
+#define MINA_H
+
+enum EstadoMina { COLOCADA, CASILLA_INACTIVA, ELIMINADA };
+
 class Mina{
 
     private:
 
-        char estado;    //mina (c)olocada - casilla (i)nactiva - mina - (e)liminada
+        EstadoMina estado;
 
 
     public:
@@ -10,10 +15,23 @@ class Mina{
         // Constructor
         Mina();
 
-        // Getter del estado
-        char obtenerEstado() const;
+        // Devuelve el estado
+        char getEstado() const;
 
-        // Setter del estado
-        void cambiarEstado(char nuevoEstado);
+        // Cambia el estado
+        void setEstado(EstadoMina nuevoEstado);
 
-}
+
+        // Cambia el estado a 'colocar'
+        void colocar();
+
+
+        // Cambia el estado a 'casilla_inactiva'
+        void explotar();
+
+
+        // Cambia el estado a 'eliminada'
+        void eliminar();
+};
+
+#endif // MINA_H
