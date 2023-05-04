@@ -6,12 +6,10 @@ int main() {
     ficha soldado;
     soldado.setTipo("soldado");
     soldado.setActiva(true);
-    soldado.setVida(-100);
     soldado.setCoords(2,1,5);
     // Gets
     std::cout << "El tipo de ficha es: '" << soldado.getTipo() << "'" << ".\n";
-    std::cout << "Actualmente el " << soldado.getTipo() << " se encuentra en las coordenadas (" << soldado.getCoords('x') << ", " << soldado.getCoords('y') << ", " << soldado.getCoords('z') << ")" << " y su estado es " << soldado.getActiva() << ". (0 es false y 1 es true)\n";
-    std::cout << soldado.getTipo() << " tiene " << soldado.getVida() << " de vida.\n"; 
+    std::cout << "Actualmente el " << soldado.getTipo() << " se encuentra en las coordenadas (" << soldado.getCoords('x') << ", " << soldado.getCoords('y') << ", " << soldado.getCoords('z') << ")" << " y su estado es " << soldado.getActiva() << ". (0 es false y 1 es true)\n"; 
     return 0;
 }
 
