@@ -8,29 +8,35 @@ class Celda {
     private:
         TipoCelda tipo;
         TipoContenido contenido;
-        int jugadorOwner;
-    
+        bool estado;
+
     public:
 
-        Celda();
+        Celda(TipoCelda tipoCelda);
 
         TipoCelda getTipo();
 
         TipoContenido getEntidad();
 
-        int getJugadorOwner();
-
         void setTipo(TipoCelda tipo);
 
         void setEntidad(TipoContenido entidad);
 
-        void setJugadorOwner(int jugadorOwner);
+        void setEstado(bool estado);
+
+        bool getEstado();
 };
 
-Celda::Celda() {
-    this->tipo = AIRE;
-    this->contenido = VACIO;
-    this->jugadorOwner = -1;
+Celda::Celda(TipoCelda tipoCelda) {
+    this->tipo = tipoCelda;
+}
+
+bool Celda::getEstado() {
+    return this->estado;
+}
+
+void Celda::setEstado(bool estado) {
+    this->estado = estado;
 }
 
 TipoCelda Celda::getTipo() {
@@ -41,20 +47,12 @@ TipoContenido Celda::getEntidad() {
     return this->contenido;
 }
 
-int Celda::getJugadorOwner() {
-    return this->jugadorOwner;
-}
-
 void Celda::setTipo(TipoCelda tipo) {
     this->tipo = tipo;
 }
 
 void Celda::setEntidad(TipoContenido entidad) {
     this->contenido = entidad;
-}
-
-void Celda::setJugadorOwner(int jugadorOwner) {
-    this->jugadorOwner = jugadorOwner;
 }
 
 #endif
