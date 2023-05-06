@@ -1,4 +1,8 @@
+#include "jugador.h"
 #include "Carta.h"
+#include "tablero.h"
+#include <string>
+using namespace std;
 
 Carta::Carta(TipoCarta carta) {
     
@@ -28,48 +32,86 @@ Carta::Carta(TipoCarta carta) {
     }
 }
 
-void Carta::usarCarta(){
+/* void Carta::usarCarta(Jugador jugador){
     
     this->activa = false;
 
     switch(this->carta){
         case OMITIR_TURNO:
-            omitirTurno();
+            //se pasa por parametros jugador continuo
+            activarAtributosJugador(jugador->omitirTurno);
             break;
         case ESCUDO:
-            protegerFichas();
+            activarAtributosJugador(jugador->escudoActivo);
             break;
     }
-}
+} */
 
-void Carta::usarCarta(int x, int y, int z){
+/* void Carta::usarCarta(Jugador jugador, int x, int y, int z){
 
     this->activa = false;
 
     switch(this->carta){
         case AVION:
             this->radioAccion = 8;
-            obtenerReporte(int x, int y, int z);
+            obtenerReporte(x, y, z);
             break;
         case ATAQUE_QUIMICO:
             this->radioAccion = 5;
-            inactivarCasillas(int x, int y, int z);
+            inactivarCasillas(x, y, z);
             break;
         case BOMBARDEO:
             this->radioAccion = 5;
             this->cantidadBombas = 4;
-            bombardearZona(int x, int y, int z);
+            bombardearZona(x, y, z);
             break;
         case BARCO:
-            lanzarMisil(int x, int y, int z);
+            lanzarMisil(x, y, z);
             break;
     }
-}
+} */
 
-TipoCarta Carta::getCarta() {
+TipoCarta Carta::obteneterTipoCarta() {
     return this->carta;
 }
 
-bool Carta::getActiva() {
+bool Carta::cartaActiva() {
     return this->activa;
+}
+
+void Carta::inactivarCasillas(int x, int y, int z){
+    int radio= this->radioAccion;
+    int centroX = x;
+    int centroY = y;
+    int centroZ = z;
+
+    /*instanciar una nueva celda y asignarle lo obtenido
+    
+    */
+}
+
+void Carta::bombardearZona(int x, int y, int z){
+
+}
+
+void Carta::obtenerReporte(int x, int y, int z){
+
+}
+
+void Carta::lanzarMisil(int x, int y, int z){
+
+}
+
+string Carta::obtenerCoordenadas(int x, int y, int z){
+
+}
+
+string Carta::obtenerContenidoCasilla(int x, int y, int z){
+
+}
+
+void Carta::activarAtributosJugador(bool atributoJugador){
+    if(!atributoJugador){
+        atributoJugador = true;
+    }
 }

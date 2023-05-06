@@ -1,4 +1,5 @@
 #include <string>
+#include "jugador.h"
 
 #ifndef __CARTA_H__
 #define __CARTA_H__
@@ -13,6 +14,25 @@ class Carta{
         int radioAccion;
         int cantidadBombas;
         //int* ubicacion;
+
+    public:
+
+        //Constructor
+        Carta(TipoCarta carta);
+
+        //Permite al jugador acceder a la accion de la carta dependiendo de su tipo
+        //void usarCarta(Jugador jugador);
+
+        //Permite al jugador acceder a la accion de la carta dependiendo de su tipo
+        //void usarCarta(Jugador jugador, int x, int y, int z);
+
+        //Permite saber cual es el tipo de carta
+        TipoCarta obteneterTipoCarta();
+
+        //Permite saber si la carta esta activa
+        bool cartaActiva();
+
+    private:
 
         //Se inactivan las celdas del perimetro marcado por el radio
         void inactivarCasillas(int x, int y, int z);
@@ -33,27 +53,8 @@ class Carta{
         std::string obtenerContenidoCasilla(int x, int y, int z);
 
         //Omite el turno del jugador continuo
-        void omitirTurno();
+        void activarAtributosJugador(bool atributoJugador);
 
-        //Protege las fichas del jugador durante la ronda siguiente
-        std::string protegerFichas();
-
-    public:
-
-        //Constructor
-        Carta(TipoCarta carta);
-
-        //Permite al jugador acceder a la accion de la carta dependiendo de su tipo
-        void usarCarta();
-
-        //Permite al jugador acceder a la accion de la carta dependiendo de su tipo
-        void usarCarta(int x, int y, int z);
-
-        //Permite saber cual es el tipo de carta
-        TipoCarta getCarta();
-
-        //Permite saber si la carta esta activa
-        bool getActiva();
 };
 
 #endif
