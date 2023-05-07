@@ -1,4 +1,4 @@
-#include "ficha.h"
+/* #include "ficha.h"
 #include <iostream>
 
 int main() {
@@ -14,7 +14,7 @@ int main() {
     std::cout << soldado.getTipo() << " tiene " << soldado.getVida() << " de vida.\n"; 
     return 0;
 }
-
+ */
 /*
     ._______________________________________________.
    | OUTPUT DEL EJECUTABLE, COMPILADO CON VALGRIND: |

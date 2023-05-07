@@ -1,6 +1,6 @@
-#include "jugador.h"
 #include "Carta.h"
 #include "tablero.h"
+#include "celda.h"
 #include <string>
 using namespace std;
 
@@ -32,44 +32,44 @@ Carta::Carta(TipoCarta carta) {
     }
 }
 
-/* void Carta::usarCarta(Jugador jugador){
+ void Carta::usarCarta(bool &atributoJugador){
     
     this->activa = false;
 
     switch(this->carta){
         case OMITIR_TURNO:
             //se pasa por parametros jugador continuo
-            activarAtributosJugador(jugador->omitirTurno);
+            activarAtributosJugador(atributoJugador);
             break;
         case ESCUDO:
-            activarAtributosJugador(jugador->escudoActivo);
+            activarAtributosJugador(atributoJugador);
             break;
     }
-} */
+} 
 
-/* void Carta::usarCarta(Jugador jugador, int x, int y, int z){
+ void Carta::usarCarta(Tablero tablero, int x, int y, int z){
 
     this->activa = false;
 
     switch(this->carta){
         case AVION:
             this->radioAccion = 8;
-            obtenerReporte(x, y, z);
+            obtenerReporte(tablero,x, y, z);
             break;
         case ATAQUE_QUIMICO:
             this->radioAccion = 5;
-            inactivarCasillas(x, y, z);
+            inactivarCeldas(tablero,x, y, z);
             break;
         case BOMBARDEO:
             this->radioAccion = 5;
             this->cantidadBombas = 4;
-            bombardearZona(x, y, z);
+            bombardearZona(tablero,x, y, z);
             break;
         case BARCO:
-            lanzarMisil(x, y, z);
+            lanzarMisil(tablero,x, y, z);
             break;
     }
-} */
+}
 
 TipoCarta Carta::obteneterTipoCarta() {
     return this->carta;
@@ -79,26 +79,21 @@ bool Carta::cartaActiva() {
     return this->activa;
 }
 
-void Carta::inactivarCasillas(int x, int y, int z){
-    int radio= this->radioAccion;
-    int centroX = x;
-    int centroY = y;
-    int centroZ = z;
-
-    /*instanciar una nueva celda y asignarle lo obtenido
+void Carta::inactivarCeldas(Tablero tablero, int x, int y, int z){
     
-    */
+    int radio= this->radioAccion;
+    Celda copiaCelda = new Celda() ;
 }
 
-void Carta::bombardearZona(int x, int y, int z){
-
-}
-
-void Carta::obtenerReporte(int x, int y, int z){
+void Carta::bombardearCeldas(Tablero tablero, int x, int y, int z){
 
 }
 
-void Carta::lanzarMisil(int x, int y, int z){
+void Carta::obtenerReporte(Tablero tablero, int x, int y, int z){
+
+}
+
+void Carta::lanzarMisil(Tablero tablero, int x, int y, int z){
 
 }
 
@@ -110,8 +105,8 @@ string Carta::obtenerContenidoCasilla(int x, int y, int z){
 
 }
 
-void Carta::activarAtributosJugador(bool atributoJugador){
+void Carta::activarAtributosJugador(bool &atributoJugador){
     if(!atributoJugador){
         atributoJugador = true;
     }
-}
+} 

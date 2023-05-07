@@ -12,7 +12,7 @@ class Jugador{
         int armamentos;
         bool escudoActivo; //yenny nuevo
         bool omitirTurno;//yenny nuevo
-        Carta *cartas; // ver esto
+        //Carta *cartas;
     public:
             
             Jugador();
@@ -25,7 +25,7 @@ class Jugador{
     
             int getArmamentos();
     
-            Carta* getCartas();
+            //Carta* getCartas();
     
             void setNombre(std::string nombre);
     
