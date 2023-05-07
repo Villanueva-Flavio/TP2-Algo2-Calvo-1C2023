@@ -23,7 +23,8 @@ class Carta{
         void usarCarta(bool &atributoJugador);
 
         //Permite al jugador acceder a la accion de la carta dependiendo de su tipo
-        void usarCarta(Tablero tablero, int x, int y, int z);
+        template <class T> 
+        void usarCarta(Tablero<T> &, int x, int y, int z);
 
         //Permite saber cual es el tipo de carta
         TipoCarta obteneterTipoCarta();
@@ -34,16 +35,20 @@ class Carta{
     private:
 
         //Se inactivan las celdas del perimetro marcado por el radio
-        void inactivarCeldas(Tablero tablero, int x, int y, int z);
+        template <class T> 
+        void inactivarCeldas(Tablero<T> &, int x, int y, int z);
 
         //Inactiva la cantidad de casillas indicadas en cantidad bombas de forma aleatoria dentro del rango
-        void bombardearCeldas(Tablero tablero, int x, int y, int z);
+        template <class T> 
+        void bombardearCeldas(Tablero<T> &, int x, int y, int z);
 
         //Devuelve un reporte que indica si se alcanzo a un objetivo contrario y donde
-        void obtenerReporte(Tablero tablero,int x, int y, int z);
+        template <class T> 
+        void obtenerReporte(Tablero<T> &,int x, int y, int z);
 
         //Inactiva la casilla impactada
-        void lanzarMisil(Tablero tablero, int x, int y, int z);
+        template <class T> 
+        void lanzarMisil(Tablero<T> &, int x, int y, int z);
 
         //Devuelve las coordenadas dentro del radio definido
         std::string obtenerCoordenadas(int x, int y, int z);

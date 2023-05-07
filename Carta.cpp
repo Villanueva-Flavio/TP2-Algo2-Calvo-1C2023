@@ -46,8 +46,8 @@ Carta::Carta(TipoCarta carta) {
             break;
     }
 } 
-
- void Carta::usarCarta(Tablero tablero, int x, int y, int z){
+template <class T> 
+ void Carta::usarCarta(Tablero<T> &tablero, int x, int y, int z){
 
     this->activa = false;
 
@@ -78,33 +78,36 @@ TipoCarta Carta::obteneterTipoCarta() {
 bool Carta::cartaActiva() {
     return this->activa;
 }
-
-void Carta::inactivarCeldas(Tablero tablero, int x, int y, int z){
+template <class T> 
+void Carta::inactivarCeldas(Tablero<T> &tablero, int x, int y, int z){
     
     int radio= this->radioAccion;
-    Celda copiaCelda = new Celda() ;
-}
+    Celda celdaCopiada();
 
-void Carta::bombardearCeldas(Tablero tablero, int x, int y, int z){
-
-}
-
-void Carta::obtenerReporte(Tablero tablero, int x, int y, int z){
+    celdaCopiada = tablero->getTData(x,y,z);
 
 }
+template <class T> 
+void Carta::bombardearCeldas(Tablero<T> &tablero, int x, int y, int z){
 
-void Carta::lanzarMisil(Tablero tablero, int x, int y, int z){
+}
+template <class T> 
+void Carta::obtenerReporte(Tablero<T> &tablero, int x, int y, int z){
+
+}
+template <class T> 
+void Carta::lanzarMisil(Tablero<T> &tablero, int x, int y, int z){
 
 }
 
-string Carta::obtenerCoordenadas(int x, int y, int z){
+/* string Carta::obtenerCoordenadas(int x, int y, int z){
 
 }
 
 string Carta::obtenerContenidoCasilla(int x, int y, int z){
 
 }
-
+ */
 void Carta::activarAtributosJugador(bool &atributoJugador){
     if(!atributoJugador){
         atributoJugador = true;
