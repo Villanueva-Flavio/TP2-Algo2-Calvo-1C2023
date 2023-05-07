@@ -80,34 +80,53 @@ bool Carta::cartaActiva() {
 }
 template <class T> 
 void Carta::inactivarCeldas(Tablero<T> &tablero, int x, int y, int z){
-    
-    int radio= this->radioAccion;
-    Celda celdaCopiada();
 
-    celdaCopiada = tablero->getTData(x,y,z);
+  /*   
+    1.accedo a la celda que central
+    2.Itero sobre las celdas dentro del rango de la explosion
+    3.una vez accedo al contenido de las celdas verifico su contenido 
+        Si la celda esta vacia-> la inactivo
+        Si la celda tenia una Ficha-> guardo la ubicacion y agrego la linea en un archivo txt reporte -> la inactivo
+        (X,Y,Z) - Tipo de Ficha - Owner /
+    4. Imprimo un reporte en un txt 
+ */
 
 }
 template <class T> 
 void Carta::bombardearCeldas(Tablero<T> &tablero, int x, int y, int z){
 
+/*   
+    1.accedo a la celda central
+    2. Elijo 4 ubicaciones de forma aleatoria
+    3.una vez accedo al contenido de las celdas verifico su contenido 
+        Si la celda esta vacia-> la inactivo
+        Si la celda tenia una Ficha-> guardo la ubicacion y agrego la linea en un archivo txt reporte -> la inactivo
+        (X,Y,Z) - Tipo de Ficha - Owner /
+    4. Imprimo un reporte en un txt 
+ */
 }
 template <class T> 
 void Carta::obtenerReporte(Tablero<T> &tablero, int x, int y, int z){
-
+ /*   
+    1.accedo a la celda central
+    2.Itero sobre las celdas dentro del rango de la explosion
+    3.una vez accedo al contenido de las celdas verifico su contenido 
+        Si la celda tenia una Ficha-> tomo la ubicacion y agrego la linea en un archivo txt reporte
+        (X,Y,Z) - Tipo de Ficha - Owner - Estado/
+    4. Imprimo un reporte en un txt 
+ */
 }
 template <class T> 
 void Carta::lanzarMisil(Tablero<T> &tablero, int x, int y, int z){
-
-}
-
-/* string Carta::obtenerCoordenadas(int x, int y, int z){
-
-}
-
-string Carta::obtenerContenidoCasilla(int x, int y, int z){
-
-}
+    /*   Hacer que devuelva un string con 
+    1.accedo a la celda
+    2.una vez accedo al contenido de las celdas verifico su contenido 
+        Si la celda tenia una Ficha-> tomo la ubicacion y agrego la linea en un archivo txt reporte- la inactivo
+        (X,Y,Z) - Tipo de Ficha - Owner - Estado/
+    4. Imprimo un reporte en un txt 
  */
+}
+
 void Carta::activarAtributosJugador(bool &atributoJugador){
     if(!atributoJugador){
         atributoJugador = true;

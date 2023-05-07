@@ -50,12 +50,6 @@ class Carta{
         template <class T> 
         void lanzarMisil(Tablero<T> &, int x, int y, int z);
 
-        //Devuelve las coordenadas dentro del radio definido
-        std::string obtenerCoordenadas(int x, int y, int z);
-
-        //Devuelve el contenido de la casilla
-        std::string obtenerContenidoCasilla(int x, int y, int z);
-
         //Omite el turno del jugador continuo
         void activarAtributosJugador(bool &atributoJugador);
 
