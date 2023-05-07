@@ -16,7 +16,7 @@ class Mina{
         Mina();
 
         // Devuelve el estado
-        char getEstado() const;
+        EstadoMina getEstado() const;
 
         // Cambia el estado
         void setEstado(EstadoMina nuevoEstado);

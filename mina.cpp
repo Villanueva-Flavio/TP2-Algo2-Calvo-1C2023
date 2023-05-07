@@ -3,31 +3,31 @@
 
 Mina::Mina(){
 
-    estado = COLOCADA;
+    this->estado = COLOCADA;
 }
 
 
-char Mina::getEstado() const {
+EstadoMina Mina::getEstado() const {
 
-    return estado;
+    return this->estado;
 }
 
 void Mina::setEstado(EstadoMina  nuevoEstado){
 
-    estado = nuevoEstado;
+    this->estado = nuevoEstado;
 }
 
 void Mina::colocar() {
 
-    estado = COLOCADA;
+    this->estado = COLOCADA;
 }
 
 void Mina::explotar() {
 
-    estado = CASILLA_INACTIVA;
+    this->estado = CASILLA_INACTIVA;
 }
 
 void Mina::eliminar() {
 
-    estado = ELIMINADA;
+    this->estado = ELIMINADA;
 }
