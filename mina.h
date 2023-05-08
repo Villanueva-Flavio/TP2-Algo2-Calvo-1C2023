@@ -9,7 +9,6 @@ class Mina{
 
         EstadoMina estado;
 
-
     public:
 
         // Constructor
@@ -21,14 +20,11 @@ class Mina{
         // Cambia el estado
         void setEstado(EstadoMina nuevoEstado);
 
-
         // Cambia el estado a 'colocar'
         void colocar();
 
-
         // Cambia el estado a 'casilla_inactiva'
         void explotar();
-
 
         // Cambia el estado a 'eliminada'
         void eliminar();
