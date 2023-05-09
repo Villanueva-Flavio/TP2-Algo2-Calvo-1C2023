@@ -3,23 +3,28 @@
 
 #include <string>
 #include "carta.h"
+#include "mina.h"
 
 class Jugador{
     private:
         std::string nombre;
         int soldados;
-        int minas;
+        int numMinas;      //
         int armamentos;
         Carta *cartas; // ver esto
     public:
             
+            Mina* minas;    // agregado
+            
             Jugador();
+
+            ~Jugador();    // agregado
     
             std::string getNombre();
     
             int getSoldados();
     
-            int getMinas();
+            int getNumMinas();  //
     
             int getArmamentos();
     
@@ -29,7 +34,7 @@ class Jugador{
     
             void setSoldados(int soldados);
     
-            void setMinas(int minas);
+            void setNumMinas(int minas);    //
     
             void setArmamentos(int armamentos);
     
@@ -40,9 +45,14 @@ class Jugador{
 Jugador::Jugador() {
     this->nombre = "";
     this->soldados = 0;
-    this->minas = 0;
+    this->numMinas = 0;
     this->armamentos = 0;
     this->cartas = new Carta;
+    this->minas = new Mina[numMinas];    //
+}
+
+Jugador::~Jugador() {
+    delete[] this->minas;
 }
 
 std::string Jugador::getNombre() {
@@ -53,8 +63,8 @@ int Jugador::getSoldados() {
     return this->soldados;
 }
 
-int Jugador::getMinas() {
-    return this->minas;
+int Jugador::getNumMinas() {
+    return this->numMinas;
 }
 
 int Jugador::getArmamentos() {
@@ -73,8 +83,9 @@ void Jugador::setSoldados(int soldados) {
     this->soldados = soldados;
 }
 
-void Jugador::setMinas(int minas) {
-    this->minas = minas;
+void Jugador::setNumMinas(int minas) {
+    this->numMinas = numMinas;
+
 }
 
 void Jugador::setArmamentos(int armamentos) {
