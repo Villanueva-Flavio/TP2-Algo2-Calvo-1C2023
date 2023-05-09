@@ -8,7 +8,7 @@ class Celda {
     private:
         TipoCelda tipo;
         bool estado;
-        Ficha *ficha;
+        Ficha ficha;
 
     public:
 
@@ -25,7 +25,7 @@ class Celda {
 
 Celda::Celda(TipoCelda tipoCelda, TipoContenido contenido) {
     this->tipo = tipoCelda;
-    this->ficha = new Ficha(contenido);
+    this->ficha.setTipo(contenido);
 }
 
 bool Celda::getEstado() {
