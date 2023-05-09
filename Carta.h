@@ -1,5 +1,6 @@
 #include <string>
 #include "tablero.h"
+#include "celda.h"
 
 #ifndef __CARTA_H__
 #define __CARTA_H__
@@ -23,8 +24,8 @@ class Carta{
         void usarCarta(bool &atributoJugador);
 
         //Permite al jugador acceder a la accion de la carta dependiendo de su tipo
-        template <class T> 
-        void usarCarta(Tablero<T> &, int x, int y, int z);
+        template <class Celda> 
+        void usarCarta(Tablero<Celda> &, int x, int y, int z);
 
         //Permite saber cual es el tipo de carta
         TipoCarta obteneterTipoCarta();
@@ -35,20 +36,20 @@ class Carta{
     private:
 
         //Se inactivan las celdas del perimetro marcado por el radio
-        template <class T> 
-        void inactivarCeldas(Tablero<T> &, int x, int y, int z);
+        template <class Celda> 
+        void inactivarCeldas(Tablero<Celda> &,int x, int y, int z);
 
         //Inactiva la cantidad de casillas indicadas en cantidad bombas de forma aleatoria dentro del rango
-        template <class T> 
-        void bombardearCeldas(Tablero<T> &, int x, int y, int z);
+        template <class Celda>  
+        void bombardearCeldas(Tablero<Celda> &,int x, int y, int z);
 
         //Devuelve un reporte que indica si se alcanzo a un objetivo contrario y donde
-        template <class T> 
-        void obtenerReporte(Tablero<T> &,int x, int y, int z);
+        template <class Celda>  
+        void obtenerReporte(Tablero<Celda> &, int x, int y, int z);
 
         //Inactiva la casilla impactada
-        template <class T> 
-        void lanzarMisil(Tablero<T> &, int x, int y, int z);
+        template <class Celda>  
+        void lanzarMisil(Tablero<Celda> &, int x, int y, int z);
 
         //Omite el turno del jugador continuo
         void activarAtributosJugador(bool &atributoJugador);
