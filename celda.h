@@ -3,7 +3,6 @@
 #define __CELDA_H__
 
 enum TipoCelda {TIERRA, AGUA, AIRE};
-enum TipoContenido {SOLDADO, ARMAMENTO, MINA, CARTA, VACIO};
 
 class Celda {
     private:
@@ -13,7 +12,7 @@ class Celda {
 
     public:
 
-        Celda(TipoCelda tipoCelda);
+        Celda(TipoCelda tipoCelda, TipoContenido contenido);
 
         TipoCelda getTipo();
 
@@ -24,9 +23,9 @@ class Celda {
         bool getEstado();
 };
 
-Celda::Celda(TipoCelda tipoCelda) {
+Celda::Celda(TipoCelda tipoCelda, TipoContenido contenido) {
     this->tipo = tipoCelda;
-    this->ficha = new Ficha(TipoContenido);
+    this->ficha = new Ficha(contenido);
 }
 
 bool Celda::getEstado() {

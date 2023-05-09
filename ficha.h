@@ -1,10 +1,13 @@
 #include <string>
-class ficha{
+
+enum TipoContenido {SOLDADO, ARMAMENTO, MINA, CARTA, VACIO};
+
+class Ficha{
     private:
         int jugadorOwner;
         std::string tipo; // revisar los enums y cambiar 
     public:
-        ficha();
+        Ficha(TipoContenido contenido);
         void setTipo(std::string nombre);
         std::string getTipo();
         int getJugadorOwner();
@@ -12,26 +15,26 @@ class ficha{
 };
 
 // Constructor y destructor en las siguietes dos lineas
-ficha::ficha() {
+Ficha::Ficha(TipoContenido contenido) {
     this->tipo = "";
     this->jugadorOwner = NULL;
 }
 
-int ficha::getJugadorOwner() {
+int Ficha::getJugadorOwner() {
     return this->jugadorOwner;
 }
 
-void ficha::setJugadorOwner(int jugadorOwner) {
+void Ficha::setJugadorOwner(int jugadorOwner) {
     this->jugadorOwner = jugadorOwner;
 }
 
-// Pre: recibe el nombre que va a recibir el nombre de la ficha, este es un string.
+// Pre: recibe el nombre que va a recibir el nombre de la Ficha, este es un string.
 // Post: cambia el contenido del atributo 'tipo'
-void ficha::setTipo(std::string nombre) {
+void Ficha::setTipo(std::string nombre) {
     this->tipo = nombre;
 }
 
 // Post: devuelve el contenido del atributo 'tipo'.
-std::string ficha::getTipo() {
+std::string Ficha::getTipo() {
     return this->tipo;
 }
