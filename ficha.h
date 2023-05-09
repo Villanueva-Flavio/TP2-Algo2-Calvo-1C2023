@@ -1,3 +1,6 @@
+#ifndef __FICHA_H__
+#define __FICHA_H__
+
 #include <string>
 
 enum TipoContenido {SOLDADO, TANQUE, SUBMARINO, AVION, MINA, CARTA, VACIO};
@@ -7,17 +10,17 @@ class Ficha{
         int jugadorOwner;
         TipoContenido tipo; 
     public:
-        Ficha();
+        Ficha(TipoContenido tipo);
         void setTipo(TipoContenido tipo);
-        TipoContenido Ficha::getTipo();
+        TipoContenido getTipo();
         int getJugadorOwner();
         void setJugadorOwner(int jugadorOwner);
 };
 
 // Constructor
-Ficha::Ficha() {
-    this->tipo = VACIO;
-    this->jugadorOwner = 0;
+Ficha::Ficha(TipoContenido tipo) {
+    this->tipo = tipo;
+    this->jugadorOwner = -1;
 }
 
 // Devuelve ID del jugador al que le pertenece la ficha
@@ -40,3 +43,5 @@ void Ficha::setTipo(TipoContenido tipo) {
 TipoContenido Ficha::getTipo() {
     return this->tipo;
 }
+
+#endif
