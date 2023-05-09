@@ -48,7 +48,7 @@ Jugador::Jugador() {
     this->numMinas = 0;
     this->armamentos = 0;
     this->cartas = new Carta;
-    this->minas = new Mina[numMinas];    //
+    this->minas = nullptr;    //
 }
 
 Jugador::~Jugador() {
@@ -85,7 +85,7 @@ void Jugador::setSoldados(int soldados) {
 
 void Jugador::setNumMinas(int minas) {
     this->numMinas = numMinas;
-
+    this->minas = new Mina[numMinas];
 }
 
 void Jugador::setArmamentos(int armamentos) {
