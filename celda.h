@@ -1,12 +1,15 @@
+#include "ficha.h"
 #ifndef __CELDA_H__
 #define __CELDA_H__
 
 enum TipoCelda {TIERRA, AGUA, AIRE};
+enum TipoContenido {SOLDADO, ARMAMENTO, MINA, CARTA, VACIO};
 
 class Celda {
     private:
         TipoCelda tipo;
         bool estado;
+        Ficha *ficha;
 
     public:
 
@@ -23,6 +26,7 @@ class Celda {
 
 Celda::Celda(TipoCelda tipoCelda) {
     this->tipo = tipoCelda;
+    this->ficha = new Ficha(TipoContenido);
 }
 
 bool Celda::getEstado() {
