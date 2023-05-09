@@ -3,7 +3,6 @@
 #include <iostream>
 #include "EasyBMP.h"
 #include <map>
-#include <cmath>
 #define SIZE 30
 int matrix[SIZE][SIZE][SIZE];
 
@@ -105,7 +104,7 @@ void setPlayerColor(RGBApixel* rgba, int jugador, mapaColores& mapa){ // requier
     mapa[static_cast<Capa>(jugador)] = *rgba;
 }
 
-bool esBorde(int x, int y, int z, bool frente){
+/* bool esBorde(int x, int y, int z, bool frente){
     bool esBorde;
     bool a = (x == 1 || x == SIZE ); // FRENTE IZQ || FONDO DER
     bool b = (y == 1 || y == SIZE ); // FONDO IZQ || FRENTE DER
@@ -136,7 +135,7 @@ void setColor(Coordenada pos, RGBApixel* rgba, Capa capa){ // PLAYA
     if(capa == CAPA_BORDE){
         *rgba = (esBorde(pos.x, pos.y, pos.z, true) && capa == CAPA_BORDE)? BORDE : *rgba;
     }
-}
+} */
 
 int pixelSizeGet(RGBApixel color){
     int resultado = (rgbaIg(color, AGUA))? 2:8;
@@ -171,7 +170,7 @@ void pintarEntidad(BMP* image, Coordenada pixelPos, RGBApixel color, Coordenada 
     }
 }
 
-bool validarCapa(Capa capa, RGBApixel color){
+/* bool validarCapa(Capa capa, RGBApixel color){
     mapaColores mapa = getMap();
     for(mapaColores::iterator it = mapa.begin(); it != mapa.end(); ++it){
         if(it->first == capa){
@@ -179,7 +178,7 @@ bool validarCapa(Capa capa, RGBApixel color){
         }
     }
     return false;
-}
+} */
 
 Coordenada getPixelOffset(int angulo){
     Coordenada pixelOffset;
