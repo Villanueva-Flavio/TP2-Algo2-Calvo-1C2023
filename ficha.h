@@ -33,7 +33,7 @@ void Ficha::setJugadorOwner(int jugadorOwner) {
     this->jugadorOwner = jugadorOwner;
 }
 
-// Tipos que admite: SOLDADO, TANQUE, AVION y SUBMARINO.
+// Tipos que admite: SOLDADO, TANQUE, SUBMARINO, AVION, MINA, CART y, VACIO.
 // Modifica el tipo de fichea, se le debe pasar un enum { setTipo(TipoFicha) }
 void Ficha::setTipo(TipoContenido tipo) {
     this->tipo = tipo;
