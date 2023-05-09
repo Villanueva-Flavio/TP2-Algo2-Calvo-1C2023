@@ -1,7 +1,4 @@
 #include <string>
-
-enum TipoContenido {SOLDADO, ARMAMENTO, MINA, CARTA, VACIO};
-
 class ficha{
     private:
         int jugadorOwner;

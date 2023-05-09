@@ -2,7 +2,7 @@
 #define __JUGADOR_H__
 
 #include <string>
-#include "carta.h"
+#include "Carta.h"
 
 class Jugador{
     private:
@@ -10,7 +10,9 @@ class Jugador{
         int soldados;
         int minas;
         int armamentos;
-        Carta *cartas; // ver esto
+        bool escudoActivo; //yenny nuevo
+        bool omitirTurno;//yenny nuevo
+        //Carta *cartas;
     public:
             
             Jugador();
@@ -23,7 +25,7 @@ class Jugador{
     
             int getArmamentos();
     
-            Carta* getCartas();
+            //Carta* getCartas();
     
             void setNombre(std::string nombre);
     
@@ -35,6 +37,12 @@ class Jugador{
     
             void setCartas(Carta* cartas);
 
+            //Memueve el escudo activado por una carta
+            void desactivarEscudo();//yenny nuevo
+
+            //Habilita al jugador a participar en las rondas
+            void reactivarJugador();//yenny nuevo
+
 };
 
 Jugador::Jugador() {
@@ -42,7 +50,9 @@ Jugador::Jugador() {
     this->soldados = 0;
     this->minas = 0;
     this->armamentos = 0;
-    this->cartas = new Carta;
+    this->escudoActivo = false;
+    this->omitirTurno = false;
+   // this->cartas = new Carta;
 }
 
 std::string Jugador::getNombre() {
@@ -61,9 +71,9 @@ int Jugador::getArmamentos() {
     return this->armamentos;
 }
 
-Carta* Jugador::getCartas() {
+/* Carta* Jugador::getCartas() {
     return this->cartas;
-}
+} */
 
 void Jugador::setNombre(std::string nombre) {
     this->nombre = nombre;
@@ -81,8 +91,19 @@ void Jugador::setArmamentos(int armamentos) {
     this->armamentos = armamentos;
 }
 
-void Jugador::setCartas(Carta* cartas) {
+/* void Jugador::setCartas(Carta* cartas) {
     this->cartas = cartas;
+} */
+
+void Jugador::desactivarEscudo(){
+    if(this->escudoActivo){
+        this->escudoActivo = false;
+    }
 }
 
+void Jugador::reactivarJugador(){
+    if(this->omitirTurno){
+        this->omitirTurno = false;
+    }
+}
 #endif
