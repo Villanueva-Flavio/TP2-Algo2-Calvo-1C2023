@@ -21,11 +21,12 @@ class Celda {
         void setEstado(bool estado);
 
         bool getEstado();
+
+        Ficha getFicha();
 };
 
 Celda::Celda() {
     this->tipo = AIRE;
-    this->ficha->setTipo(VACIO);
 }
 
 bool Celda::getEstado() {
@@ -42,6 +43,10 @@ TipoCelda Celda::getTipo() {
 
 void Celda::setTipo(TipoCelda tipo) {
     this->tipo = tipo;
+}
+
+Ficha Celda::getFicha() {
+    return this->ficha;
 }
 
 #endif

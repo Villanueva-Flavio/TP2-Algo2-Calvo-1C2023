@@ -10,7 +10,7 @@ class Ficha{
         int jugadorOwner;
         TipoContenido tipo; 
     public:
-        Ficha(TipoContenido tipo);
+        Ficha();
         void setTipo(TipoContenido tipo);
         TipoContenido getTipo();
         int getJugadorOwner();
@@ -18,8 +18,8 @@ class Ficha{
 };
 
 // Constructor
-Ficha::Ficha(TipoContenido tipo) {
-    this->tipo = tipo;
+Ficha::Ficha() {
+    this->tipo = VACIO;
     this->jugadorOwner = -1;
 }
 
