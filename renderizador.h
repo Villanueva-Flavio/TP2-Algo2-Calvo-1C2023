@@ -25,10 +25,11 @@ const RGBApixel FUEGO = {12, 92, 232, 0};
 struct Coordenada{int x; int y; int z;};
 struct CoordenadaDouble{double x; double y; double z;};
 
-typedef std::map<int, RGBApixel> mapaColores;
+typedef std::map<int, RGBApixel> MapaColores;
+typedef Tablero<Celda> Mapa;
 
-mapaColores getMap(){
-    mapaColores mapa;
+MapaColores getMap(){
+    MapaColores mapa;
     mapa[CAPA_ARENA] = ARENA;
     mapa[CAPA_AGUA] = AGUA;
     mapa[CAPA_PASTO] = PASTO;
@@ -76,8 +77,8 @@ bool pixelEnRango(int px, int py, Coordenada imgSize){
     return px >= 0 && px < imgSize.x && py >= 0 && py < imgSize.y;
 }
 
-bool colorDisponible(RGBApixel color, mapaColores mapa){
-    for(mapaColores::iterator it = mapa.begin(); it != mapa.end(); ++it){
+bool colorDisponible(RGBApixel color, MapaColores mapa){
+    for(MapaColores::iterator it = mapa.begin(); it != mapa.end(); ++it){
         if(coloresSonIguales(it->second, color)){
             return false;
         }
@@ -85,7 +86,7 @@ bool colorDisponible(RGBApixel color, mapaColores mapa){
     return true;
 }
 
-void setPlayerColor(RGBApixel* color, int jugador, mapaColores& mapa){
+void setPlayerColor(RGBApixel* color, int jugador, MapaColores& mapa){
     std::cout << "Ingrese el color del jugador en formato R G B (0 a 255): " << std::endl;
     std::cin >> color->Red >> color->Green >> color->Blue;
     while(!colorEnRango(*color) || !colorDisponible(*color, mapa)){
@@ -136,19 +137,26 @@ Coordenada getPixelOffset(Lado lado, int size){
     return pixelOffset;
 }
 
-void imprimirAngulo(Lado lado, Coordenada imgSize, BMP* image, Tablero<Celda> tablero){
-    
-    RGBApixel color;
-    Coordenada pixelOffset = getPixelOffset(lado, size), matrixPos;
+RGBApixel getColor(Celda celda){
+    MapaColores mapa = getMap();
+    RGBApixel color = mapa[celda.getTipo()]; 
+    return color;
+}
 
-    for (matrixPos.x = size; matrixPos.x > 0; matrixPos.x--) {
-        for (matrixPos.y = size; matrixPos.y > 0; matrixPos.y--) {
-            for (matrixPos.z = size; matrixPos.z > 0; matrixPos.z--){
+void imprimirAngulo(Lado lado, Coordenada imgSize, BMP* image, Mapa tablero){
+    RGBApixel color;
+    Coordenada pixelOffset = getPixelOffset(lado, tablero.getTamanioX()), matrixPos, pixelPos;
+
+    for (matrixPos.x = tablero.getTamanioX(); matrixPos.x > 0; matrixPos.x--) {
+        for (matrixPos.y = tablero.getTamanioY(); matrixPos.y > 0; matrixPos.y--) {
+            for (matrixPos.z = tablero.getTamanioZ(); matrixPos.z > 0; matrixPos.z--){
+
                 CoordenadaDouble pixel = {matrixPos.x, matrixPos.y, matrixPos.z};
                 aplicarProyeccionIsometrica(&pixel, lado);
-                Coordenada pixelPos = {static_cast<int>(pixel.x * 20 + pixelOffset.x), static_cast<int>(pixel.y * 20 + pixelOffset.y)};
-                getColor(matrixPos, &color, capa);
+                pixelPos = {static_cast<int>(pixel.x * 20 + pixelOffset.x), static_cast<int>(pixel.y * 20 + pixelOffset.y)};
+                color = getColor(tablero.getTData(matrixPos.x, matrixPos.y, matrixPos.z));
                 pintarEntidad(image, pixelPos, color, imgSize);
+            
             }
         }
     }

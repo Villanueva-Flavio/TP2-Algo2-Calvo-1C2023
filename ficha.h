@@ -1,37 +1,47 @@
+#ifndef __FICHA_H__
+#define __FICHA_H__
+
 #include <string>
-class ficha{
+
+enum TipoContenido {SOLDADO, TANQUE, SUBMARINO, AVION, MINA, CARTA, VACIO};
+
+class Ficha{
     private:
         int jugadorOwner;
-        std::string tipo; // revisar los enums y cambiar 
+        TipoContenido tipo; 
     public:
-        ficha();
-        void setTipo(std::string nombre);
-        std::string getTipo();
+        Ficha();
+        void setTipo(TipoContenido tipo);
+        TipoContenido getTipo();
         int getJugadorOwner();
         void setJugadorOwner(int jugadorOwner);
 };
 
-// Constructor y destructor en las siguietes dos lineas
-ficha::ficha() {
-    this->tipo = "";
-    this->jugadorOwner = NULL;
+// Constructor
+Ficha::Ficha() {
+    this->tipo = VACIO;
+    this->jugadorOwner = (int)NULL;
 }
 
-int ficha::getJugadorOwner() {
+// Devuelve ID del jugador al que le pertenece la ficha
+int Ficha::getJugadorOwner() {
     return this->jugadorOwner;
 }
 
-void ficha::setJugadorOwner(int jugadorOwner) {
+// Modifica el ID del jugador al que le pertenece la ficha
+void Ficha::setJugadorOwner(int jugadorOwner) {
     this->jugadorOwner = jugadorOwner;
 }
 
-// Pre: recibe el nombre que va a recibir el nombre de la ficha, este es un string.
-// Post: cambia el contenido del atributo 'tipo'
-void ficha::setTipo(std::string nombre) {
-    this->tipo = nombre;
+// Tipos que admite: SOLDADO, TANQUE, SUBMARINO, AVION, MINA, CART y, VACIO.
+// Modifica el tipo de fichea, se le debe pasar un enum { setTipo(TipoFicha) }
+void Ficha::setTipo(TipoContenido tipo) {
+    this->tipo = tipo;
 }
 
-// Post: devuelve el contenido del atributo 'tipo'.
-std::string ficha::getTipo() {
+// Devuelve el tipo enum de la ficha
+TipoContenido Ficha::getTipo() {
     return this->tipo;
 }
+
+#endif
