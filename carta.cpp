@@ -1,4 +1,4 @@
-#include "Carta.h"
+#include "carta.h"
 #include "tablero.h"
 #include "celda.h"
 #include <string>

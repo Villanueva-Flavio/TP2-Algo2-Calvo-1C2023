@@ -87,8 +87,8 @@ template <class T> T Tablero<T>::getTData(int n, int m, int l){
 
 template <class T> void Tablero<T>::setCoordenada(int n, int m, int l){
     this->cubo->irANodo(n);
-    this->cubo->Lista<T>::getLData(m)->irANodo(m);
-    this->cubo->Lista<T>::getLData(m)->Lista<T>::getLData(m)->irANodo(l);
+    this->cubo->getLData(m)->irANodo(m);
+    this->cubo->getLData(m)->getLData(m)->irANodo(l);
 }
 
 template <class T> bool Tablero<T>::inRange(int n, int m, int l) {

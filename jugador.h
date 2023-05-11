@@ -2,7 +2,7 @@
 #define __JUGADOR_H__
 
 #include <string>
-#include "Carta.h"
+#include "carta.h"
 
 class Jugador{
     private:
