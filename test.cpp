@@ -11,7 +11,7 @@ void cargarSuelo(Tablero<Celda*>* suelo){
 };
 
 void crearFicha(Tablero<Celda*>* suelo){
-
+    suelo->getTData(9,9,0)->getFicha().setTipo(SOLDADO);
 }
 
 void moverFicha();
@@ -23,7 +23,7 @@ int main() {
     Tablero<Celda*>* juego = new Tablero<Celda*>(20, 20, 20);
     cargarSuelo(juego);
     crearFicha(juego);
-    while (!false) {        
+    while (!cortar) {        
         moverFicha();
         mostrarEventos();
     }    

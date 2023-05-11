@@ -27,6 +27,8 @@ class Celda {
 
 Celda::Celda() {
     this->tipo = AIRE;
+    this->estado = true;
+    this->ficha = Ficha();
 }
 
 bool Celda::getEstado() {

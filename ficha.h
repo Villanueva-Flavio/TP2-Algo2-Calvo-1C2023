@@ -20,7 +20,7 @@ class Ficha{
 // Constructor
 Ficha::Ficha() {
     this->tipo = VACIO;
-    this->jugadorOwner = -1;
+    this->jugadorOwner = (int)NULL;
 }
 
 // Devuelve ID del jugador al que le pertenece la ficha
