@@ -44,5 +44,5 @@ public:
 
 	void irANodo(int x);
 };
-
+#include "./tpps/lista.tpp"
 #endif

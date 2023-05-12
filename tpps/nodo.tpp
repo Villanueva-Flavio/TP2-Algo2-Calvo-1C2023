@@ -1,5 +1,3 @@
-#include "nodo.h"
-
 template <class T> Nodo<T>::Nodo(T data){
     this->data = data;
     this->sig = NULL;
