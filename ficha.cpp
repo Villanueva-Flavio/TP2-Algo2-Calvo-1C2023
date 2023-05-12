@@ -1,3 +1,5 @@
+#include "ficha.h"
+
 // Constructor
 Ficha::Ficha() {
     this->tipo = VACIO;

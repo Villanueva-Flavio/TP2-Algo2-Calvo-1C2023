@@ -1,3 +1,5 @@
+#include "tablero.h"
+
 template <class T> Tablero<T>::Tablero(int n, int m, int l) {
     this->x = n, this->y = m, this->z = l;
     cubo = new Lista<Lista<Lista<T>*>*>();

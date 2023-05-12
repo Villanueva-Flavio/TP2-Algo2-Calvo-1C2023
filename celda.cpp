@@ -1,3 +1,5 @@
+#include "celda.h"
+
 Celda::Celda() {
     this->tipo = AIRE;
     this->estado = true;

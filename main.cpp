@@ -1,6 +1,5 @@
 #include "tablero.h"
 #include "celda.h"
-#include "renderizador.h"
 #include <typeinfo>
 #include <iostream>
 
@@ -11,7 +10,7 @@ void cargarPlaya(Mapa* batallaDigital){
     for(int i = 0; i < batallaDigital->getTamanioX(); i++){
         for(int j = 0; j < batallaDigital->getTamanioY(); j++){
             for(int k = 0; k < batallaDigital->getTamanioZ(); k++){
-                // batallaDigital->getTData(i, j, k).setTipo(k > (batallaDigital->getTamanioZ() / 2)? AIRE : (batallaDigital->getTamanioX() < batallaDigital->getTamanioZ() - 4) ? AGUA : TIERRA);
+                batallaDigital->getTData(i, j, k).setTipo(k > (batallaDigital->getTamanioZ() / 2)? AIRE : (batallaDigital->getTamanioX() < batallaDigital->getTamanioZ() - 4) ? AGUA : TIERRA);
             }
         }
     }
@@ -20,7 +19,6 @@ void cargarPlaya(Mapa* batallaDigital){
 int main(){
     Mapa* batallaDigital = new Mapa(20, 20, 20);
     cargarPlaya(batallaDigital);
-    
     delete batallaDigital;
     return 0;
 }

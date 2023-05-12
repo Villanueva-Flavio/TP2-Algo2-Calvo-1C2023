@@ -24,5 +24,5 @@ class Celda {
 
         Ficha getFicha();
 };
-#include "./tpps/celda.tpp"
+
 #endif

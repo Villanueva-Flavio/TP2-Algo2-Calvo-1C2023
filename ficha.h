@@ -14,5 +14,5 @@ class Ficha{
         int getJugadorOwner();
         void setJugadorOwner(int jugadorOwner);
 };
-#include "./tpps/ficha.tpp"
+
 #endif

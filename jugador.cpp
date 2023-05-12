@@ -1,3 +1,6 @@
+#include "jugador.h"
+#include "Carta.h"
+
 Jugador::Jugador() {
     this->nombre = "";
     this->soldados = 0;
