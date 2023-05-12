@@ -9,20 +9,15 @@ class Celda {
         TipoCelda tipo;
         bool estado;
         Ficha ficha;
-
+        
     public:
-
         Celda();
-
         TipoCelda getTipo();
-
         void setTipo(TipoCelda tipo);
-
         void setEstado(bool estado);
-
         bool getEstado();
-
         Ficha getFicha();
+
 };
 #include "tpps/celda.tpp"
 #endif
