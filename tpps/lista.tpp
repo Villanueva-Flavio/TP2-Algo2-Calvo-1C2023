@@ -1,4 +1,3 @@
-#include "lista.h"
 
 template <class T> Lista<T>::Lista() {
 	this->primero = NULL;
