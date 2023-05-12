@@ -5,7 +5,7 @@
 #ifndef __CARTA_H__
 #define __CARTA_H__
 
-enum TipoCarta {AVION, BARCO, ATAQUE_QUIMICO, BOMBARDEO, OMITIR_TURNO, ESCUDO};
+enum TipoCarta {ATAQUE_QUIMICO, BOMBARDEO, OMITIR_TURNO, ESCUDO};
 
 class Carta{
     private:
