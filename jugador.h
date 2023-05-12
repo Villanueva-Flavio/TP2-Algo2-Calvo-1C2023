@@ -34,7 +34,7 @@ class Jugador{
     
             void setArmamentos(int armamentos);
     
-            void setCartas(Carta* cartas);
+            //void setCartas(Carta* cartas);
 
             //Memueve el escudo activado por una carta
             void desactivarEscudo();//yenny nuevo

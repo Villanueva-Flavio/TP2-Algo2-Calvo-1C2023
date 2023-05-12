@@ -2,8 +2,8 @@
 
 template <class T> Nodo<T>::Nodo(T data){
     this->data = data;
-    this->sig = NULL;
-    this->ant = NULL;
+    this->sig = nullptr;
+    this->ant = nullptr;
 }
 
 template <class T> T Nodo<T>::getNData(){
