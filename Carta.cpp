@@ -11,9 +11,9 @@ Carta::Carta(TipoCarta carta) {
     this->cantidadBombas = NULL;
 
     switch(carta){
-        case AVION:
-            this->carta = AVION;
-            break;
+        //case AVION:
+        //    this->carta = AVION;
+        //    break;
         case ATAQUE_QUIMICO:
             this->carta = ATAQUE_QUIMICO;
             break;
@@ -51,7 +51,7 @@ template <class T>
 
     this->activa = false;
 
-    switch(this->carta){
+    /* switch(this->carta){
         case AVION:
             this->radioAccion = 8;
             obtenerReporte(tablero,celda);
@@ -68,7 +68,7 @@ template <class T>
         case BARCO:
             lanzarMisil(tablero,celda);
             break;
-    }
+    } */
 }
 
 TipoCarta Carta::obteneterTipoCarta() {
@@ -84,9 +84,9 @@ void Carta::inactivarCeldas(Tablero<Celda> &tablero, int x, int y, int z){
     int &radio = this->radioAccion; 
 
     Celda celdaCentral = new Celda();
-    celdaCentral = tablero->getTData(x,y,z)
+    celdaCentral = tablero->getTData(x,y,z);
     
-    for (x=-radio; x < radio ; x++){
+    /* for (x=-radio; x < radio ; x++){
 
         for (y=-radio; y < radio ; y++){
 
@@ -103,7 +103,7 @@ void Carta::inactivarCeldas(Tablero<Celda> &tablero, int x, int y, int z){
         
         }
 
-    }
+    } */
   /*   
     1.accedo a la celda que central
     2.Itero sobre las celdas dentro del rango de la explosion

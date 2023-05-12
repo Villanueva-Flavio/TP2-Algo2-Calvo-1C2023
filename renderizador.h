@@ -120,7 +120,7 @@ void pintarEntidad(BMP* image, Coordenada pixelPos, RGBApixel color, Coordenada 
     int pixelSize = pixelSizeGet(color);
     for(int i = 0; i < pixelSize; i++){
         for(int j = 0; j < pixelSize; j++){
-            if(pixelSizeEnRango(pixelPos, imgSize) && !rgbaIg(color, BLANCO)){
+            if(pixelSizeEnRango(pixelPos, imgSize) && !coloresSonIguales(color, BLANCO)){
                     image->SetPixel(pixelPos.x + i, pixelPos.y + j, color);
                     image->SetPixel(pixelPos.x - i, pixelPos.y + j, color);
                     image->SetPixel(pixelPos.x + i, pixelPos.y - j, color);
@@ -137,13 +137,12 @@ Coordenada getPixelOffset(Lado lado, int size){
     return pixelOffset;
 }
 
-RGBApixel getColor(Celda celda){
-    MapaColores mapa = getMap();
-    RGBApixel color = mapa[celda.getTipo()]; 
-    return color;
+RGBApixel getColor(Celda celda, MapaColores colores){
+    return (colores.find(celda.getTipo()) != colores.end())?   colores[celda.getTipo()] : 
+           (celda.getFicha().getTipo() == SOLDADO)?            colores[celda.getFicha().getJugadorOwner()] : BLANCO;
 }
 
-void imprimirAngulo(Lado lado, Coordenada imgSize, BMP* image, Mapa tablero){
+void imprimirAngulo(Lado lado, Coordenada imgSize, BMP* image, Mapa tablero, MapaColores colores){
     RGBApixel color;
     Coordenada pixelOffset = getPixelOffset(lado, tablero.getTamanioX()), matrixPos, pixelPos;
 
@@ -154,7 +153,7 @@ void imprimirAngulo(Lado lado, Coordenada imgSize, BMP* image, Mapa tablero){
                 CoordenadaDouble pixel = {matrixPos.x, matrixPos.y, matrixPos.z};
                 aplicarProyeccionIsometrica(&pixel, lado);
                 pixelPos = {static_cast<int>(pixel.x * 20 + pixelOffset.x), static_cast<int>(pixel.y * 20 + pixelOffset.y)};
-                color = getColor(tablero.getTData(matrixPos.x, matrixPos.y, matrixPos.z));
+                color = getColor(tablero.getTData(matrixPos.x, matrixPos.y, matrixPos.z), colores);
                 pintarEntidad(image, pixelPos, color, imgSize);
             
             }
