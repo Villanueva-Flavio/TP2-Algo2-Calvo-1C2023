@@ -2,7 +2,7 @@
 #ifndef __CELDA_H__
 #define __CELDA_H__
 
-enum TipoCelda {TIERRA, AGUA, AIRE};
+enum TipoCelda {TIERRA_CELDA, CELDA_AGUA, AIRE};
 
 class Celda {
     private:
@@ -24,5 +24,4 @@ class Celda {
 
         Ficha getFicha();
 };
-
 #endif

@@ -1,7 +1,7 @@
 #ifndef __FICHA_H__
 #define __FICHA_H__
 
-enum TipoContenido {SOLDADO, TANQUE, SUBMARINO, AVION, MINA, CARTA, VACIO};
+enum TipoContenido {SOLDADO, TANQUE, SUBMARINO, AVION, MINA_FICHA, CARTA, VACIO};
 
 class Ficha{
     private:

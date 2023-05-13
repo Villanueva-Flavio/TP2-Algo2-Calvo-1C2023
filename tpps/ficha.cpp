@@ -1,6 +1,6 @@
-#include "ficha.h"
-
 // Constructor
+#include "../ficha.h"
+
 Ficha::Ficha() {
     this->tipo = VACIO;
     this->jugadorOwner = -1;

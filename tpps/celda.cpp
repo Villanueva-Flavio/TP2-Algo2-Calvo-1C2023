@@ -1,4 +1,4 @@
-#include "celda.h"
+#include "../celda.h"
 
 Celda::Celda() {
     this->tipo = AIRE;

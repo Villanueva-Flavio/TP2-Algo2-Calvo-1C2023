@@ -1,9 +1,7 @@
-#include "nodo.h"
-
 template <class T> Nodo<T>::Nodo(T data){
     this->data = data;
-    this->sig = nullptr;
-    this->ant = nullptr;
+    this->sig = NULL;
+    this->ant = NULL;
 }
 
 template <class T> T Nodo<T>::getNData(){
