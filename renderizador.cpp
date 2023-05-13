@@ -2,8 +2,8 @@
 #include <sstream>
 #include <string>
 #include <iostream>
-#include "tablero.h"
-#include "renderizador.h"
+#include "./Headers/tablero.h"
+#include "./Headers/renderizador.h"
 
 
 const RGBApixel BLANCO = {255, 255, 255, 0};

@@ -43,6 +43,6 @@ class Jugador{
             void reactivarJugador();//yenny nuevo
 
 };
-#include "./tpps/jugador.tpp"
-#include "./tpps/Carta.tpp"
+#include "../TPPs/jugador.tpp"
+#include "../TPPs/Carta.tpp"
 #endif

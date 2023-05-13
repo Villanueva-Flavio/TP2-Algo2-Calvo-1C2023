@@ -3,7 +3,7 @@
 
 #include <map>
 #include "celda.h"
-#include "./rendererSrc/EasyBMP.h"
+#include "../EasyBMP/EasyBMP.h"
 enum Lado {IZQUIERDA, DERECHA, ATRAS};
 enum Capa {CAPA_ARENA, CAPA_AGUA, CAPA_TIERRA, CAPA_PASTO, CAPA_BORDE, CAPA_MINA, CAPA_FUEGO};
 struct Coordenada{int x; int y; int z;};

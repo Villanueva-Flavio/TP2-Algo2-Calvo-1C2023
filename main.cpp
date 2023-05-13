@@ -1,6 +1,6 @@
-#include "tablero.h"
-#include "celda.h"
-#include "renderizador.h"
+#include "./Headers/tablero.h"
+#include "./Headers/celda.h"
+#include "./Headers/renderizador.h"
 #include <typeinfo>
 #include <iostream>
 

@@ -30,5 +30,5 @@ public:
 
     void setAnt(Nodo<T>* ant);
 };
-#include "./tpps/nodo.tpp"
+#include "../TPPs/nodo.tpp"
 #endif
