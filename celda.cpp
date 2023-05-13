@@ -1,7 +1,7 @@
 #include "./Headers/celda.h"
 
 Celda::Celda() {
-    this->tipo = AIRE;
+    this->tipo = CELDA_AIRE;
     this->estado = true;
     this->ficha = Ficha();
 }

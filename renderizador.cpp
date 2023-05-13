@@ -1,10 +1,8 @@
-
 #include <sstream>
 #include <string>
 #include <iostream>
 #include "./Headers/tablero.h"
 #include "./Headers/renderizador.h"
-
 
 const RGBApixel BLANCO = {255, 255, 255, 0};
 const RGBApixel ARENA = {0, 215, 215, 0};
