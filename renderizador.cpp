@@ -138,16 +138,17 @@ void imprimirAngulo(Lado lado, Coordenada imgSize, BMP* image, Mapa tablero, Map
     RGBApixel color;
     Coordenada pixelOffset = getPixelOffset(lado, tablero.getTamanioX()), matrixPos, pixelPos;
 
-    for (matrixPos.x = tablero.getTamanioX(); matrixPos.x > 0; matrixPos.x--) {
-        for (matrixPos.y = tablero.getTamanioY(); matrixPos.y > 0; matrixPos.y--) {
-            for (matrixPos.z = tablero.getTamanioZ(); matrixPos.z > 0; matrixPos.z--){
-
+    /* for (matrixPos.x = tablero.getTamanioX()-1; matrixPos.x >= 0; matrixPos.x--) {
+        for (matrixPos.y = tablero.getTamanioY()-1; matrixPos.y >= 0; matrixPos.y--) {
+            for (matrixPos.z = tablero.getTamanioZ()-1; matrixPos.z >= 0; matrixPos.z--){ */
+    for(matrixPos.x = 0; matrixPos.x < tablero.getTamanioX(); matrixPos.x++){
+        for(matrixPos.y = 0; matrixPos.y < tablero.getTamanioY(); matrixPos.y++){
+            for(matrixPos.z = 0; matrixPos.z < tablero.getTamanioZ(); matrixPos.z++){
                 CoordenadaDouble pixel = {(double)matrixPos.x, (double)matrixPos.y, (double)matrixPos.z};
                 aplicarProyeccionIsometrica(&pixel, lado);
                 pixelPos = {static_cast<int>(pixel.x * 20 + pixelOffset.x), static_cast<int>(pixel.y * 20 + pixelOffset.y)};
                 color = getColor(tablero.getTData(matrixPos.x, matrixPos.y, matrixPos.z), colores);
                 pintarEntidad(image, pixelPos, color, imgSize);
-            
             }
         }
     }

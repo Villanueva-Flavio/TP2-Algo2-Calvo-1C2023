@@ -1,8 +1,10 @@
+//hacer sleeps y marcar prints
 #include "./Headers/tablero.h"
 #include "./Headers/celda.h"
 #include "./Headers/renderizador.h"
 #include <typeinfo>
 #include <iostream>
+#include <unistd.h>
 
 using namespace std;
 typedef Tablero<Celda> Mapa;
@@ -25,9 +27,11 @@ int main(){
     imagen.SetSize(imgSize.x, imgSize.y);
     cargarPlaya(batallaDigital);
     imprimirAngulo(IZQUIERDA, imgSize, &imagen, *batallaDigital, getMap());
+    sleep(1);
+    cout << "Angulo 2" << endl;
     imprimirAngulo(DERECHA, imgSize, &imagen, *batallaDigital, getMap());
     imprimirAngulo(ATRAS, imgSize, &imagen, *batallaDigital, getMap());
     imagen.WriteToFile("Partida.bmp");
-    delete batallaDigital;
+    //delete batallaDigital;
     return 0;
 }
