@@ -1,8 +1,14 @@
 #include "Carta.h"
-#include "tablero.h"
-#include "celda.h"
+//#include "tablero.h"
+//#include "celda.h"
+
 #include <string>
+#include <fstream>
+#include <iostream>
+
 using namespace std;
+
+enum TipoContenido {SOLDADO, ARMAMENTO, MINA, CARTA, VACIO}
 
 Carta::Carta(TipoCarta carta) {
     
@@ -82,20 +88,37 @@ template <class Celda>
 void Carta::inactivarCeldas(Tablero<Celda> &tablero, int x, int y, int z){
 
     int &radio = this->radioAccion; 
+    string reporte = "";
 
-    Celda celdaCentral = new Celda();
-    celdaCentral = tablero->getTData(x,y,z)
-    
-    for (x=-radio; x < radio ; x++){
+    for (int x=-radio; x < radio ; x++){
 
-        for (y=-radio; y < radio ; y++){
+        for (int y=-radio; y < radio ; y++){
 
-            for (z=-radio; z < radio ; z++){
+            for (int z=-radio; z < radio ; z++){
 
                 if(tablero->inRange(x,y,z)){
 
-                    if(){
+                    if(tablero->getTData(x,y,z)->Ficha->tipo == VACIO){
+                        tablero->getTData(x,y,z)->setEstado(false); 
+                    }else{
 
+                        string contenido;
+                        int owner = tablero->getTData(x,y,z)->ficha->jugadorOwner;
+                        
+                        switch(tablero->getTData(x,y,z)->Ficha->tipo){
+                            case SOLDADO:
+                                contenido = "Soldado";
+                                break;
+                            case ARMAMENTO:
+                                contenido = "Armamento";
+                                break;
+                            case MINA:
+                                contenido = "Mina"
+                                break;
+                        }
+
+                        reporte = reporte + "(" + to_string(x) + ","+ to_string(y) + ","+ to_string(z) + ") - " + contenido + " " + to_string(owner) + "/";
+                        tablero->getTData(x,y,z)->setEstado(false);
                     }
                 }
         
@@ -104,16 +127,8 @@ void Carta::inactivarCeldas(Tablero<Celda> &tablero, int x, int y, int z){
         }
 
     }
-  /*   
-    1.accedo a la celda que central
-    2.Itero sobre las celdas dentro del rango de la explosion
-    3.una vez accedo al contenido de las celdas verifico su contenido 
-        Si la celda esta vacia-> la inactivo
-        Si la celda tenia una Ficha-> guardo la ubicacion y agrego la linea en un archivo txt reporte -> la inactivo
-        (X,Y,Z) - Tipo de Ficha - Owner /
-    4. Imprimo un reporte en un txt 
- */
 
+    this->imprimirReporte(reporte);
 }
 template <class Celda> 
 void Carta::bombardearCeldas(Tablero<Celda> &tablero,  int x, int y, int z){
@@ -155,3 +170,24 @@ void Carta::activarAtributosJugador(bool &atributoJugador){
         atributoJugador = true;
     }
 } 
+
+void Carta::imprimirReporte(string reporte){
+
+    string txtName = "cartaReporte.txt";
+    ofstream file;
+
+    file.open(txtName.c_str(), fstream::out);
+
+    for(int i=0; i < reporte.size ; i++){
+
+        if (reporte[i] != "/" ) {
+            file << reporte[i];
+            
+        }else{
+            file <<"\n";
+        }
+    }
+
+    file.close();
+
+}

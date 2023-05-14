@@ -54,6 +54,9 @@ class Carta{
         //Omite el turno del jugador continuo
         void activarAtributosJugador(bool &atributoJugador);
 
+         //Imprime el reporte de los efectos de las
+        void imprimirReporte(std::string reporte);
+
 };
 
 #endif
