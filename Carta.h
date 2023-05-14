@@ -58,5 +58,3 @@ class Carta{
         void imprimirReporte(std::string reporte);
 
 };
-
-#endif
