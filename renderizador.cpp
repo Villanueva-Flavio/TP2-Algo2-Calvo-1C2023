@@ -36,7 +36,7 @@ double gradosARadianes(double grados){
     return grados * 3.14159 / 180.0;
 }
 
-void getAngulos(double angulos[6], Lado lado){
+void getAngulos(double angulos[6], int lado){
     switch(lado){
         case IZQUIERDA:
             angulos[0] = 40; angulos[1] = 20; angulos[2] = 0; angulos[3] = 30; angulos[4] = -30; angulos[5] = 30;
@@ -50,7 +50,7 @@ void getAngulos(double angulos[6], Lado lado){
     }
 }
 
-void aplicarProyeccionIsometrica(CoordenadaDouble* pixel, Lado lado){
+void aplicarProyeccionIsometrica(CoordenadaDouble* pixel, int lado){
     double angulos[6];
     getAngulos(angulos, lado);
     pixel->x = gradosARadianes(angulos[0]) * pixel->x + gradosARadianes(angulos[1]) * pixel->y + gradosARadianes(angulos[2]) * pixel->z;
@@ -122,10 +122,10 @@ void pintarEntidad(BMP* image, Coordenada pixelPos, RGBApixel color, Coordenada 
     }
 }
 
-Coordenada getPixelOffset(Lado lado, int size){
+Coordenada getPixelOffset(int lado, int size){
     Coordenada pixelOffset;
-    pixelOffset.x = (lado == IZQUIERDA)? size*5 : (lado == DERECHA)? size*45 : size*55;
-    pixelOffset.y = (lado == IZQUIERDA)? size*37 : (lado == DERECHA)? size*30 : size*37;
+    pixelOffset.x = (lado == IZQUIERDA)? size*5 : (lado == DERECHA)? size*43 : size*55;
+    pixelOffset.y = (lado == IZQUIERDA)? size*37 : (lado == DERECHA)? size*31 : size*38;
     return pixelOffset;
 }
 
@@ -134,21 +134,20 @@ RGBApixel getColor(Celda celda, MapaColores colores){
            (celda.getFicha().getTipo() == SOLDADO)?            colores[celda.getFicha().getJugadorOwner()] : BLANCO;
 }
 
-void imprimirAngulo(Lado lado, Coordenada imgSize, BMP* image, Mapa tablero, MapaColores colores){
+void imprimirAngulo(Coordenada imgSize, BMP* image, Mapa tablero, MapaColores colores){
     RGBApixel color;
-    Coordenada pixelOffset = getPixelOffset(lado, tablero.getTamanioX()), matrixPos, pixelPos;
-
-    /* for (matrixPos.x = tablero.getTamanioX()-1; matrixPos.x >= 0; matrixPos.x--) {
-        for (matrixPos.y = tablero.getTamanioY()-1; matrixPos.y >= 0; matrixPos.y--) {
-            for (matrixPos.z = tablero.getTamanioZ()-1; matrixPos.z >= 0; matrixPos.z--){ */
-    for(matrixPos.x = 0; matrixPos.x < tablero.getTamanioX(); matrixPos.x++){
-        for(matrixPos.y = 0; matrixPos.y < tablero.getTamanioY(); matrixPos.y++){
-            for(matrixPos.z = 0; matrixPos.z < tablero.getTamanioZ(); matrixPos.z++){
-                CoordenadaDouble pixel = {(double)matrixPos.x, (double)matrixPos.y, (double)matrixPos.z};
-                aplicarProyeccionIsometrica(&pixel, lado);
-                pixelPos = {static_cast<int>(pixel.x * 20 + pixelOffset.x), static_cast<int>(pixel.y * 20 + pixelOffset.y)};
-                color = getColor(tablero.getTData(matrixPos.x, matrixPos.y, matrixPos.z), colores);
-                pintarEntidad(image, pixelPos, color, imgSize);
+    Coordenada pixelOffset, matrixPos, pixelPos;
+    for(int lado = 0; lado < 3; lado ++){
+        for(matrixPos.x = 0; matrixPos.x < tablero.getTamanioX(); matrixPos.x++){
+            for(matrixPos.y = 0; matrixPos.y < tablero.getTamanioY(); matrixPos.y++){
+                for(matrixPos.z = 0; matrixPos.z < tablero.getTamanioZ(); matrixPos.z++){
+                    pixelOffset = getPixelOffset(lado, tablero.getTamanioX());            
+                    CoordenadaDouble pixel = {(double)matrixPos.x, (double)matrixPos.y, (double)matrixPos.z};
+                    aplicarProyeccionIsometrica(&pixel, lado);
+                    pixelPos = {static_cast<int>(pixel.x * 20 + pixelOffset.x), static_cast<int>(pixel.y * 20 + pixelOffset.y)};
+                    color = getColor(tablero.getTData(matrixPos.x, matrixPos.y, matrixPos.z), colores);
+                    pintarEntidad(image, pixelPos, color, imgSize);
+                }
             }
         }
     }

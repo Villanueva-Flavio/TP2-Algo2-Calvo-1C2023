@@ -1,7 +1,7 @@
 #include "./Headers/celda.h"
 
 Celda::Celda() {
-    this->tipo = CELDA_AIRE;
+    this->tipo = CAPA_AIRE;
     this->estado = true;
     this->ficha = Ficha();
 }
@@ -14,11 +14,11 @@ void Celda::setEstado(bool estado) {
     this->estado = estado;
 }
 
-TipoCelda Celda::getTipo() {
+Capa Celda::getTipo() {
     return this->tipo;
 }
 
-void Celda::setTipo(TipoCelda tipo) {
+void Celda::setTipo(Capa tipo) {
     this->tipo = tipo;
 }
 

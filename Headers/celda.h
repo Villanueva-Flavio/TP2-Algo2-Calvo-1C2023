@@ -2,11 +2,11 @@
 #ifndef __CELDA_H__
 #define __CELDA_H__
 
-enum TipoCelda {CELDA_TIERRA, CELDA_AGUA, CELDA_AIRE};
+enum Capa {CAPA_ARENA, CAPA_AGUA, CAPA_TIERRA, CAPA_PASTO, CAPA_BORDE, CAPA_MINA, CAPA_FUEGO, CAPA_AIRE};
 
 class Celda {
     private:
-        TipoCelda tipo;
+        Capa tipo;
         bool estado;
         Ficha ficha;
 
@@ -14,9 +14,9 @@ class Celda {
 
         Celda();
 
-        TipoCelda getTipo();
+        Capa getTipo();
 
-        void setTipo(TipoCelda tipo);
+        void setTipo(Capa tipo);
 
         void setEstado(bool estado);
 
