@@ -1,7 +1,7 @@
 template <class T> Nodo<T>::Nodo(T data){
     this->data = data;
     this->sig = NULL;
-    //this->ant = NULL;
+    this->ant = NULL;
 }
 
 template <class T> T Nodo<T>::getNData(){
@@ -16,14 +16,14 @@ template <class T> Nodo<T>* Nodo<T>::next(){
     return this->sig;
 }
 
-/* template <class T> Nodo<T>* Nodo<T>::prev(){
+template <class T> Nodo<T>* Nodo<T>::prev(){
     return this->ant;
-} */
+}
 
 template <class T> void Nodo<T>::setSig(Nodo<T>* sig) {
     this->sig = sig;
 }
 
-/* template <class T> void Nodo<T>::setAnt(Nodo<T>* ant) {
+template <class T> void Nodo<T>::setAnt(Nodo<T>* ant) {
     this->ant = ant;
-} */
+}

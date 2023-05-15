@@ -18,7 +18,6 @@ const RGBApixel MINA = {0, 0, 0, 0};
 const RGBApixel FUEGO = {12, 92, 232, 0};
 
 typedef std::map<int, RGBApixel> MapaColores;
-typedef Tablero<Celda> Mapa;
 
 MapaColores getMap(){
     MapaColores mapa;
@@ -145,7 +144,7 @@ void imprimirAngulo(Coordenada imgSize, BMP* image, Mapa tablero, MapaColores co
                     CoordenadaDouble pixel = {(double)matrixPos.x, (double)matrixPos.y, (double)matrixPos.z};
                     aplicarProyeccionIsometrica(&pixel, lado);
                     pixelPos = {static_cast<int>(pixel.x * 20 + pixelOffset.x), static_cast<int>(pixel.y * 20 + pixelOffset.y)};
-                    color = getColor(tablero.getTData(matrixPos.x, matrixPos.y, matrixPos.z), colores);
+                    color = getColor(*tablero.getTData(matrixPos.x, matrixPos.y, matrixPos.z), colores);
                     pintarEntidad(image, pixelPos, color, imgSize);
                 }
             }

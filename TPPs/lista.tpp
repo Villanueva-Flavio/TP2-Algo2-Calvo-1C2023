@@ -25,9 +25,9 @@ template <class T> void Lista<T>::iterar(Iteracion iteracion){
 		if(iteracion == SIGUIENTE){
 			this->iterador = this->iterador->next();
 			this->iteracion++;
-		/* } else if (iteracion == ANTERIOR) {
+		} else if (iteracion == ANTERIOR) {
 			this->iterador = this->iterador->prev();
-			this->iteracion--; */
+			this->iteracion--;
 		} else {
 			while (this->iteracion < this->getSize() -1){
 				this->iterador = this->iterador->next();
@@ -42,6 +42,10 @@ template <class T> void Lista<T>::resetIter() {
 	this->iteracion = 0;
 }
 
+template <class T> Nodo<T>* Lista<T>::getNodo() {
+	return this->iterador;
+}
+
 template <class T> T Lista<T>::getLData(int x) {
 	irANodo(x);
 	return this->iterador->getNData();
@@ -54,7 +58,7 @@ template <class T> void Lista<T>::add(T data) {
 		this->primero = nuevo;
 		this->iterador = this->primero;
 	}else{
-		//nuevo->setAnt(this->iterador);
+		nuevo->setAnt(this->iterador);
 		this->iterador->setSig(nuevo);
 	}
 	this->size++;
@@ -69,7 +73,7 @@ template <class T> int Lista<T>::getSize() {
 }
 
 // EDITAR esta aberracion
-/* template <class T> void Lista<T>::irANodo(int x){
+template <class T> void Lista<T>::irANodo(int x){
 	bool inicioMasCerca = (this->getIter() / 2 < x);
     if(x < this->getIter()){
 		if(inicioMasCerca){
@@ -87,8 +91,8 @@ template <class T> int Lista<T>::getSize() {
 				this->iterar(SIGUIENTE);
 		}
 	}
-} */
-
+}
+/* 
 template <class T> void Lista<T>::irANodo(int x){
 	if(x < this->getIter()){
 		this->resetIter();
@@ -97,4 +101,4 @@ template <class T> void Lista<T>::irANodo(int x){
 				this->iterar(SIGUIENTE);
 		}
 	}
-}
+} */

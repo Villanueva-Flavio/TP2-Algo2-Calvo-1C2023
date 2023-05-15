@@ -7,13 +7,34 @@
 #include <unistd.h>
 
 using namespace std;
-typedef Tablero<Celda> Mapa;
 
 void cargarPlaya(Mapa* batallaDigital){
     for(int i = 0; i < batallaDigital->getTamanioX(); i++){
         for(int j = 0; j < batallaDigital->getTamanioY(); j++){
             for(int k = 0; k < batallaDigital->getTamanioZ(); k++){
-                batallaDigital->getTData(i, j, k).setTipo(k > (5)? CAPA_AIRE : (batallaDigital->getTamanioX() < batallaDigital->getTamanioZ() - 4) ? CAPA_AGUA : CAPA_TIERRA);
+                batallaDigital->getTData(i, j, k)->setTipo(CAPA_ARENA);
+                cout << batallaDigital->getTData(0, 0, 0)->getTipo() << " y la capa arena es: " << CAPA_ARENA << endl;
+            }
+        }
+    }
+}
+
+void loadCeldas(Mapa* batallaDigital){
+    for(int i = 0; i < batallaDigital->getTamanioX(); i++){
+        for(int j = 0; j < batallaDigital->getTamanioY(); j++){
+            for(int k = 0; k < batallaDigital->getTamanioZ(); k++){
+                Celda* celda = new Celda();
+                batallaDigital->setTData(i, j, k, celda);
+            }
+        }
+    }
+}
+
+void unloadCeldas(Mapa* batallaDigital){
+    for(int i = 0; i < batallaDigital->getTamanioX(); i++){
+        for(int j = 0; j < batallaDigital->getTamanioY(); j++){
+            for(int k = 0; k < batallaDigital->getTamanioZ(); k++){
+                delete batallaDigital->getTData(i, j, k);
             }
         }
     }
@@ -25,9 +46,12 @@ int main(){
     Mapa* batallaDigital = new Mapa(size, size, size);
     BMP imagen;
     imagen.SetSize(imgSize.x, imgSize.y);
-    cargarPlaya(batallaDigital);
-    imprimirAngulo(imgSize, &imagen, *batallaDigital, getMap());
-    imagen.WriteToFile("Partida.bmp");
-    //delete batallaDigital;
+    //cargarPlaya(batallaDigital);
+    loadCeldas(batallaDigital);
+    cout << batallaDigital->getTData(1, 1, 1)->getTipo() << " y la capa arena es: " << CAPA_ARENA << endl;
+    unloadCeldas(batallaDigital);
+    //imprimirAngulo(imgSize, &imagen, *batallaDigital, getMap());
+    //imagen.WriteToFile("Partida.bmp");
+    delete batallaDigital;
     return 0;
 }

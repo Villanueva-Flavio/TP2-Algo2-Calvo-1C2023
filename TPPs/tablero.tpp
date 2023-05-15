@@ -43,7 +43,7 @@ template <class T> int Tablero<T>::getTamanioZ() {
 
 template <class T> void Tablero<T>::setTData(int n, int m, int l, T data){
     setCoordenada(n, m, l);
-    this->cubo->getLData(n)->getLData(m)->getLData(l)->setNData(data);
+    this->cubo->getNodo()->getNData()->getNodo()->getNData()->getNodo()->setNData(data);
 }
 
 template <class T> T Tablero<T>::getTData(int n, int m, int l){

@@ -5,7 +5,7 @@ template <class T> class Nodo{
 private:
     T data;
     Nodo<T>* sig;
-    //Nodo<T>* ant;
+    Nodo<T>* ant;
 
 public:
 
@@ -23,12 +23,12 @@ public:
     Nodo<T>* next();
 
     // Devuelve el nodo anterior
-    //Nodo<T>* prev();
+    Nodo<T>* prev();
 
     // Linkea el nodo siguiente al puntero
     void setSig(Nodo<T>* sig);
 
-    //void setAnt(Nodo<T>* ant);
+    void setAnt(Nodo<T>* ant);
 };
 #include "../TPPs/nodo.tpp"
 #endif

@@ -11,7 +11,7 @@ struct Coordenada{int x; int y; int z;};
 struct CoordenadaDouble{double x; double y; double z;};
 
 typedef std::map<int, RGBApixel> MapaColores;
-typedef Tablero<Celda> Mapa;
+typedef Tablero<Celda*> Mapa;
 
 MapaColores getMap();
 
