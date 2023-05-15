@@ -16,8 +16,8 @@ TipoCelda Celda::getTipo() {
     return this->tipo;
 }
 
-void Celda::setTipo(TipoCelda tipo) {
-    this->tipo = tipo;
+void Celda::setTipo(TipoCelda elemento) {
+    this->tipo = elemento;
 }
 
 Ficha Celda::getFicha() {

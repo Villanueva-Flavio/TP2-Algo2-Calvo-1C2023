@@ -46,6 +46,10 @@ template <class T> T Lista<T>::getLData(int x) {
 	return this->iterador->getNData();
 }
 
+template <class T> Nodo<T>* Lista<T>::getNodo() {
+	return this->iterador;
+}
+
 template <class T> void Lista<T>::add(T data) {
 	Nodo<T>* nuevo = new Nodo<T>(data);
 	iterar(FINAL);

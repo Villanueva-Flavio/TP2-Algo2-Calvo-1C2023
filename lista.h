@@ -25,6 +25,7 @@ public:
 	void iterar(Iteracion iteracion);
 	// Reinicia el iterador en la primer posicion
 	void resetIter();
+	Nodo<T>* getNodo();
 	// Obtiene el dato del nodo del iterador
 	T getLData(int x);
 	// Crea un nuevo nodo al final de la lista

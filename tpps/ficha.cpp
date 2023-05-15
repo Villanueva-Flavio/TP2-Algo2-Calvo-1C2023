@@ -2,6 +2,7 @@
 Ficha::Ficha() {
     this->tipo = VACIO;
     this->jugadorOwner = (int)NULL;
+    this->fichaNumero = (int)NULL;
 }
 
 // Devuelve ID del jugador al que le pertenece la ficha

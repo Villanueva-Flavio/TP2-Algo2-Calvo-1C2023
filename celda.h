@@ -13,11 +13,11 @@ class Celda {
     public:
         Celda();
         TipoCelda getTipo();
-        void setTipo(TipoCelda tipo);
+        void setTipo(TipoCelda elemento);
         void setEstado(bool estado);
         bool getEstado();
         Ficha getFicha();
 
 };
-#include "tpps/celda.tpp"
+#include "tpps/celda.cpp"
 #endif

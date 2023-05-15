@@ -3,12 +3,14 @@
 
 #include <string>
 
-enum TipoContenido {SOLDADO, TANQUE, SUBMARINO, AVION, MINA, CARTA, VACIO};
+enum TipoContenido {SOLDADO, TANQUE, BARCO, SUBMARINO, AVION, MINA, CARTA, VACIO};
 
 class Ficha{
     private:
         int jugadorOwner;
-        TipoContenido tipo; 
+        int fichaNumero;
+        TipoContenido tipo;
+
     public:
         Ficha();
         void setTipo(TipoContenido tipo);
@@ -16,5 +18,6 @@ class Ficha{
         int getJugadorOwner();
         void setJugadorOwner(int jugadorOwner);
 };
-#include "tpps/ficha.tpp"
+
+#include "tpps/ficha.cpp"
 #endif
