@@ -2,16 +2,16 @@
 
 Celda::Celda() {
     this->tipo = CELDA_AIRE;
-    this->estado = true;
+    this->activa = true;
     this->ficha = Ficha();
 }
 
 bool Celda::getEstado() {
-    return this->estado;
+    return this->activa;
 }
 
 void Celda::setEstado(bool estado) {
-    this->estado = estado;
+    this->activa = estado;
 }
 
 TipoCelda Celda::getTipo() {

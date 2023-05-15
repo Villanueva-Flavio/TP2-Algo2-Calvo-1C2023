@@ -7,7 +7,7 @@ enum TipoCelda {CELDA_TIERRA, CELDA_AGUA, CELDA_AIRE};
 class Celda {
     private:
         TipoCelda tipo;
-        bool estado;
+        bool activa;
         Ficha ficha;
 
     public:
