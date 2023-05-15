@@ -137,7 +137,6 @@ RGBApixel getColor(Celda celda, MapaColores colores){
 void imprimirAngulo(Lado lado, Coordenada imgSize, BMP* image, Mapa tablero, MapaColores colores){
     RGBApixel color;
     Coordenada pixelOffset = getPixelOffset(lado, tablero.getTamanioX()), matrixPos, pixelPos;
-
     for (matrixPos.x = tablero.getTamanioX(); matrixPos.x > 0; matrixPos.x--) {
         for (matrixPos.y = tablero.getTamanioY(); matrixPos.y > 0; matrixPos.y--) {
             for (matrixPos.z = tablero.getTamanioZ(); matrixPos.z > 0; matrixPos.z--){
