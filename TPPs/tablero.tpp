@@ -22,6 +22,9 @@ template <class T> Tablero<T>::~Tablero() {
         for (int j = 0; j < b; j++) {
             cubo->getLData(i)->getLData(j)->resetIter();
             delete cubo->getLData(i)->getLData(j);
+            for(int k = 0; k < this->z; k++){
+                cubo->getLData(i)->getLData(j)->getLData(k); // EDITED
+            }
         }
         delete cubo->getLData(i);
     }
