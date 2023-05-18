@@ -1,4 +1,4 @@
-#include "./Headers/Carta.h"
+#include "./Headers/carta.h"
 #include "./Headers/tablero.h"
 #include "./Headers/celda.h"
 
@@ -6,13 +6,14 @@
 #include <fstream>
 #include <iostream>
 #include <cstdlib>
+#include <cmath>
 
 using namespace std;
 
 
 Carta::Carta(TipoCarta carta) {
     
-    this->activa = true;
+    this->cartaActiva = true;
     this->radioAccion = NULL;
     this->cantidadBombas = NULL;
 
@@ -40,7 +41,7 @@ Carta::Carta(TipoCarta carta) {
 
  void Carta::usarCarta(bool &atributoJugador){
     
-    this->activa = false;
+    this->cartaActiva = false;
 
     switch(this->carta){
         case OMITIR_TURNO:
@@ -55,7 +56,7 @@ Carta::Carta(TipoCarta carta) {
 template <class Celda> 
  void Carta::usarCarta(Tablero<Celda> &tablero, int x, int y, int z){
 
-    this->activa = false;
+    this->cartaActiva = false;
 
     switch(this->carta){
         case AVION_RADAR:
@@ -89,22 +90,45 @@ void Carta::inactivarCeldas(Tablero<Celda> &tablero, int x, int y, int z){
 
     // Falta reactivar celdas dependiendo del radio 
     int &radio = this->radioAccion; 
-    string reporte = "";
+    string reporte;
+    
 
     for (int n= x - radio; n < x + radio ; n++){
         for (int m= y - radio; m < y + radio ; m++){
             for (int l = z - radio; l < z + radio ; l++){
-
                 if(tablero->inRange(n,m,l)){
+
+                    float distanciaCentro = sqrt(pow( x - n, 2 ) + pow( y - m, 2 ) + pow( z - l, 2));
+                    int turnosInactiva;
+
+                    switch(ceil(distanciaCentro)){
+                        case radio:
+                            turnosInactiva = 1;
+                            break;
+                        case radio - 1:
+                            turnosInactiva = 2;
+                            break;
+                        case radio - 2:
+                            turnosInactiva = 4;
+                            break;
+                        case radio - 3:
+                            turnosInactiva = 6;
+                            break;
+                        default:
+                            turnosInactiva = 8;
+                        }
 
                     if(tablero->getTData(n,m,l)->getFicha()->getTipo() == VACIO){
                         tablero->getTData(n,m,l)->setEstado(false); 
+                        tablero->getTData(n,m,l)->setTurnosInactiva(turnosInactiva);
                     }else{
                         int owner = tablero->getTData(n,m,l)->getFicha()->getJugadorOwner();
                         string contenido = this->getStringTipoFicha(tablero->getTData(n,m,l)->getFicha()->getTipo());
                         reporte = reporte + "(" + to_string(n) + ","+ to_string(m) + ","+ to_string(l) + ") - " + contenido + " " + to_string(owner) + "/";
                         
                         tablero->getTData(n,m,l)->setEstado(false);
+                        tablero->getTData(n,m,l)->setTurnosInactiva(turnosInactiva);
+                        tablero->getTData(n,m,l)->getFicha()->setTipo(VACIO);
                     }
                 }
         
@@ -173,7 +197,7 @@ void Carta::obtenerReporte(Tablero<Celda> &tablero, int x, int y, int z){
     this->imprimirReporte(reporte);
 }
 
-template <class Celda> 
+template <class Celda>  
 void Carta::lanzarMisil(Tablero<Celda> &tablero,  int x, int y, int z){
     
     if(tablero->inRange(x,y,z)){

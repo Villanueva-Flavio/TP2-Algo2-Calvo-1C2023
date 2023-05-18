@@ -9,6 +9,9 @@ class Celda {
         TipoCelda tipo;
         bool activa;
         Ficha ficha;
+        //Revisar en reunion
+        int totalTurnosInactiva;
+        int contadorTurnosInactiva;
 
     public:
 
@@ -23,5 +26,11 @@ class Celda {
         bool getEstado();
 
         Ficha getFicha();
+
+        void setTurnosInactiva(int turnosInactiva);
+
+        int getTurnosInactiva();
+
+        void reactivarCeldaInactiva();
 };
 #endif
