@@ -41,6 +41,6 @@ Coordenada getPixelOffset(int lado, int size);
 
 RGBApixel getColor(Celda celda, MapaColores colores);
 
-void imprimirAngulo(Coordenada imgSize, BMP* image, Mapa tablero, MapaColores colores);
+void imprimirAngulo(Coordenada imgSize, BMP* image, Mapa* tablero, MapaColores colores);
 
 #endif

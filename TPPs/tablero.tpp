@@ -1,3 +1,5 @@
+#include "../Headers/celda.h"
+
 template <class T> Tablero<T>::Tablero(int n, int m, int l) {
     this->x = n, this->y = m, this->z = l;
     cubo = new Lista<Lista<Lista<T>*>*>();
@@ -6,7 +8,8 @@ template <class T> Tablero<T>::Tablero(int n, int m, int l) {
         for (int j = 0; j < m; j++) {
             Lista<T>* fila = new Lista<T>();
             for (int k = 0; k < l; k++) {
-                fila->add(T());
+                Celda *celda = new Celda();
+                fila->add(celda);
             }
             plano->add(fila);
         }
@@ -16,19 +19,18 @@ template <class T> Tablero<T>::Tablero(int n, int m, int l) {
 
 template <class T> Tablero<T>::~Tablero() {
     cubo->resetIter();
-    int a = this->y, b = this->z;
-    for (int i = 0; i < a; i++) {
+    int a = this->x, b = this->y, c = this->z;
+    for(int i = 0; i < a; i++){
         cubo->getLData(i)->resetIter();
-        for (int j = 0; j < b; j++) {
+        for(int j = 0; j < b; j++){
             cubo->getLData(i)->getLData(j)->resetIter();
-            delete cubo->getLData(i)->getLData(j);
-            for(int k = 0; k < this->z; k++){
-                cubo->getLData(i)->getLData(j)->getLData(k); // EDITED
+            for(int k = 0; k < c; k++){
+                delete cubo->getLData(i)->getLData(j)->getLData(k);
             }
+            delete cubo->getLData(i)->getLData(j);
         }
         delete cubo->getLData(i);
     }
-    this->x = 0, this->y = 0, this->z = 0;
     delete cubo;
 }
 
@@ -46,7 +48,8 @@ template <class T> int Tablero<T>::getTamanioZ() {
 
 template <class T> void Tablero<T>::setTData(int n, int m, int l, T data){
     setCoordenada(n, m, l);
-    this->cubo->getNodo()->getNData()->getNodo()->getNData()->getNodo()->setNData(data);
+
+    this->cubo->getLData(n)->getLData(m)->getLData(l)->setNData(data);
 }
 
 template <class T> T Tablero<T>::getTData(int n, int m, int l){
