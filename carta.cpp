@@ -91,7 +91,16 @@ void Carta::inactivarCeldas(Tablero<Celda> &tablero, int x, int y, int z){
     // Falta reactivar celdas dependiendo del radio 
     int &radio = this->radioAccion; 
     string reporte;
-    
+    // for i < radio
+    // Turnos de la coordenada: coord.x + i = 2* abs(i) - 2
+    // Turnos de la coordenada: coord.y + i = 2* abs(i) - 2
+    // Turnos de la coordenada: coord.z + i = 2* abs(i) - 2
+    //
+    // Turnos de la coordenada: coord.x - i = 2* abs(i) - 2
+    // Turnos de la coordenada: coord.y - i = 2* abs(i) - 2
+    // Turnos de la coordenada: coord.z - i = 2* abs(i) - 2
+
+    // turno = (i = radio -1)? turno + 1 : turno
 
     for (int n= x - radio; n < x + radio ; n++){
         for (int m= y - radio; m < y + radio ; m++){
