@@ -12,8 +12,14 @@ void cargarPlaya(Mapa* batallaDigital){
     for(int i = 0; i < batallaDigital->getTamanioX(); i++){
         for(int j = 0; j < batallaDigital->getTamanioY(); j++){
             for(int k = 0; k < batallaDigital->getTamanioZ(); k++){
-                if(i == 0 || i == batallaDigital->getTamanioX() - 1 || j == 0 || j == batallaDigital->getTamanioY() - 1){
+                if(i < k+4 ){
+                    batallaDigital->getTData(i, j, k)->setTipo(CAPA_ARENA);
+                } else if (i >= k+4){
                     batallaDigital->getTData(i, j, k)->setTipo(CAPA_AGUA);
+                }
+
+                if(k > batallaDigital->getTamanioX() / 2){
+                    batallaDigital->getTData(i, j, k)->setTipo(CAPA_AIRE);
                 }
             }
         }
