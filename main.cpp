@@ -21,13 +21,11 @@ void cargarPlaya(Mapa* batallaDigital){
 }
 
 int main(){
-    int size = 10;
+    int size = 20;
     Coordenada imgSize = {size*100, size*70};
     Mapa* batallaDigital = new Mapa(size, size, size);
     BMP imagen;
     imagen.SetSize(imgSize.x, imgSize.y);
-    batallaDigital->getTData(1, 1, 1)->setTipo(CAPA_AGUA);
-    cout << batallaDigital->getTData(1, 1, 1)->getTipo() << " y la capa arena es: " << CAPA_ARENA << endl;
     cargarPlaya(batallaDigital);
     imprimirAngulo(imgSize, &imagen, batallaDigital, getMap());
     imagen.WriteToFile("Partida.bmp");
