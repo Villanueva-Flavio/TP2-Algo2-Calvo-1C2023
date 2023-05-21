@@ -21,7 +21,7 @@ void cargarPlaya(Mapa* batallaDigital){
 }
 
 int main(){
-    int size = 20;
+    int size = 10;
     Coordenada imgSize = {size*100, size*70};
     Mapa* batallaDigital = new Mapa(size, size, size);
     BMP imagen;
