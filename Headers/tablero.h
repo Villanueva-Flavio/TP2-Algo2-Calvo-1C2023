@@ -30,5 +30,5 @@ template <class T> class Tablero {
         
         bool inRange(int n, int m, int l);
 };
-#include "../tpps/tablero.tpp"
+#include "../TPPs/tablero.tpp"
 #endif

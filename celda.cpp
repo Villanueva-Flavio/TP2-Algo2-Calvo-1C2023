@@ -9,11 +9,11 @@ Celda::Celda() {
 }
 
 bool Celda::getEstado() {
-    return this->activa;
+    return this->estado;
 }
 
 void Celda::setEstado(bool estado) {
-    this->activa = estado;
+    this->estado = estado;
 }
 
 Capa Celda::getTipo() {
@@ -38,14 +38,14 @@ int Celda::getTurnosInactiva(){
 
 void Celda::reactivarCeldaInactiva(){
 
-    if(this->activa){
+    if(this->estado){
 
         if(this->totalTurnosInactiva != this->contadorTurnosInactiva ){
             this->contadorTurnosInactiva ++;
         }else{
             this->contadorTurnosInactiva = 0;
             this->totalTurnosInactiva = 0;
-            this->activa = true;
+            this->estado = true;
         }
     }
     
