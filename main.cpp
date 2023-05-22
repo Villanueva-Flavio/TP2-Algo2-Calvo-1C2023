@@ -1,17 +1,26 @@
+//hacer sleeps y marcar prints
 #include "./Headers/tablero.h"
 #include "./Headers/celda.h"
 #include "./Headers/renderizador.h"
 #include <typeinfo>
 #include <iostream>
+#include <unistd.h>
 
 using namespace std;
-typedef Tablero<Celda> Mapa;
 
 void cargarPlaya(Mapa* batallaDigital){
     for(int i = 0; i < batallaDigital->getTamanioX(); i++){
         for(int j = 0; j < batallaDigital->getTamanioY(); j++){
             for(int k = 0; k < batallaDigital->getTamanioZ(); k++){
-                batallaDigital->getTData(i, j, k).setTipo(k > (batallaDigital->getTamanioZ() / 2)? CELDA_AIRE : (batallaDigital->getTamanioX() < batallaDigital->getTamanioZ() - 4) ? CELDA_AGUA : CELDA_TIERRA);
+                if(i < k+4 ){
+                    batallaDigital->getTData(i, j, k)->setTipo(CAPA_ARENA);
+                } else if (i >= k+4){
+                    batallaDigital->getTData(i, j, k)->setTipo(CAPA_AGUA);
+                }
+
+                if(k > batallaDigital->getTamanioX() / 2){
+                    batallaDigital->getTData(i, j, k)->setTipo(CAPA_AIRE);
+                }
             }
         }
     }
@@ -24,9 +33,7 @@ int main(){
     BMP imagen;
     imagen.SetSize(imgSize.x, imgSize.y);
     cargarPlaya(batallaDigital);
-    imprimirAngulo(IZQUIERDA, imgSize, &imagen, *batallaDigital, getMap());
-    imprimirAngulo(DERECHA, imgSize, &imagen, *batallaDigital, getMap());
-    imprimirAngulo(ATRAS, imgSize, &imagen, *batallaDigital, getMap());
+    imprimirAngulo(imgSize, &imagen, batallaDigital, getMap());
     imagen.WriteToFile("Partida.bmp");
     delete batallaDigital;
     return 0;

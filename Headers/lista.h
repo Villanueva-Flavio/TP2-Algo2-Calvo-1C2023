@@ -23,6 +23,7 @@ public:
 	// Y lo asigna al nodo del iterador
 	void assign(T data);
 
+	Nodo<T>* getNodo();
 	// Recibe el tipo de iteracion
 	// Itera la lista una vez, o hasta el final
 	void iterar(Iteracion iteracion);

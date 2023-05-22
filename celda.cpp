@@ -1,8 +1,8 @@
 #include "./Headers/celda.h"
 
 Celda::Celda() {
-    this->tipo = CELDA_AIRE;
-    this->activa = true;
+    this->tipo = CAPA_AIRE;
+    this->estado = true;
     this->ficha = Ficha();
     this->contadorTurnosInactiva = 0;
     this->totalTurnosInactiva = 0;
@@ -16,11 +16,11 @@ void Celda::setEstado(bool estado) {
     this->activa = estado;
 }
 
-TipoCelda Celda::getTipo() {
+Capa Celda::getTipo() {
     return this->tipo;
 }
 
-void Celda::setTipo(TipoCelda tipo) {
+void Celda::setTipo(Capa tipo) {
     this->tipo = tipo;
 }
 
