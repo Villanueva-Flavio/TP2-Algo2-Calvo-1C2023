@@ -14,6 +14,7 @@ class Ficha{
         TipoContenido getTipo();
         int getJugadorOwner();
         void setJugadorOwner(int jugadorOwner);
+        int getNumFicha();
+        void setNumFicha();
 };
-
 #endif

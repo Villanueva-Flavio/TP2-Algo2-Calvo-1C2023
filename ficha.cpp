@@ -26,3 +26,13 @@ void Ficha::setTipo(TipoContenido tipo) {
 TipoContenido Ficha::getTipo() {
     return this->tipo;
 }
+
+// Devuelve el número que identifica a la ficha de las otras del mismo tipo
+int Ficha::getNumFicha(){
+    return this->enumerador;
+}
+
+// Cambia el número que identifica a la ficha de las otras del mismo tipo
+void Ficha::setNumFicha(){
+    this->enumerador = 0;
+}
