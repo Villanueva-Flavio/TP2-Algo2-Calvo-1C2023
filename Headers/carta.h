@@ -59,6 +59,9 @@ class Carta{
         void imprimirReporte(std::string reporte);
 
         std::string getStringTipoFicha(TipoContenido);
+
+        //Devuelve la cantidad de turnos que va a permanecer la casilla dependiendo de la distancia a la que se encuentre del centrio de la explosion
+        int getTurnosInactiva(int, int, int, int, int, int);
 };
 
 #endif

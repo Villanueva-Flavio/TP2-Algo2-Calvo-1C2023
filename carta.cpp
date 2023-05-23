@@ -90,42 +90,15 @@ void Carta::inactivarCeldas(Tablero<Celda> &tablero, int x, int y, int z){
 
     // Falta reactivar celdas dependiendo del radio 
     int &radio = this->radioAccion; 
-    string reporte;
-    // for i < radio
-    // Turnos de la coordenada: coord.x + i = 2* abs(i) - 2
-    // Turnos de la coordenada: coord.y + i = 2* abs(i) - 2
-    // Turnos de la coordenada: coord.z + i = 2* abs(i) - 2
-    //
-    // Turnos de la coordenada: coord.x - i = 2* abs(i) - 2
-    // Turnos de la coordenada: coord.y - i = 2* abs(i) - 2
-    // Turnos de la coordenada: coord.z - i = 2* abs(i) - 2
-
-    // turno = (i = radio -1)? turno + 1 : turno
+    string reporte = NULL;
 
     for (int n= x - radio; n < x + radio ; n++){
         for (int m= y - radio; m < y + radio ; m++){
             for (int l = z - radio; l < z + radio ; l++){
+                
                 if(tablero->inRange(n,m,l)){
 
-                    float distanciaCentro = sqrt(pow( x - n, 2 ) + pow( y - m, 2 ) + pow( z - l, 2));
-                    int turnosInactiva;
-
-                    switch(ceil(distanciaCentro)){
-                        case radio:
-                            turnosInactiva = 1;
-                            break;
-                        case radio - 1:
-                            turnosInactiva = 2;
-                            break;
-                        case radio - 2:
-                            turnosInactiva = 4;
-                            break;
-                        case radio - 3:
-                            turnosInactiva = 6;
-                            break;
-                        default:
-                            turnosInactiva = 8;
-                        }
+                    int turnosInactiva = getTurnosInactiva(n,m,l,x,y,z);
 
                     if(tablero->getTData(n,m,l)->getFicha()->getTipo() == VACIO){
                         tablero->getTData(n,m,l)->setEstado(false); 
@@ -140,7 +113,6 @@ void Carta::inactivarCeldas(Tablero<Celda> &tablero, int x, int y, int z){
                         tablero->getTData(n,m,l)->getFicha()->setTipo(VACIO);
                     }
                 }
-        
             }
         }
     }
@@ -271,4 +243,28 @@ string getStringTipoFicha(TipoContenido tipo){
     }
 
     return contenido;
+}
+
+int getTurnosInactiva(int puntoX, int puntoY, int puntoZ, int centroX, int centroY, int centroZ){
+
+    int radio = this->radioAccion;
+
+    int distanciaX = abs(centroX - puntoX);
+    int distanciaY = abs(centroY - puntoY);
+    int distanciaZ = abs(centroZ - puntoZ);
+    
+    if (distanciaX == radio || distanciaY == radio || distanciaZ == radio) {
+        return  1; 
+    } else if (distanciaX == radio-1 || distanciaY == radio-1 || distanciaZ == radio-1) {
+        return  2; 
+    } else if (distanciaX == radio-2 || distanciaY == radio-2 || distanciaZ == radio-2) {
+        return  4; 
+    } else if (distanciaX == radio-3 || distanciaY == radio-3 || distanciaZ == radio-3) {
+        return  6; 
+    } else if (distanciaX == radio-4 || distanciaY == radio-4 || distanciaZ == radio-4) {
+        return  8; 
+    } else {
+        return 10; 
+    }
+
 }
