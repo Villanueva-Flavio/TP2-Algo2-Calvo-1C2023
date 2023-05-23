@@ -44,5 +44,5 @@ class Jugador{
 
 };
 #include "../TPPs/jugador.tpp"
-#include "../TPPs/Carta.tpp"
+// #include "../TPPs/Carta.tpp"
 #endif
