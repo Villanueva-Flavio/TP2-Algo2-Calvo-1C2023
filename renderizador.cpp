@@ -148,6 +148,7 @@ void imprimirAngulo(Coordenada imgSize, BMP* image, Mapa* tablero, MapaColores c
                     aplicarProyeccionIsometrica(&pixel, lado);
                     pixelPos.x = static_cast<int>(pixel.x * 20 + pixelOffset.x); 
                     pixelPos.y = static_cast<int>(pixel.y * 20 + pixelOffset.y);
+                    //std::cout << "\nSADASFASDA\n" ;
                     color = getColor(*tablero->getTData(matrixPos.x, matrixPos.y, matrixPos.z), colores);
                     pintarEntidad(image, pixelPos, color, imgSize);
                 }
