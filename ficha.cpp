@@ -33,6 +33,6 @@ int Ficha::getNumFicha(){
 }
 
 // Cambia el número que identifica a la ficha de las otras del mismo tipo
-void Ficha::setNumFicha(){
-    this->enumerador = 0;
+void Ficha::setNumFicha(int numero){
+    this->enumerador = numero;
 }

@@ -40,14 +40,15 @@ bool seEncuentraLaFicha(Tablero<Celda*>* tablero, string opcion, int x, int y, i
 }
 
 bool buscarFicha(Tablero<Celda*>* tablero){
-    string opcion = pedirOpcion();
+    string tipoFicha = pedirOpcion();
+    int enumeracionFicha = stoi(pedirOpcion());
     int nivelX = 1;
     int nivelZ = 1;
     bool encontrada = false;
-    for (int x = (opcion == "avion") ? nivelX : 0; x < tablero->getTamanioX(); x++){ // Se inicializa x siempre en el nivel del aire si es que se eligió buscar una cosa de ahí
+    for (int x = (tipoFicha == "avion") ? nivelX : 0; x < tablero->getTamanioX(); x++){ // Se inicializa x siempre en el nivel del aire si es que se eligió buscar una cosa de ahí
         for(int y = 0; y < tablero->getTamanioY(); y++){
             for(int z = 0; z < tablero->getTamanioZ(); z++){
-                if (seEncuentraLaFicha(tablero,opcion,x,y,z)){
+                if (seEncuentraLaFicha(tablero,tipoFicha,x,y,z)){
                     encontrada = true;
                     x = tablero->getTamanioX();
                     y = tablero->getTamanioY();

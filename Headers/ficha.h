@@ -15,6 +15,6 @@ class Ficha{
         int getJugadorOwner();
         void setJugadorOwner(int jugadorOwner);
         int getNumFicha();
-        void setNumFicha();
+        void setNumFicha(int numero);
 };
 #endif

@@ -23,5 +23,7 @@ class Celda {
         bool getEstado();
 
         Ficha* getFicha();
+
+        Ficha getCopiaFicha();
 };
 #endif
