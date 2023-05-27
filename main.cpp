@@ -87,13 +87,17 @@ void moverLongitudinalmente(char movimiento, Tablero<Celda*>* tablero, coordenad
     Celda auxiliar;
     if (movimiento == 'W'){
         if ((fichaActual.x + 1) < tablero->getTamanioX()){
+            system("clear");
+            cout << "\n(" << fichaActual.x + 1 << fichaActual.y << fichaActual.z << ")\n";
             auxiliar = *tablero->getTData((fichaActual.x + 1),(fichaActual.y),(fichaActual.z));
             *tablero->getTData((fichaActual.x + 1),(fichaActual.y),(fichaActual.z)) = *tablero->getTData((fichaActual.x),(fichaActual.y),(fichaActual.z)); 
             *tablero->getTData((fichaActual.x),(fichaActual.y),(fichaActual.z)) = auxiliar; 
         }
     }
     else if (movimiento == 'S'){
-        if (fichaActual.x-- > 0){
+        if ((fichaActual.x - 1) >= 0){
+            system("clear");
+            cout << "\n(" << fichaActual.x - 1 << fichaActual.y << fichaActual.z << ")\n";
             auxiliar = *tablero->getTData((fichaActual.x - 1),(fichaActual.y),(fichaActual.z));
             *tablero->getTData((fichaActual.x - 1),(fichaActual.y),(fichaActual.z)) = *tablero->getTData((fichaActual.x),(fichaActual.y),(fichaActual.z)); 
             *tablero->getTData((fichaActual.x),(fichaActual.y),(fichaActual.z)) = auxiliar; 
@@ -105,13 +109,17 @@ void moverLateralmente(char movimiento, Tablero<Celda*>* tablero, coordenadas fi
     Celda auxiliar;
     if (movimiento == 'D'){
         if ((fichaActual.y + 1) < tablero->getTamanioY()){
+            system("clear");
+            cout << "\n(" << fichaActual.x << fichaActual.y + 1 << fichaActual.z << ")\n";
             auxiliar = *tablero->getTData((fichaActual.x),(fichaActual.y + 1),(fichaActual.z)); 
             *tablero->getTData((fichaActual.x),(fichaActual.y + 1),(fichaActual.z)) = *tablero->getTData((fichaActual.x),(fichaActual.y),(fichaActual.z));
             *tablero->getTData((fichaActual.x),(fichaActual.y),(fichaActual.z)) = auxiliar;
         }
     }
     else if (movimiento == 'A'){
-        if ((fichaActual.y - 1) > 0){
+        if ((fichaActual.y - 1) >= 0){
+            system("clear");
+            cout << "\n(" << fichaActual.x << fichaActual.y - 1 << fichaActual.z << ")\n";
             auxiliar = *tablero->getTData((fichaActual.x),(fichaActual.y - 1),(fichaActual.z)); 
             *tablero->getTData((fichaActual.x),(fichaActual.y - 1),(fichaActual.z)) = *tablero->getTData((fichaActual.x),(fichaActual.y),(fichaActual.z));
             *tablero->getTData((fichaActual.x),(fichaActual.y),(fichaActual.z)) = auxiliar;
@@ -130,6 +138,9 @@ void moverFicha(Tablero<Celda*>* tablero) {
 }
 
 int main(){
+    bool seguir = false;
+    string cortar = "";
+
     int size = 20;
     Coordenada imgSize = {size*100, size*70};
     BMP imagen;
@@ -137,21 +148,16 @@ int main(){
     
     Tablero<Celda*>* tablero = new Tablero<Celda*>(size, size, size);
     cargarMapa(tablero);
-
-    
-    imprimirAngulo(imgSize, &imagen, tablero, getMap());
-    imagen.WriteToFile("Partida.bmp");
-
-    cout << endl << tablero->getTData(2,2,1)->getTipo() << endl;
-    cout << tablero->getTData(3,2,1)->getTipo() << endl;
-    
-    moverFicha(tablero);
-
-    cout << endl << tablero->getTData(2,2,1)->getTipo() << endl;
-    cout << tablero->getTData(3,2,1)->getTipo() << endl;
-    imprimirAngulo(imgSize, &imagen, tablero, getMap());
-    imagen.WriteToFile("Partida.bmp");
-
+    while (!seguir){
+        imprimirAngulo(imgSize, &imagen, tablero, getMap());
+        imagen.WriteToFile("Partida.bmp");
+        moverFicha(tablero);
+        imprimirAngulo(imgSize, &imagen, tablero, getMap());
+        imagen.WriteToFile("Partida.bmp");
+        cout << "\nSeguir?\n-";
+        cin >> cortar;
+        seguir = (cortar == "c") ? true : false;
+    }
     delete tablero;
     return 0;
 }
