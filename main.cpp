@@ -120,65 +120,65 @@ void buscarCoordenadasFicha(coordenadas* coorFicha, Tablero<Celda*>* tablero, st
 
 // Pide los movimientos longitudinales y horizontales (WASD). No existen movimientos diagonales ni de alturas.
 void pedirMovimiento(char* movimiento){
-    cout << "Ingrese el movimiento:\n-Frontal y tracero: W y S\nLaterales: A y D\n[ ";
+        system("clear");
+    cout << "Ingrese el movimiento:\n-Frontal y tracero: W y S\nLaterales: A y D\n(Puede mandar la letra 'f' para salir)\n-";
     cin >> *movimiento;
 }
 // Usando la lógica de 'moverLongitudinalmente( )' lo hace pero con casillas que se encuentren a los laterales en donde se encuentra la ficha a desplazar.
-void moverLongitudinalmente(char movimiento, Tablero<Celda*>* tablero, coordenadas fichaActual, string ficha){
+void moverLongitudinalmente(char movimiento, Tablero<Celda*>* tablero, coordenadas* fichaActual, string ficha){
     Celda auxiliar;
     if (movimiento == 'W'){
-        if ((fichaActual.x + 1) < tablero->getTamanioX()){
+        if ((fichaActual->x + 1) < tablero->getTamanioX()){
                 system("clear");
-                cout << "\n(" << fichaActual.x + 1 << fichaActual.y << fichaActual.z << ")\n";
-            auxiliar = *tablero->getTData((fichaActual.x + 1),(fichaActual.y),(fichaActual.z));
-            *tablero->getTData((fichaActual.x + 1),(fichaActual.y),(fichaActual.z)) = *tablero->getTData((fichaActual.x),(fichaActual.y),(fichaActual.z)); 
-            *tablero->getTData((fichaActual.x),(fichaActual.y),(fichaActual.z)) = auxiliar;
-            
+                cout << "\n(" << fichaActual->x + 1 << fichaActual->y << fichaActual->z << ")\n";
+            auxiliar = *tablero->getTData((fichaActual->x + 1),(fichaActual->y),(fichaActual->z));
+            *tablero->getTData((fichaActual->x + 1),(fichaActual->y),(fichaActual->z)) = *tablero->getTData((fichaActual->x),(fichaActual->y),(fichaActual->z)); 
+            *tablero->getTData((fichaActual->x),(fichaActual->y),(fichaActual->z)) = auxiliar;
+            fichaActual->x++;           
         }
     }
     else if (movimiento == 'S'){
-        if ((fichaActual.x - 1) >= 0){
+        if ((fichaActual->x - 1) >= 0){
                 system("clear");
-                cout << "\n(" << fichaActual.x - 1 << fichaActual.y << fichaActual.z << ")\n";
-            auxiliar = *tablero->getTData((fichaActual.x - 1),(fichaActual.y),(fichaActual.z));
-            *tablero->getTData((fichaActual.x - 1),(fichaActual.y),(fichaActual.z)) = *tablero->getTData((fichaActual.x),(fichaActual.y),(fichaActual.z)); 
-            *tablero->getTData((fichaActual.x),(fichaActual.y),(fichaActual.z)) = auxiliar;
+                cout << "\n(" << fichaActual->x - 1 << fichaActual->y << fichaActual->z << ")\n";
+            auxiliar = *tablero->getTData((fichaActual->x - 1),(fichaActual->y),(fichaActual->z));
+            *tablero->getTData((fichaActual->x - 1),(fichaActual->y),(fichaActual->z)) = *tablero->getTData((fichaActual->x),(fichaActual->y),(fichaActual->z)); 
+            *tablero->getTData((fichaActual->x),(fichaActual->y),(fichaActual->z)) = auxiliar;
+            fichaActual--;
         }
     }
 }
 
 // Usando la lógica de 'moverLongitudinalmente( )' lo hace pero con casillas que se encuentren a los laterales en donde se encuentra la ficha a desplazar.
-void moverLateralmente(char movimiento, Tablero<Celda*>* tablero, coordenadas fichaActual, string ficha){
+void moverLateralmente(char movimiento, Tablero<Celda*>* tablero, coordenadas* fichaActual, string ficha){
     Celda auxiliar;
-    if (movimiento == 'D'){
-        if ((fichaActual.y + 1) < tablero->getTamanioY()){
+    if (movimiento == 'A'){
+        if ((fichaActual->y + 1) < tablero->getTamanioY()){
                 system("clear");
-                cout << "\n(" << fichaActual.x << fichaActual.y + 1 << fichaActual.z << ")\n";
-            auxiliar = *tablero->getTData((fichaActual.x),(fichaActual.y + 1),(fichaActual.z)); 
-            *tablero->getTData((fichaActual.x),(fichaActual.y + 1),(fichaActual.z)) = *tablero->getTData((fichaActual.x),(fichaActual.y),(fichaActual.z));
-            *tablero->getTData((fichaActual.x),(fichaActual.y),(fichaActual.z)) = auxiliar;
+                cout << "\n(" << fichaActual->x << fichaActual->y + 1 << fichaActual->z << ")\n";
+            auxiliar = *tablero->getTData((fichaActual->x),(fichaActual->y + 1),(fichaActual->z)); 
+            *tablero->getTData((fichaActual->x),(fichaActual->y + 1),(fichaActual->z)) = *tablero->getTData((fichaActual->x),(fichaActual->y),(fichaActual->z));
+            *tablero->getTData((fichaActual->x),(fichaActual->y),(fichaActual->z)) = auxiliar;
+            fichaActual->y++;
         }
     }
-    else if (movimiento == 'A'){
-        if ((fichaActual.y - 1) >= 0){
+    else if (movimiento == 'D'){
+        if ((fichaActual->y - 1) >= 0){
                 system("clear");
-                cout << "\n(" << fichaActual.x << fichaActual.y - 1 << fichaActual.z << ")\n";
-            auxiliar = *tablero->getTData((fichaActual.x),(fichaActual.y - 1),(fichaActual.z)); 
-            *tablero->getTData((fichaActual.x),(fichaActual.y - 1),(fichaActual.z)) = *tablero->getTData((fichaActual.x),(fichaActual.y),(fichaActual.z));
-            *tablero->getTData((fichaActual.x),(fichaActual.y),(fichaActual.z)) = auxiliar;
+                cout << "\n(" << fichaActual->x << fichaActual->y - 1 << fichaActual->z << ")\n";
+            auxiliar = *tablero->getTData((fichaActual->x),(fichaActual->y - 1),(fichaActual->z)); 
+            *tablero->getTData((fichaActual->x),(fichaActual->y - 1),(fichaActual->z)) = *tablero->getTData((fichaActual->x),(fichaActual->y),(fichaActual->z));
+            *tablero->getTData((fichaActual->x),(fichaActual->y),(fichaActual->z)) = auxiliar;
+            fichaActual->y--;
         }      
     }
 }
 
 // Cambia la casilla en la que se encuentra la ficha por la siguiente y viceversa, siempre y cuando se cumplan ciertas restricciones.
-void moverFicha(Tablero<Celda*>* tablero) {
-    string ficha;
-    char movimiento;
-    coordenadas fichaActual = {-1,-1,-1};
-    buscarCoordenadasFicha(&fichaActual,tablero,&ficha);
-    pedirMovimiento(&movimiento);
-    moverLongitudinalmente(movimiento,tablero,fichaActual,ficha);
-    moverLateralmente(movimiento,tablero,fichaActual,ficha);
+void moverFicha(Tablero<Celda*>* tablero, coordenadas* fichaActual, string ficha, char* movimiento) {
+    pedirMovimiento(movimiento);
+    moverLongitudinalmente(*movimiento,tablero,fichaActual,ficha);
+    moverLateralmente(*movimiento,tablero,fichaActual,ficha);
     fichaActual = fichaActual;
 }
 
@@ -186,7 +186,11 @@ int main(){
     bool seguir = false;
     string cortar = "";
     int size = 20;
+    string ficha;
+    char movimiento;
     
+    coordenadas fichaActual = {-1,-1,-1};
+
     Coordenada imgSize = {size*100, size*70};
     BMP imagen;
     imagen.SetSize(imgSize.x, imgSize.y);
@@ -194,12 +198,17 @@ int main(){
     Tablero<Celda*>* tablero = new Tablero<Celda*>(size, size, size);
     cargarMapa(tablero);
     while (!seguir){
+
         imprimirAngulo(imgSize, &imagen, tablero, getMap());
         imagen.WriteToFile("Partida.bmp");
-        moverFicha(tablero);
-        imprimirAngulo(imgSize, &imagen, tablero, getMap());
-        imagen.WriteToFile("Partida.bmp");
-        cout << "\nSeguir?\n-";
+
+        buscarCoordenadasFicha(&fichaActual,tablero,&ficha);
+        while (movimiento != 't'){
+            moverFicha(tablero, &fichaActual, ficha, &movimiento);
+            imprimirAngulo(imgSize, &imagen, tablero, getMap());
+            imagen.WriteToFile("Partida.bmp");
+        }
+        cout << "\nSeguir?(Puede mandar la letra 'c' para salir)\n-";
         cin >> cortar;
         seguir = (cortar == "c") ? true : false;
     }
