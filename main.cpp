@@ -46,15 +46,20 @@ int pedirEnumeracion() {
 bool seEncuentraLaFicha(Tablero<Celda*>* tablero, string opcion, int enumeracionFicha, int x, int y, int z) {
     bool seEncontro = false;
     if (opcion == "soldado"){
-        seEncontro = ((tablero->getTData(x,y,z)->getFicha()->getTipo() == SOLDADO) && (tablero->getTData(x,y,z)->getFicha()->getNumFicha() == enumeracionFicha)) ? true : false ;
+        seEncontro = ((tablero->getTData(x,y,z)->getFicha()->getTipo() == SOLDADO) 
+        && (tablero->getTData(x,y,z)->getFicha()->getNumFicha() == enumeracionFicha)) ? true : false ;
     }else if (opcion == "tanque"){
-        seEncontro = ((tablero->getTData(x,y,z)->getFicha()->getTipo() == TANQUE) && (tablero->getTData(x,y,z)->getFicha()->getNumFicha() == enumeracionFicha)) ? true : false ;
+        seEncontro = ((tablero->getTData(x,y,z)->getFicha()->getTipo() == TANQUE) 
+        && (tablero->getTData(x,y,z)->getFicha()->getNumFicha() == enumeracionFicha)) ? true : false ;
     }else if (opcion == "barco"){
-        seEncontro = ((tablero->getTData(x,y,z)->getFicha()->getTipo() == BARCO) && (tablero->getTData(x,y,z)->getFicha()->getNumFicha() == enumeracionFicha)) ? true : false ;
+        seEncontro = ((tablero->getTData(x,y,z)->getFicha()->getTipo() == BARCO) 
+        && (tablero->getTData(x,y,z)->getFicha()->getNumFicha() == enumeracionFicha)) ? true : false ;
     }else if (opcion == "avion"){
-        seEncontro = ((tablero->getTData(x,y,z)->getFicha()->getTipo() == AVION) && (tablero->getTData(x,y,z)->getFicha()->getNumFicha() == enumeracionFicha)) ? true : false ;
+        seEncontro = ((tablero->getTData(x,y,z)->getFicha()->getTipo() == AVION) 
+        && (tablero->getTData(x,y,z)->getFicha()->getNumFicha() == enumeracionFicha)) ? true : false ;
     }else if (opcion == "submarino"){
-        seEncontro = ((tablero->getTData(x,y,z)->getFicha()->getTipo() == SUBMARINO) && (tablero->getTData(x,y,z)->getFicha()->getNumFicha() == enumeracionFicha)) ? true : false ;
+        seEncontro = ((tablero->getTData(x,y,z)->getFicha()->getTipo() == SUBMARINO) 
+        && (tablero->getTData(x,y,z)->getFicha()->getNumFicha() == enumeracionFicha)) ? true : false ;
     }
     return seEncontro; 
 }
