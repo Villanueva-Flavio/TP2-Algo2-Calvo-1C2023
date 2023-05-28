@@ -4,8 +4,9 @@
 #include <iostream>
 using namespace std;
 
-struct coordenadas{int x; int y; int z;};
-struct Niveles{int suelo;int mar;};
+struct coordenadas{int x,y,z;};
+struct Niveles{int suelo,mar;};
+struct Desplazar{int x,y,z;};
 
 // Carga el terreno de juego
 void cargarMapa(Tablero<Celda*>* tablero){
@@ -22,7 +23,7 @@ void cargarMapa(Tablero<Celda*>* tablero){
     }
     tablero->getTData(2,2,1)->getFicha()->setTipo(SOLDADO);
     tablero->getTData(2,2,1)->getFicha()->setNumFicha(1);
-    tablero->getTData(2,2,1)->setTipo(CAPA_MINA);
+    tablero->getTData(2,2,1)->setTipo(CAPA_ARENA);
 }
 
 // Pide un tipo de ficha
@@ -46,17 +47,13 @@ bool seEncuentraLaFicha(Tablero<Celda*>* tablero, string opcion, int enumeracion
     bool seEncontro = false;
     if (opcion == "soldado"){
         seEncontro = ((tablero->getTData(x,y,z)->getFicha()->getTipo() == SOLDADO) && (tablero->getTData(x,y,z)->getFicha()->getNumFicha() == enumeracionFicha)) ? true : false ;
-    }
-    else if (opcion == "tanque"){
+    }else if (opcion == "tanque"){
         seEncontro = ((tablero->getTData(x,y,z)->getFicha()->getTipo() == TANQUE) && (tablero->getTData(x,y,z)->getFicha()->getNumFicha() == enumeracionFicha)) ? true : false ;
-    }
-    else if (opcion == "barco"){
+    }else if (opcion == "barco"){
         seEncontro = ((tablero->getTData(x,y,z)->getFicha()->getTipo() == BARCO) && (tablero->getTData(x,y,z)->getFicha()->getNumFicha() == enumeracionFicha)) ? true : false ;
-    }
-    else if (opcion == "avion"){
+    }else if (opcion == "avion"){
         seEncontro = ((tablero->getTData(x,y,z)->getFicha()->getTipo() == AVION) && (tablero->getTData(x,y,z)->getFicha()->getNumFicha() == enumeracionFicha)) ? true : false ;
-    }
-    else if (opcion == "submarino"){
+    }else if (opcion == "submarino"){
         seEncontro = ((tablero->getTData(x,y,z)->getFicha()->getTipo() == SUBMARINO) && (tablero->getTData(x,y,z)->getFicha()->getNumFicha() == enumeracionFicha)) ? true : false ;
     }
     return seEncontro; 
@@ -121,65 +118,67 @@ void buscarCoordenadasFicha(coordenadas* coorFicha, Tablero<Celda*>* tablero, st
 // Pide los movimientos longitudinales y horizontales (WASD). No existen movimientos diagonales ni de alturas.
 void pedirMovimiento(char* movimiento){
         system("clear");
-    cout << "Ingrese el movimiento:\n-Frontal y tracero: W y S\nLaterales: A y D\n(Puede mandar la letra 'f' para salir)\n-";
+    cout << "Ingrese el movimiento:\n-Frontal y tracero: W y S\nLaterales: A y D\n(Puede mandar la letra 't' para salir)\n-";
     cin >> *movimiento;
 }
-// Usando la lógica de 'moverLongitudinalmente( )' lo hace pero con casillas que se encuentren a los laterales en donde se encuentra la ficha a desplazar.
-void moverLongitudinalmente(char movimiento, Tablero<Celda*>* tablero, coordenadas* fichaActual, string ficha){
-    Celda auxiliar;
-    if (movimiento == 'W'){
-        if ((fichaActual->x + 1) < tablero->getTamanioX()){
-                system("clear");
-                cout << "\n(" << fichaActual->x + 1 << fichaActual->y << fichaActual->z << ")\n";
-            auxiliar = *tablero->getTData((fichaActual->x + 1),(fichaActual->y),(fichaActual->z));
-            *tablero->getTData((fichaActual->x + 1),(fichaActual->y),(fichaActual->z)) = *tablero->getTData((fichaActual->x),(fichaActual->y),(fichaActual->z)); 
-            *tablero->getTData((fichaActual->x),(fichaActual->y),(fichaActual->z)) = auxiliar;
-            fichaActual->x++;           
-        }
+
+// Revisa que las celdas cercanas sean de un tipo coherente a donde se va a mover la ficha (celda)
+bool permitirPaso(Tablero<Celda*>* tablero, coordenadas coordFicha, string ficha, char movimiento, Desplazar desplazarPor) {
+    bool permitido = false;
+    if (ficha == "soldado" || ficha == "tanque" || ficha == "barco"){
+        // El condicional ternario que modifica a 'permitido' tiene una condición compleja tal que ( (este || otro ) ... (este || otro) && (este) ) || ( (este) && (otro) ) tienen que ver con revisar las capas periféricas a celda en donde estoy estacionado.
+            permitido = ( (((tablero->getTData(coordFicha.x + desplazarPor.x,coordFicha.y + desplazarPor.y,coordFicha.z)->getTipo() == CAPA_PASTO) || (tablero->getTData(coordFicha.x + desplazarPor.x,coordFicha.y + desplazarPor.y,coordFicha.z)->getTipo() == CAPA_TIERRA) || (tablero->getTData(coordFicha.x + desplazarPor.x,coordFicha.y + desplazarPor.y,coordFicha.z)->getTipo() == CAPA_ARENA)) && (ficha == "soldado" || ficha == "tanque")) || ((tablero->getTData(coordFicha.x + 1,coordFicha.y,coordFicha.z)->getTipo() == CAPA_AGUA) && (ficha == "barco")) ) ? true : false;
+    }else if (ficha == "avion" || ficha == "submarino"){
+        // El condicional ternario que modifica a 'permitido' tiene una condición compleja tal que ((esto || otro) && (esto || otro)) tienen que ver con revisar las capas periféricas a celda en donde estoy estacionado.
+            permitido = ( ((tablero->getTData(coordFicha.x + desplazarPor.x,coordFicha.y + desplazarPor.y,coordFicha.z + desplazarPor.z)->getTipo() == CAPA_AIRE) && (ficha == "avion")) || ((tablero->getTData(coordFicha.x + desplazarPor.x,coordFicha.y + desplazarPor.y,coordFicha.z + desplazarPor.z)->getTipo() == CAPA_AGUA) && (ficha == "submarino")) ) ? true : false;
     }
-    else if (movimiento == 'S'){
-        if ((fichaActual->x - 1) >= 0){
-                system("clear");
-                cout << "\n(" << fichaActual->x - 1 << fichaActual->y << fichaActual->z << ")\n";
-            auxiliar = *tablero->getTData((fichaActual->x - 1),(fichaActual->y),(fichaActual->z));
-            *tablero->getTData((fichaActual->x - 1),(fichaActual->y),(fichaActual->z)) = *tablero->getTData((fichaActual->x),(fichaActual->y),(fichaActual->z)); 
-            *tablero->getTData((fichaActual->x),(fichaActual->y),(fichaActual->z)) = auxiliar;
-            fichaActual--;
-        }
+    return permitido;
+}
+
+// Segun el movimiento que le ingrese el usuario se modifican los valores del estuct 'desplazar'
+void ajustarDesplazamientosPorMovimiento(Desplazar* desplazar, string ficha, char movimiento) {
+    if (movimiento == 'w' || movimiento == 's'){
+        desplazar->x = (movimiento == 'w') ? 1 : -1;
+    }else if (movimiento == 'a' || movimiento == 'd'){
+        desplazar->y = (movimiento == 'a') ? 1 : -1;
+    }else if((movimiento == 'e'|| movimiento == 'x') && (ficha == "avion" || ficha == "submarino")){
+        desplazar->z = (movimiento == 'e') ? 1 : -1;
     }
 }
 
-// Usando la lógica de 'moverLongitudinalmente( )' lo hace pero con casillas que se encuentren a los laterales en donde se encuentra la ficha a desplazar.
-void moverLateralmente(char movimiento, Tablero<Celda*>* tablero, coordenadas* fichaActual, string ficha){
+// Procesa los cambios de las celdas
+void procesarMovimiento(char movimiento, Tablero<Celda*>* tablero, coordenadas* fichaActual, string ficha){
     Celda auxiliar;
-    if (movimiento == 'A'){
-        if ((fichaActual->y + 1) < tablero->getTamanioY()){
-                system("clear");
-                cout << "\n(" << fichaActual->x << fichaActual->y + 1 << fichaActual->z << ")\n";
-            auxiliar = *tablero->getTData((fichaActual->x),(fichaActual->y + 1),(fichaActual->z)); 
-            *tablero->getTData((fichaActual->x),(fichaActual->y + 1),(fichaActual->z)) = *tablero->getTData((fichaActual->x),(fichaActual->y),(fichaActual->z));
-            *tablero->getTData((fichaActual->x),(fichaActual->y),(fichaActual->z)) = auxiliar;
-            fichaActual->y++;
+    Desplazar desplazar = {0,0,0};
+    if (ficha == "soldado" || ficha == "tanque" || ficha == "barco"){
+        ajustarDesplazamientosPorMovimiento(&desplazar,ficha,movimiento);
+        // Este if () es para evitar que se trate de hacer un intercambio de celdas con celdas inexistentes, evitando una violación de segmento
+        if (fichaActual->x + desplazar.x >= 0 && fichaActual->x + desplazar.x < tablero->getTamanioX() && fichaActual->y + desplazar.y >= 0 && fichaActual->y + desplazar.y < tablero->getTamanioY() && fichaActual->z + desplazar.z >= 0 && fichaActual->z + desplazar.z < tablero->getTamanioZ()){
+            if (permitirPaso(tablero,*fichaActual,ficha,movimiento, desplazar)){
+                // Guardo la siguiente celda próxima, anterior o laterales
+                    auxiliar = *tablero->getTData((fichaActual->x + desplazar.x),(fichaActual->y + desplazar.y),(fichaActual->z + desplazar.z));
+                // La celda próxima, anterior o laterales son cambiadas por la celda en donde mi ficha está estacionada
+                    *tablero->getTData((fichaActual->x + desplazar.x),(fichaActual->y + desplazar.y),(fichaActual->z + desplazar.z)) = *tablero->getTData((fichaActual->x),(fichaActual->y),(fichaActual->z)); 
+                // La celda en donde estaba parado es cambiada por la celda que estaba en la posicion anterior de la celda que contenía mi ficha.
+                  *tablero->getTData((fichaActual->x),(fichaActual->y),(fichaActual->z)) = auxiliar;
+                // Actualizo los valores de posición por si quiero seguir moviendo las celdas
+                    fichaActual->x += desplazar.x;
+                    fichaActual->y += desplazar.y;
+                    fichaActual->z += desplazar.z;
+            }
         }
-    }
-    else if (movimiento == 'D'){
-        if ((fichaActual->y - 1) >= 0){
-                system("clear");
-                cout << "\n(" << fichaActual->x << fichaActual->y - 1 << fichaActual->z << ")\n";
-            auxiliar = *tablero->getTData((fichaActual->x),(fichaActual->y - 1),(fichaActual->z)); 
-            *tablero->getTData((fichaActual->x),(fichaActual->y - 1),(fichaActual->z)) = *tablero->getTData((fichaActual->x),(fichaActual->y),(fichaActual->z));
-            *tablero->getTData((fichaActual->x),(fichaActual->y),(fichaActual->z)) = auxiliar;
-            fichaActual->y--;
-        }      
     }
 }
 
 // Cambia la casilla en la que se encuentra la ficha por la siguiente y viceversa, siempre y cuando se cumplan ciertas restricciones.
 void moverFicha(Tablero<Celda*>* tablero, coordenadas* fichaActual, string ficha, char* movimiento) {
     pedirMovimiento(movimiento);
-    moverLongitudinalmente(*movimiento,tablero,fichaActual,ficha);
-    moverLateralmente(*movimiento,tablero,fichaActual,ficha);
-    fichaActual = fichaActual;
+    procesarMovimiento(*movimiento,tablero,fichaActual,ficha);
+}
+
+void procesarMapa(Coordenada imgSize, BMP* imagen, Tablero<Celda*>* tablero) {
+    imprimirAngulo(imgSize, imagen, tablero, getMap());
+    imagen->WriteToFile("Partida.bmp");
 }
 
 int main(){
@@ -198,15 +197,11 @@ int main(){
     Tablero<Celda*>* tablero = new Tablero<Celda*>(size, size, size);
     cargarMapa(tablero);
     while (!seguir){
-
-        imprimirAngulo(imgSize, &imagen, tablero, getMap());
-        imagen.WriteToFile("Partida.bmp");
-
         buscarCoordenadasFicha(&fichaActual,tablero,&ficha);
         while (movimiento != 't'){
+            procesarMapa(imgSize, &imagen, tablero);
             moverFicha(tablero, &fichaActual, ficha, &movimiento);
-            imprimirAngulo(imgSize, &imagen, tablero, getMap());
-            imagen.WriteToFile("Partida.bmp");
+            procesarMapa(imgSize, &imagen, tablero);
         }
         cout << "\nSeguir?(Puede mandar la letra 'c' para salir)\n-";
         cin >> cortar;
