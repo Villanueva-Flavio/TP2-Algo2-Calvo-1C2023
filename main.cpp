@@ -21,9 +21,9 @@ void cargarMapa(Tablero<Celda*>* tablero){
             }
         }
     }
-    tablero->getTData(2,2,1)->getFicha()->setTipo(SOLDADO);
-    tablero->getTData(2,2,1)->getFicha()->setNumFicha(1);
-    tablero->getTData(2,2,1)->setTipo(CAPA_ARENA);
+    tablero->getTData(2,2,11)->getFicha()->setTipo(AVION);
+    tablero->getTData(2,2,11)->getFicha()->setNumFicha(1);
+    tablero->getTData(2,2,11)->setTipo(CAPA_ARENA);
 }
 
 // Pide un tipo de ficha
@@ -150,22 +150,20 @@ void ajustarDesplazamientosPorMovimiento(Desplazar* desplazar, string ficha, cha
 void procesarMovimiento(char movimiento, Tablero<Celda*>* tablero, coordenadas* fichaActual, string ficha){
     Celda auxiliar;
     Desplazar desplazar = {0,0,0};
-    if (ficha == "soldado" || ficha == "tanque" || ficha == "barco"){
-        ajustarDesplazamientosPorMovimiento(&desplazar,ficha,movimiento);
-        // Este if () es para evitar que se trate de hacer un intercambio de celdas con celdas inexistentes, evitando una violación de segmento
-        if (fichaActual->x + desplazar.x >= 0 && fichaActual->x + desplazar.x < tablero->getTamanioX() && fichaActual->y + desplazar.y >= 0 && fichaActual->y + desplazar.y < tablero->getTamanioY() && fichaActual->z + desplazar.z >= 0 && fichaActual->z + desplazar.z < tablero->getTamanioZ()){
-            if (permitirPaso(tablero,*fichaActual,ficha,movimiento, desplazar)){
-                // Guardo la siguiente celda próxima, anterior o laterales
-                    auxiliar = *tablero->getTData((fichaActual->x + desplazar.x),(fichaActual->y + desplazar.y),(fichaActual->z + desplazar.z));
-                // La celda próxima, anterior o laterales son cambiadas por la celda en donde mi ficha está estacionada
-                    *tablero->getTData((fichaActual->x + desplazar.x),(fichaActual->y + desplazar.y),(fichaActual->z + desplazar.z)) = *tablero->getTData((fichaActual->x),(fichaActual->y),(fichaActual->z)); 
-                // La celda en donde estaba parado es cambiada por la celda que estaba en la posicion anterior de la celda que contenía mi ficha.
-                  *tablero->getTData((fichaActual->x),(fichaActual->y),(fichaActual->z)) = auxiliar;
-                // Actualizo los valores de posición por si quiero seguir moviendo las celdas
-                    fichaActual->x += desplazar.x;
-                    fichaActual->y += desplazar.y;
-                    fichaActual->z += desplazar.z;
-            }
+    ajustarDesplazamientosPorMovimiento(&desplazar,ficha,movimiento);
+    // Este if () es para evitar que se trate de hacer un intercambio de celdas con celdas inexistentes, evitando una violación de segmento
+    if (fichaActual->x + desplazar.x >= 0 && fichaActual->x + desplazar.x < tablero->getTamanioX() && fichaActual->y + desplazar.y >= 0 && fichaActual->y + desplazar.y < tablero->getTamanioY() && fichaActual->z + desplazar.z >= 0 && fichaActual->z + desplazar.z < tablero->getTamanioZ()){
+        if (permitirPaso(tablero,*fichaActual,ficha,movimiento, desplazar)){
+            // Guardo la siguiente celda próxima, anterior o laterales
+                auxiliar = *tablero->getTData((fichaActual->x + desplazar.x),(fichaActual->y + desplazar.y),(fichaActual->z + desplazar.z));
+            // La celda próxima, anterior o laterales son cambiadas por la celda en donde mi ficha está estacionada
+                *tablero->getTData((fichaActual->x + desplazar.x),(fichaActual->y + desplazar.y),(fichaActual->z + desplazar.z)) = *tablero->getTData((fichaActual->x),(fichaActual->y),(fichaActual->z)); 
+            // La celda en donde estaba parado es cambiada por la celda que estaba en la posicion anterior de la celda que contenía mi ficha.
+                *tablero->getTData((fichaActual->x),(fichaActual->y),(fichaActual->z)) = auxiliar;
+            // Actualizo los valores de posición por si quiero seguir moviendo las celdas
+                fichaActual->x += desplazar.x;
+                fichaActual->y += desplazar.y;
+                fichaActual->z += desplazar.z;
         }
     }
 }
