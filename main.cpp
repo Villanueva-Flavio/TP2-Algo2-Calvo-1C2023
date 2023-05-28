@@ -123,7 +123,7 @@ void pedirMovimiento(char* movimiento){
 }
 
 // Revisa que las celdas cercanas sean de un tipo coherente a donde se va a mover la ficha (celda)
-bool permitirPaso(Tablero<Celda*>* tablero, coordenadas coordFicha, string ficha, char movimiento, Desplazar desplazarPor) {
+bool escanearCeldasPerifericasCompatibles(Tablero<Celda*>* tablero, coordenadas coordFicha, string ficha, char movimiento, Desplazar desplazarPor) {
     bool permitido = false; 
     if (ficha == "soldado" || ficha == "tanque" || ficha == "barco"){
         // El condicional ternario que modifica a 'permitido' tiene una condición compleja tal que ( (este || otro ) ... (este || otro) && (este) ) || ( (este) && (otro) ) tienen que ver con revisar las capas periféricas a celda en donde estoy estacionado.
@@ -152,24 +152,38 @@ void ajustarDesplazamientosPorMovimiento(Desplazar* desplazar, string ficha, cha
     }
 }
 
+void actualizarCoordenadasDeFicha(coordenadas* fichaActual,Desplazar* desplazar) {
+    fichaActual->x += desplazar->x;
+    fichaActual->y += desplazar->y;
+    fichaActual->z += desplazar->z;
+}
+
+void procesarIntercambioCeldas(Tablero<Celda*>* tablero, coordenadas* fichaActual, Desplazar desplazar) {
+    Celda celdaAuxiliar;
+    // Guardo la siguiente celda próxima, anterior o laterales
+        celdaAuxiliar = *tablero->getTData((fichaActual->x + desplazar.x),(fichaActual->y + desplazar.y),(fichaActual->z + desplazar.z));
+    // La celda próxima, anterior o laterales son cambiadas por la celda en donde mi ficha está estacionada
+        *tablero->getTData((fichaActual->x + desplazar.x),(fichaActual->y + desplazar.y),(fichaActual->z + desplazar.z)) = *tablero->getTData((fichaActual->x),(fichaActual->y),(fichaActual->z)); 
+    // La celda en donde estaba parado es cambiada por la celda que estaba en la posicion anterior de la celda que contenía mi ficha.
+        *tablero->getTData((fichaActual->x),(fichaActual->y),(fichaActual->z)) = celdaAuxiliar;
+}
+
+// Simula el movimiento de las fichas para evaluar si se sale del mapa o no.
+bool revisarLimitesDelMapa(Tablero<Celda*>* tablero, coordenadas fichaActual, Desplazar desplazar) {
+    return (fichaActual.x + desplazar.x >= 0 && fichaActual.x + desplazar.x < tablero->getTamanioX() 
+        && fichaActual.y + desplazar.y >= 0 && fichaActual.y + desplazar.y < tablero->getTamanioY() 
+        && fichaActual.z + desplazar.z >= 0 && fichaActual.z + desplazar.z < tablero->getTamanioZ()) ? true : false;
+}
+ 
 // Procesa los cambios de las celdas
 void procesarMovimiento(char movimiento, Tablero<Celda*>* tablero, coordenadas* fichaActual, string ficha){
     Celda celdaAuxiliar;
     Desplazar desplazar = {0,0,0};
     ajustarDesplazamientosPorMovimiento(&desplazar,ficha,movimiento);
-    // Este if () es para evitar que se trate de hacer un intercambio de celdas con celdas inexistentes, evitando una violación de segmento
-    if (fichaActual->x + desplazar.x >= 0 && fichaActual->x + desplazar.x < tablero->getTamanioX() && fichaActual->y + desplazar.y >= 0 && fichaActual->y + desplazar.y < tablero->getTamanioY() && fichaActual->z + desplazar.z >= 0 && fichaActual->z + desplazar.z < tablero->getTamanioZ()){
-        if (permitirPaso(tablero,*fichaActual,ficha,movimiento, desplazar)){
-            // Guardo la siguiente celda próxima, anterior o laterales
-                celdaAuxiliar = *tablero->getTData((fichaActual->x + desplazar.x),(fichaActual->y + desplazar.y),(fichaActual->z + desplazar.z));
-            // La celda próxima, anterior o laterales son cambiadas por la celda en donde mi ficha está estacionada
-                *tablero->getTData((fichaActual->x + desplazar.x),(fichaActual->y + desplazar.y),(fichaActual->z + desplazar.z)) = *tablero->getTData((fichaActual->x),(fichaActual->y),(fichaActual->z)); 
-            // La celda en donde estaba parado es cambiada por la celda que estaba en la posicion anterior de la celda que contenía mi ficha.
-                *tablero->getTData((fichaActual->x),(fichaActual->y),(fichaActual->z)) = celdaAuxiliar;
-            // Actualizo los valores de posición por si quiero seguir moviendo las celdas
-                fichaActual->x += desplazar.x;
-                fichaActual->y += desplazar.y;
-                fichaActual->z += desplazar.z;
+    if (revisarLimitesDelMapa(tablero,*fichaActual,desplazar)){
+        if (escanearCeldasPerifericasCompatibles(tablero,*fichaActual,ficha,movimiento, desplazar)){
+            procesarIntercambioCeldas(tablero,fichaActual,desplazar);
+            actualizarCoordenadasDeFicha(fichaActual,&desplazar);
         }
     }
 }
