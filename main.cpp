@@ -126,14 +126,12 @@ void pedirMovimiento(char* movimiento){
 bool escanearCeldasPerifericasCompatibles(Tablero<Celda*>* tablero, coordenadas coordFicha, string ficha, char movimiento, Desplazar desplazarPor) {
     bool permitido = false; 
     if (ficha == "soldado" || ficha == "tanque" || ficha == "barco"){
-        // El condicional ternario que modifica a 'permitido' tiene una condición compleja tal que ( (este || otro ) ... (este || otro) && (este) ) || ( (este) && (otro) ) tienen que ver con revisar las capas periféricas a celda en donde estoy estacionado.
             permitido = ( (((tablero->getTData(coordFicha.x + desplazarPor.x,coordFicha.y + desplazarPor.y,coordFicha.z)->getTipo() == CAPA_PASTO) 
             || (tablero->getTData(coordFicha.x + desplazarPor.x,coordFicha.y + desplazarPor.y,coordFicha.z)->getTipo() == CAPA_TIERRA) 
             || (tablero->getTData(coordFicha.x + desplazarPor.x,coordFicha.y + desplazarPor.y,coordFicha.z)->getTipo() == CAPA_ARENA)) 
             && (ficha == "soldado" || ficha == "tanque")) 
             || ((tablero->getTData(coordFicha.x + 1,coordFicha.y,coordFicha.z)->getTipo() == CAPA_AGUA) && (ficha == "barco")) ) ? true : false;
     }else if (ficha == "avion" || ficha == "submarino"){
-        // El condicional ternario que modifica a 'permitido' tiene una condición compleja tal que ((esto || otro) && (esto || otro)) tienen que ver con revisar las capas periféricas a celda en donde estoy estacionado.
             permitido = ( ((tablero->getTData(coordFicha.x + desplazarPor.x,coordFicha.y + desplazarPor.y,coordFicha.z + desplazarPor.z)->getTipo() == CAPA_AIRE) 
             && (ficha == "avion")) 
             || ((tablero->getTData(coordFicha.x + desplazarPor.x,coordFicha.y + desplazarPor.y,coordFicha.z + desplazarPor.z)->getTipo() == CAPA_AGUA) && (ficha == "submarino")) ) ? true : false;
@@ -158,14 +156,15 @@ void actualizarCoordenadasDeFicha(coordenadas* fichaActual,Desplazar* desplazar)
     fichaActual->z += desplazar->z;
 }
 
-void procesarIntercambioCeldas(Tablero<Celda*>* tablero, coordenadas* fichaActual, Desplazar desplazar) {
+void procesarIntercambioCeldas(Tablero<Celda*>* tablero, coordenadas fichaActual, Desplazar desplazar) {
     Celda celdaAuxiliar;
     // Guardo la siguiente celda próxima, anterior o laterales
-        celdaAuxiliar = *tablero->getTData((fichaActual->x + desplazar.x),(fichaActual->y + desplazar.y),(fichaActual->z + desplazar.z));
+        celdaAuxiliar = *tablero->getTData((fichaActual.x + desplazar.x),(fichaActual.y + desplazar.y),(fichaActual.z + desplazar.z));
     // La celda próxima, anterior o laterales son cambiadas por la celda en donde mi ficha está estacionada
-        *tablero->getTData((fichaActual->x + desplazar.x),(fichaActual->y + desplazar.y),(fichaActual->z + desplazar.z)) = *tablero->getTData((fichaActual->x),(fichaActual->y),(fichaActual->z)); 
+        *tablero->getTData((fichaActual.x + desplazar.x),(fichaActual.y + desplazar.y),(fichaActual.z + desplazar.z)) 
+        = *tablero->getTData((fichaActual.x),(fichaActual.y),(fichaActual.z)); 
     // La celda en donde estaba parado es cambiada por la celda que estaba en la posicion anterior de la celda que contenía mi ficha.
-        *tablero->getTData((fichaActual->x),(fichaActual->y),(fichaActual->z)) = celdaAuxiliar;
+        *tablero->getTData((fichaActual.x),(fichaActual.y),(fichaActual.z)) = celdaAuxiliar;
 }
 
 // Simula el movimiento de las fichas para evaluar si se sale del mapa o no.
@@ -182,7 +181,7 @@ void procesarMovimiento(char movimiento, Tablero<Celda*>* tablero, coordenadas* 
     ajustarDesplazamientosPorMovimiento(&desplazar,ficha,movimiento);
     if (revisarLimitesDelMapa(tablero,*fichaActual,desplazar)){
         if (escanearCeldasPerifericasCompatibles(tablero,*fichaActual,ficha,movimiento, desplazar)){
-            procesarIntercambioCeldas(tablero,fichaActual,desplazar);
+            procesarIntercambioCeldas(tablero,*fichaActual,desplazar);
             actualizarCoordenadasDeFicha(fichaActual,&desplazar);
         }
     }
