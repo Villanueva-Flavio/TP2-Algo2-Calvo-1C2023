@@ -14,16 +14,20 @@ void cargarMapa(Tablero<Celda*>* tablero){
         for(int y = 0; y < tablero->getTamanioY(); y++){
             if (x < (tablero->getTamanioX()/1.5)){
                 tablero->getTData(x, y, 0)->setTipo(CAPA_TIERRA);
-                tablero->getTData(x, y, 1)->setTipo(CAPA_PASTO);
+                tablero->getTData(x, y, 1)->setTipo(CAPA_TIERRA);
+                tablero->getTData(x, y, 2)->setTipo(CAPA_TIERRA);
+                tablero->getTData(x, y, 3)->setTipo(CAPA_PASTO);
             }else {
                 tablero->getTData(x, y, 0)->setTipo(CAPA_AGUA);
                 tablero->getTData(x, y, 1)->setTipo(CAPA_AGUA);
+                tablero->getTData(x, y, 2)->setTipo(CAPA_AGUA);
+                tablero->getTData(x, y, 3)->setTipo(CAPA_AGUA);
             }
         }
     }
-    tablero->getTData(9,9,11)->getFicha()->setTipo(AVION);
-    tablero->getTData(9,9,11)->getFicha()->setNumFicha(1);
-    tablero->getTData(9,9,11)->setTipo(CAPA_ARENA);
+    tablero->getTData(16,16,5)->getFicha()->setTipo(AVION);
+    tablero->getTData(16,16,5)->getFicha()->setNumFicha(1);
+    tablero->getTData(16,16,5)->setTipo(CAPA_ARENA);
 }
 
 // Pide un tipo de ficha
@@ -48,6 +52,7 @@ bool seEncuentraLaFicha(Tablero<Celda*>* tablero, string opcion, int enumeracion
     if (opcion == "soldado"){
         seEncontro = ((tablero->getTData(x,y,z)->getFicha()->getTipo() == SOLDADO) 
         && (tablero->getTData(x,y,z)->getFicha()->getNumFicha() == enumeracionFicha)) ? true : false ;
+        cout << "\n" << x << y << z << "\n";
     }else if (opcion == "tanque"){
         seEncontro = ((tablero->getTData(x,y,z)->getFicha()->getTipo() == TANQUE) 
         && (tablero->getTData(x,y,z)->getFicha()->getNumFicha() == enumeracionFicha)) ? true : false ;
@@ -66,9 +71,7 @@ bool seEncuentraLaFicha(Tablero<Celda*>* tablero, string opcion, int enumeracion
 
 // Busca la capa máxima de suelo y mar. Cuidado que solo sirve para esta versión de mapa
 Niveles buscarNiveles(Tablero<Celda*>* tablero) {
-    Niveles nivel;
-    nivel.suelo = 0;
-    nivel.mar = 0;
+    Niveles nivel = {1,1};
     for(int z = 0; z < tablero->getTamanioZ(); z++){
         nivel.suelo = (tablero->getTData(0,0,z)->getTipo() == CAPA_TIERRA || tablero->getTData(0,0,z)->getTipo() == CAPA_PASTO) ? z + 1 : nivel.suelo;
         nivel.mar = (tablero->getTData(tablero->getTamanioX() - 1,tablero->getTamanioY() - 1,z)->getTipo() == CAPA_AGUA) ?  z + 1 : nivel.mar;
@@ -76,21 +79,42 @@ Niveles buscarNiveles(Tablero<Celda*>* tablero) {
     return nivel;
 }
 
-// Devuelve el máximo valor de iteración de z según la ficha que eligió el usuario
-int nivelMaximoDeBusqueda(string ficha, Niveles nivel, int nivelMaximo){
-    int capa = nivelMaximo;
-    if (ficha == "soldado" || ficha == "tanque" || ficha == "submarino"){
-        capa = (ficha == "soldado" || ficha == "tanque") ? nivel.suelo : capa;
-        capa = (ficha == "submarino") ? nivel.mar : capa;
+int nivelMinimoDeBusqueda(string ficha,Niveles nivel) {
+    int nivelMinimo = 0;
+    if (ficha == "soldado" || ficha == "tanque"){
+        nivelMinimo = nivel.suelo;
+    } else if (ficha == "barco"){
+        nivelMinimo = nivel.mar;
+    } else if (ficha == "avion"){
+        nivelMinimo = nivel.mar;
+    } // Submarino no aparece porque el agua llega hasta abajo del mapa
+    return nivelMinimo;
+}
+
+int nivelMaximoDeBusqueda(string ficha, Niveles nivel, int nivelMaxTablero) {
+    int nivelMaximo = nivelMaxTablero - 1;
+    if (ficha == "soldado" || ficha == "tanque"){
+        nivelMaximo = nivel.suelo;
+    } else if (ficha == "barco"){
+        nivelMaximo = nivel.mar;
+    } else if (ficha == "avion"){
+        nivelMaximo = nivelMaxTablero - 1;
+    } else if (ficha ==  "submarino"){
+        nivelMaximo = nivel.mar;
     }
-    return capa;
+    return nivelMaximo;
 }
 
 // Realiza el barrido del mapa según los valores de 'minimo', 'maximo' más que los otros datos que reciben la función.
-void procesarBusqueda(coordenadas* coorFicha, Tablero<Celda*>* tablero, string* ficha, int minimo, int maximo, int numeroFicha){
+void procesarBusqueda(coordenadas* coorFicha, Tablero<Celda*>* tablero, string* ficha, int numeroFicha){
+    int minimo, maximo;
+    minimo = 0, maximo = tablero->getTamanioZ();
+    Niveles nivel;
+    nivel = buscarNiveles(tablero);
+    minimo = nivelMinimoDeBusqueda(*ficha,nivel), maximo = nivelMaximoDeBusqueda(*ficha,nivel,maximo);
     for (int x = 0; x < tablero->getTamanioX(); x++){
         for(int y = 0; y < tablero->getTamanioY(); y++){
-            for(int z = (*ficha == "avion") ? minimo : 0; z < maximo; z++){
+            for(int z = minimo; z <= maximo; z++){
                 if (seEncuentraLaFicha(tablero,*ficha,numeroFicha,x,y,z)){
                     *coorFicha = {x,y,z};
                     x = tablero->getTamanioX();
@@ -104,20 +128,17 @@ void procesarBusqueda(coordenadas* coorFicha, Tablero<Celda*>* tablero, string* 
 
 // Busca las coordenadas de la celda en donde está parada la ficha
 void buscarCoordenadasFicha(coordenadas* coorFicha, Tablero<Celda*>* tablero, string* ficha){
-    Niveles nivel;
-    int nivelAire = 0; 
-    int nivelMaximo = 0;
-    int enumeracionFicha = 0;
-    do{ nivel = buscarNiveles(tablero);
-        *ficha = pedirOpcion();
-        nivelMaximo = nivelMaximoDeBusqueda(*ficha,nivel,tablero->getTamanioZ());
-        nivelAire = (nivel.suelo >= nivel.mar) ? nivel.suelo : nivel.mar;
+    int nivelAire = 0, nivelMaximo = 0, enumeracionFicha = 0;
+    string salir = "";
+    do{ 
+        *ficha = pedirOpcion();        
         enumeracionFicha = pedirEnumeracion();
-        procesarBusqueda(coorFicha,tablero,ficha,nivelAire,nivelMaximo,enumeracionFicha);
+        procesarBusqueda(coorFicha,tablero,ficha,enumeracionFicha);
         if (coorFicha->x == -1 && coorFicha->y == -1 && coorFicha->z == -1){
-            cout << "\nLa ficha que usted intenta buscar fue eliminada de la jugada o es inexistente, vuelva a intentarlo.\n";
+            cout << "\nLa ficha que usted intenta buscar fue eliminada de la jugada o es inexistente, vuelva a intentarlo.\n('t' para salir)\n-";
+            cin >> salir;
         }
-    } while (coorFicha->x == -1 && coorFicha->y == -1 && coorFicha->z == -1);
+    } while ((coorFicha->x == -1 && coorFicha->y == -1 && coorFicha->z == -1) && (salir != "t"));
 }
 
 // Pide los movimientos longitudinales y horizontales (WASD). No existen movimientos diagonales ni de alturas.
@@ -130,12 +151,16 @@ void pedirMovimiento(char* movimiento){
 // Revisa que las celdas cercanas sean de un tipo coherente a donde se va a mover la ficha (celda)
 bool escanearCeldasPerifericasCompatibles(Tablero<Celda*>* tablero, coordenadas coordFicha, string ficha, char movimiento, Desplazar desplazarPor) {
     bool permitido = false; 
-    if (ficha == "soldado" || ficha == "tanque" || ficha == "barco"){
-            permitido = ( (((tablero->getTData(coordFicha.x + desplazarPor.x,coordFicha.y + desplazarPor.y,coordFicha.z)->getTipo() == CAPA_PASTO) 
-            || (tablero->getTData(coordFicha.x + desplazarPor.x,coordFicha.y + desplazarPor.y,coordFicha.z)->getTipo() == CAPA_TIERRA) 
-            || (tablero->getTData(coordFicha.x + desplazarPor.x,coordFicha.y + desplazarPor.y,coordFicha.z)->getTipo() == CAPA_ARENA)) 
-            && (ficha == "soldado" || ficha == "tanque")) 
-            || ((tablero->getTData(coordFicha.x + 1,coordFicha.y,coordFicha.z)->getTipo() == CAPA_AGUA) && (ficha == "barco")) ) ? true : false;
+    if (ficha == "soldado" || ficha == "tanque"){
+        if (tablero->getTData(coordFicha.x + desplazarPor.x,coordFicha.y + desplazarPor.y,coordFicha.z - 1)->getTipo() == CAPA_PASTO 
+        || tablero->getTData(coordFicha.x + desplazarPor.x,coordFicha.y + desplazarPor.y,coordFicha.z - 1)->getTipo() == CAPA_TIERRA 
+        || tablero->getTData(coordFicha.x + desplazarPor.x,coordFicha.y + desplazarPor.y,coordFicha.z - 1)->getTipo() == CAPA_ARENA){
+            permitido = true;
+        }
+    } else if (ficha == "barco"){
+        if (tablero->getTData(coordFicha.x + desplazarPor.x,coordFicha.y + desplazarPor.y,coordFicha.z - 1)->getTipo() == CAPA_AGUA){
+            permitido = true;
+        }
     }else if (ficha == "avion" || ficha == "submarino"){
             permitido = ( ((tablero->getTData(coordFicha.x + desplazarPor.x,coordFicha.y + desplazarPor.y,coordFicha.z + desplazarPor.z)->getTipo() == CAPA_AIRE) 
             && (ficha == "avion")) 
@@ -207,20 +232,21 @@ void procesarMapa(Tablero<Celda*>* tablero, int size) {
 }
 
 int main(){
+    string cortar = "",ficha = "";
     bool seguir = false;
-    string cortar = "";
     int size = 20;
-    string ficha;
     char movimiento;
     coordenadas fichaActual = {-1,-1,-1};
     Tablero<Celda*>* tablero = new Tablero<Celda*>(size, size, size);
     cargarMapa(tablero);
     while (!seguir){
         buscarCoordenadasFicha(&fichaActual,tablero,&ficha);
-        while (movimiento != 't'){
-            procesarMapa(tablero,size);
-            moverFicha(tablero,&fichaActual, ficha, &movimiento);
-            procesarMapa(tablero,size);
+        if (fichaActual.x != -1 && fichaActual.y != -1 && fichaActual.z != -1){
+            while (movimiento != 't'){
+                procesarMapa(tablero,size);
+                moverFicha(tablero,&fichaActual, ficha, &movimiento);
+                procesarMapa(tablero,size);
+            }
         }
         cout << "\nSeguir?(Puede mandar la letra 'c' para salir)\n-";
         cin >> cortar;
