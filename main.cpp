@@ -21,9 +21,9 @@ void cargarMapa(Tablero<Celda*>* tablero){
             }
         }
     }
-    tablero->getTData(9,9,1)->getFicha()->setTipo(SOLDADO);
-    tablero->getTData(9,9,1)->getFicha()->setNumFicha(1);
-    tablero->getTData(9,9,1)->setTipo(CAPA_ARENA);
+    tablero->getTData(9,9,11)->getFicha()->setTipo(AVION);
+    tablero->getTData(9,9,11)->getFicha()->setNumFicha(1);
+    tablero->getTData(9,9,11)->setTipo(CAPA_ARENA);
 }
 
 // Pide un tipo de ficha
@@ -155,10 +155,10 @@ void ajustarDesplazamientosPorMovimiento(Desplazar* desplazar, string ficha, cha
     }
 }
 
-void actualizarCoordenadasDeFicha(coordenadas* fichaActual,Desplazar* desplazar) {
-    fichaActual->x += desplazar->x;
-    fichaActual->y += desplazar->y;
-    fichaActual->z += desplazar->z;
+void actualizarCoordenadasDeFicha(coordenadas* fichaActual,Desplazar desplazar) {
+    fichaActual->x += desplazar.x;
+    fichaActual->y += desplazar.y;
+    fichaActual->z += desplazar.z;
 }
 
 void procesarIntercambioCeldas(Tablero<Celda*>* tablero, coordenadas fichaActual, Desplazar desplazar) {
@@ -187,7 +187,7 @@ void procesarMovimiento(char movimiento, Tablero<Celda*>* tablero, coordenadas* 
     if (revisarLimitesDelMapa(tablero,*fichaActual,desplazar)){
         if (escanearCeldasPerifericasCompatibles(tablero,*fichaActual,ficha,movimiento, desplazar)){
             procesarIntercambioCeldas(tablero,*fichaActual,desplazar);
-            actualizarCoordenadasDeFicha(fichaActual,&desplazar);
+            actualizarCoordenadasDeFicha(fichaActual,desplazar);
         }
     }
 }
@@ -198,9 +198,12 @@ void moverFicha(Tablero<Celda*>* tablero, coordenadas* fichaActual, string ficha
     procesarMovimiento(*movimiento,tablero,fichaActual,ficha);
 }
 
-void procesarMapa(Coordenada imgSize, BMP* imagen, Tablero<Celda*>* tablero) {
-    imprimirAngulo(imgSize, imagen, tablero, getMap());
-    imagen->WriteToFile("Partida.bmp");
+void procesarMapa(Tablero<Celda*>* tablero, int size) {
+    Coordenada imgSize = {size*100, size*70};
+    BMP imagen;
+    imagen.SetSize(imgSize.x,imgSize.y);
+    imprimirAngulo(imgSize, &imagen, tablero, getMap());
+    imagen.WriteToFile("Partida.bmp");
 }
 
 int main(){
@@ -209,21 +212,15 @@ int main(){
     int size = 20;
     string ficha;
     char movimiento;
-    
     coordenadas fichaActual = {-1,-1,-1};
-
-    Coordenada imgSize = {size*100, size*70};
-    BMP imagen;
-    imagen.SetSize(imgSize.x, imgSize.y);
-    
     Tablero<Celda*>* tablero = new Tablero<Celda*>(size, size, size);
     cargarMapa(tablero);
     while (!seguir){
         buscarCoordenadasFicha(&fichaActual,tablero,&ficha);
         while (movimiento != 't'){
-            procesarMapa(imgSize, &imagen, tablero);
-            moverFicha(tablero, &fichaActual, ficha, &movimiento);
-            procesarMapa(imgSize, &imagen, tablero);
+            procesarMapa(tablero,size);
+            moverFicha(tablero,&fichaActual, ficha, &movimiento);
+            procesarMapa(tablero,size);
         }
         cout << "\nSeguir?(Puede mandar la letra 'c' para salir)\n-";
         cin >> cortar;
