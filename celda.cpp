@@ -22,6 +22,6 @@ void Celda::setTipo(Capa tipo) {
     this->tipo = tipo;
 }
 
-Ficha* Celda::getFicha() {
-    return &this->ficha;
+Ficha Celda::getFicha() {
+    return this->ficha;
 }

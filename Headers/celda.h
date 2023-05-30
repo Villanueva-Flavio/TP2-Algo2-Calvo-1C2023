@@ -22,6 +22,6 @@ class Celda {
 
         bool getEstado();
 
-        Ficha* getFicha();
+        Ficha getFicha();
 };
 #endif

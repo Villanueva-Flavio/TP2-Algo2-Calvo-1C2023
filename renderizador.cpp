@@ -130,7 +130,7 @@ Coordenada getPixelOffset(int lado, int size){
 
 RGBApixel getColor(Celda celda, MapaColores colores){
     return (colores.find(celda.getTipo()) != colores.end())?   colores[celda.getTipo()] : 
-           (celda.getFicha()->getTipo() == SOLDADO)?           colores[celda.getFicha()->getJugadorOwner()] : BLANCO;
+           (celda.getFicha().getTipo() == SOLDADO)?            colores[celda.getFicha().getJugadorOwner()] : BLANCO;
 }
 
 void imprimirAngulo(Coordenada imgSize, BMP* image, Mapa* tablero, MapaColores colores){
@@ -138,17 +138,13 @@ void imprimirAngulo(Coordenada imgSize, BMP* image, Mapa* tablero, MapaColores c
     Coordenada pixelOffset, matrixPos, pixelPos;
     CoordenadaDouble pixel;
     for(int lado = 0; lado < 3; lado ++){
-        pixelOffset = getPixelOffset(lado, tablero->getTamanioX());            
         for(matrixPos.x = 0; matrixPos.x < tablero->getTamanioX(); matrixPos.x++){
             for(matrixPos.y = 0; matrixPos.y < tablero->getTamanioY(); matrixPos.y++){
                 for(matrixPos.z = 0; matrixPos.z < tablero->getTamanioZ(); matrixPos.z++){
-                    pixel.x = (double)matrixPos.x; 
-                    pixel.y = (double)matrixPos.y; 
-                    pixel.z = (double)matrixPos.z;
+                    pixelOffset = getPixelOffset(lado, 1);            
+                    pixel.x = (double)matrixPos.x; pixel.y = (double)matrixPos.y; pixel.z = (double)matrixPos.z;
                     aplicarProyeccionIsometrica(&pixel, lado);
-                    pixelPos.x = static_cast<int>(pixel.x * 20 + pixelOffset.x); 
-                    pixelPos.y = static_cast<int>(pixel.y * 20 + pixelOffset.y);
-                    //std::cout << "\nSADASFASDA\n" ;
+                    pixelPos.x = static_cast<int>(pixel.x * 20 + pixelOffset.x); pixelPos.y = static_cast<int>(pixel.y * 20 + pixelOffset.y);
                     color = getColor(*tablero->getTData(matrixPos.x, matrixPos.y, matrixPos.z), colores);
                     pintarEntidad(image, pixelPos, color, imgSize);
                 }

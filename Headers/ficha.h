@@ -6,7 +6,6 @@ enum TipoContenido {SOLDADO, TANQUE, SUBMARINO, AVION, MINA_FICHA, CARTA, VACIO}
 class Ficha{
     private:
         int jugadorOwner;
-        int enumerador;             //
         TipoContenido tipo; 
     public:
         Ficha();
