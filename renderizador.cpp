@@ -133,36 +133,33 @@ RGBApixel getColor(Celda celda, MapaColores colores){
            (celda.getFicha().getTipo() == SOLDADO)?            colores[celda.getFicha().getJugadorOwner()] : BLANCO;
 }
 
-Coordenada getAux(int lado){
-    Coordenada aux;
-    aux.x = (lado == IZQUIERDA)? 1 : (lado == DERECHA)? -1 : 1;
-    aux.y = (lado == IZQUIERDA)? 1 : (lado == DERECHA)? -1 : 1;
-    aux.z = (lado == IZQUIERDA)? 1 : (lado == DERECHA)? -1 : 1;
-    return aux;
+void getAux(int lado, Coordenada* aux){
+    aux->x = (lado == ATRAS)? -1: 1;
+    aux->y = (lado == ATRAS)? -1: 1;
+    aux->z = (lado == ATRAS)? -1: 1;
 }
 
-Coordenada getMatrixPos(int lado, int size){
-    Coordenada matrixPos;
-    matrixPos.x = (lado == IZQUIERDA)? 0 : (lado == DERECHA)? size-1 : 0;
-    matrixPos.y = (lado == IZQUIERDA)? 0 : (lado == DERECHA)? size-1 : 0;
-    matrixPos.z = (lado == IZQUIERDA)? 0 : (lado == DERECHA)? size-1 : 0;
-    return matrixPos;
+void getPixel(CoordenadaDouble* pixel, Coordenada matrixPos){
+    pixel->x = (double)matrixPos.x; 
+    pixel->y = (double)matrixPos.y; 
+    pixel->z = (double)matrixPos.z;
 }
 
-void imprimirAngulo(Coordenada imgSize, BMP* image, Mapa* tablero, MapaColores colores){
+int matrixPosStarter(int lado, int size){
+    return (lado == IZQUIERDA)? 0 : (lado == DERECHA)? 0 : size-1;
+}
+
+void imprimirBMP(Coordenada imgSize, BMP* image, Mapa* tablero, MapaColores colores){
     RGBApixel color;
     Coordenada pixelOffset, matrixPos, pixelPos, aux;
     CoordenadaDouble pixel;
     for(int lado = 0; lado < 3; lado ++){
-        aux = getAux(lado);
-        matrixPos = getMatrixPos(lado, tablero->getTamanioX());
-        pixelOffset = getPixelOffset(lado, tablero->getTamanioX());            
-        for(matrixPos.x; matrixPos.x < tablero->getTamanioX() && matrixPos.x >= 0; matrixPos.x += aux.x){
-            for(matrixPos.y; matrixPos.y < tablero->getTamanioY() && matrixPos.y >= 0; matrixPos.y += aux.y){
-                for(matrixPos.z; matrixPos.z < tablero->getTamanioZ() && matrixPos.z >= 0; matrixPos.z += aux.z){
-                    pixel.x = (double)matrixPos.x; 
-                    pixel.y = (double)matrixPos.y; 
-                    pixel.z = (double)matrixPos.z;
+        getAux(lado, &aux);
+        pixelOffset = getPixelOffset(lado, tablero->getTamanioX());
+        for(matrixPos.x = matrixPosStarter(lado, tablero->getTamanioX()); matrixPos.x < tablero->getTamanioX() && matrixPos.x >= 0; matrixPos.x += aux.x){
+            for(matrixPos.y =  matrixPosStarter(lado, tablero->getTamanioY()); matrixPos.y < tablero->getTamanioY() && matrixPos.y >= 0; matrixPos.y += aux.y){
+                for(matrixPos.z = matrixPosStarter(lado, tablero->getTamanioZ()); matrixPos.z < tablero->getTamanioZ() && matrixPos.z >= 0; matrixPos.z += aux.z){
+                    getPixel(&pixel, matrixPos);
                     aplicarProyeccionIsometrica(&pixel, lado);
                     pixelPos.x = static_cast<int>(pixel.x * 20 + pixelOffset.x); 
                     pixelPos.y = static_cast<int>(pixel.y * 20 + pixelOffset.y);
