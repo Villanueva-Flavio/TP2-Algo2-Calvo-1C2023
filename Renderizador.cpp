@@ -1,8 +1,8 @@
 #include <sstream>
 #include <string>
 #include <iostream>
-#include "./Headers/tablero.h"
-#include "./Headers/renderizador.h"
+#include "./Headers/Tablero.h"
+#include "./Headers/Renderizador.h"
 
 const RGBApixel BLANCO = {255, 255, 255, 0};
 const RGBApixel ARENA = {0, 215, 215, 0};
@@ -38,13 +38,13 @@ double gradosARadianes(double grados){
 void getAngulos(double angulos[6], int lado){
     switch(lado){
         case IZQUIERDA:
-            angulos[0] = 40; angulos[1] = 20; angulos[2] = 0; angulos[3] = 30; angulos[4] = -30; angulos[5] = 30;
+            angulos[0] = 40; angulos[1] = 20; angulos[2] = 0; angulos[3] = 30; angulos[4] = -30; angulos[5] = -30;
             break;
         case DERECHA:
-            angulos[0] = -40; angulos[1] = 20; angulos[2] = 0; angulos[3] = -30; angulos[4] = 30; angulos[5] = 30;
+            angulos[0] = -40; angulos[1] = 20; angulos[2] = 0; angulos[3] = -30; angulos[4] = 30; angulos[5] = -30;
             break;
         case ATRAS:
-            angulos[0] = 40; angulos[1] = 20; angulos[2] = 0; angulos[3] = -30; angulos[4] = 30; angulos[5] = 30;
+            angulos[0] = 40; angulos[1] = 20; angulos[2] = 0; angulos[3] = -30; angulos[4] = 30; angulos[5] = -30;
             break;
     }
 }
@@ -130,7 +130,7 @@ Coordenada getPixelOffset(int lado, int size){
 
 RGBApixel getColor(Celda celda, MapaColores colores){
     return (colores.find(celda.getTipo()) != colores.end())?   colores[celda.getTipo()] : 
-           (celda.getFicha().getTipo() == SOLDADO)?            colores[celda.getFicha().getJugadorOwner()] : BLANCO;
+           (celda.getFicha()->getTipo() == SOLDADO)?           colores[celda.getFicha()->getJugadorOwner()] : BLANCO;
 }
 
 void imprimirAngulo(Coordenada imgSize, BMP* image, Mapa* tablero, MapaColores colores){

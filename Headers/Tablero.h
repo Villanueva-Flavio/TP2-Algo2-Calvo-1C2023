@@ -1,6 +1,6 @@
 #ifndef __TABLERO_H__
 #define __TABLERO_H__
-#include "lista.h"
+#include "Lista.h"
 
 template <class T> class Tablero {
     private:
@@ -30,5 +30,5 @@ template <class T> class Tablero {
         
         bool inRange(int n, int m, int l);
 };
-#include "../TPPs/tablero.tpp"
+#include "../TPPs/Tablero.tpp"
 #endif

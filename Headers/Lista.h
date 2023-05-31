@@ -1,7 +1,7 @@
 #ifndef __LISTA_H__
 #define __LISTA_H__
 #include <iostream>
-#include "nodo.h"
+#include "Nodo.h"
 
 enum Iteracion {SIGUIENTE, FINAL, ANTERIOR};
 
@@ -45,5 +45,5 @@ public:
 
 	void irANodo(int x);
 };
-#include "../TPPs/lista.tpp"
+#include "../TPPs/Lista.tpp"
 #endif

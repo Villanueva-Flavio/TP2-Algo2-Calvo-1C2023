@@ -1,5 +1,5 @@
 // Constructor
-#include "./Headers/ficha.h"
+#include "./Headers/Ficha.h"
 
 Ficha::Ficha() {
     this->tipo = VACIO;
@@ -25,4 +25,14 @@ void Ficha::setTipo(TipoContenido tipo) {
 // Devuelve el tipo enum de la ficha
 TipoContenido Ficha::getTipo() {
     return this->tipo;
+}
+
+// Devuelve el número que identifica a la ficha de las otras del mismo tipo
+int Ficha::getNumFicha(){
+    return this->enumerador;
+}
+
+// Cambia el número que identifica a la ficha de las otras del mismo tipo
+void Ficha::setNumFicha(int numero){
+    this->enumerador = numero;
 }

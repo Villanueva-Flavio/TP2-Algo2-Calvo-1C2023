@@ -1,4 +1,4 @@
-#include "../Headers/celda.h"
+#include "../Headers/Celda.h"
 
 template <class T> Tablero<T>::Tablero(int n, int m, int l) {
     this->x = n, this->y = m, this->z = l;
