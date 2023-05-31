@@ -246,37 +246,36 @@ void procesarCambiosMapa(Tablero<Celda*>* tablero, int size) {
 }
 
 // Cambia la casilla en la que se encuentra la ficha por la siguiente y viceversa, siempre y cuando se cumplan ciertas restricciones.
-void usarFicha(Tablero<Celda*>* tablero, coordenadas* coordenadaFichaActual, string ficha, char* movimiento, int size) {
-    // Después declarar movimiento acá. Por ahora no porque se usa para salir del while y limpiar la memoria.
-    pedirAccion(movimiento);
-    if ((*movimiento) == 'w' || (*movimiento) == 'a' || (*movimiento) == 's' || (*movimiento) == 'd' || (*movimiento) == 'e' || (*movimiento) == 'x'){
-        procesarMovimiento((*movimiento),tablero,coordenadaFichaActual,ficha);
-    }else if (*movimiento == 'q'){
-        colocarMina(tablero,(*coordenadaFichaActual),ficha,(*movimiento));
-    }
-    procesarCambiosMapa(tablero,size);
-}
-
-int main(){
+void moverFichas(Tablero<Celda*>* tablero, int size) {
     string cortar = "",ficha = "";
-    bool seguir = false;
-    int size = 20;
-    char movimiento;
     coordenadas coordenadaFichaActual = {-1,-1,-1};
-    Tablero<Celda*>* tablero = new Tablero<Celda*>(size, size, size);
-    cargarMapa(tablero);
-    procesarCambiosMapa(tablero,size);
+    bool seguir = false;
+    char movimiento;
     while (!seguir){
         buscarCoordenadasFicha((&coordenadaFichaActual),tablero,(&ficha));
         if ((coordenadaFichaActual.x != -1) && (coordenadaFichaActual.y != -1) && (coordenadaFichaActual.z != -1)){
             while (movimiento != 't'){
-                usarFicha(tablero,(&coordenadaFichaActual),ficha,(&movimiento),size);
+                pedirAccion(&movimiento);
+                if ((movimiento) == 'w' || (movimiento) == 'a' || (movimiento) == 's' || (movimiento) == 'd' || (movimiento) == 'e' || (movimiento) == 'x'){
+                    procesarMovimiento((movimiento),tablero,&coordenadaFichaActual,ficha);
+                }else if (movimiento == 'q'){
+                    colocarMina(tablero,(coordenadaFichaActual),ficha,(movimiento));
+                }
+                procesarCambiosMapa(tablero,size);
             }
         }
         cout << "\nSeguir?(Puede mandar la letra 'c' para salir)\n-";
         cin >> cortar;
         seguir = (cortar == "c") ? true : false;
     }
+}
+
+int main(){
+    int size = 20;
+    Tablero<Celda*>* tablero = new Tablero<Celda*>(size, size, size);
+    cargarMapa(tablero);
+    moverFichas(tablero,size);
+    procesarCambiosMapa(tablero,size);
     delete tablero;
     return 0;
 }
