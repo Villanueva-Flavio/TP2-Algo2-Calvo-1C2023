@@ -2,7 +2,7 @@
 #define __RENDERIZADOR_H__
 
 #include <map>
-#include "celda.h"
+#include "Celda.h"
 #include "../EasyBMP/EasyBMP.h"
 #define IZQUIERDA 0
 #define DERECHA 1
