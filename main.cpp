@@ -285,7 +285,7 @@ void inicializarJuego(Tablero<Celda*>* tablero, Lista<Jugador*>* listaJugadores)
 
     //para probar
     for(int j=0; j<numJugadores; j++){
-        cout << "Nombre de jugador " << j << " es: " << listaJugadores->getLData(j)->getNombre() << "\n";
+        cout << "\nEl nombre de jugador " << j+1 << " es: " << listaJugadores->getLData(j)->getNombre() << "\n";
     }
 
     /*
@@ -293,7 +293,7 @@ void inicializarJuego(Tablero<Celda*>* tablero, Lista<Jugador*>* listaJugadores)
     cin >> mapaElegido;
 
     if(mapaElegido == "playa"){
-
+        //cargar playa
     }
     */
 }
@@ -310,7 +310,7 @@ int main(){
 
     inicializarJuego(tablero, listaJugadores);
 
-    while (!seguir){
+    /*while (!seguir){
 
         buscarCoordenadasFicha((&coordenadaFichaActual),tablero,(&ficha));
         if ((coordenadaFichaActual.x != -1) && (coordenadaFichaActual.y != -1) && (coordenadaFichaActual.z != -1)){
@@ -325,7 +325,7 @@ int main(){
         cout << "\nSeguir?(Puede mandar la letra 'c' para salir)\n-";
         cin >> cortar;
         seguir = (cortar == "c") ? true : false;
-    }
+    }*/
     delete tablero;
     return 0;
 }
