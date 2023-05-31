@@ -1,6 +1,7 @@
 #include "./Headers/Tablero.h"
 #include "./Headers/Celda.h"
 #include "./Headers/Renderizador.h"
+#include "./Headers/Jugador.h"                 //???
 #include <iostream>
 using namespace std;
 
@@ -258,6 +259,45 @@ void procesarMapa(Tablero<Celda*>* tablero, int size) {
     imagen.WriteToFile("Partida.bmp");
 }
 
+void inicializarJuego(Tablero<Celda*>* tablero, Lista<Jugador*>* listaJugadores){
+
+    int numJugadores = 0;
+    string nombreJugador = " ", mapaElegido = " ";
+
+    cout << "---BATALLA DIGITAL---\n";
+    
+    cout << "---Ingrese el numero de jugadores: ";
+    cin >> numJugadores;
+
+    while (numJugadores <= 0 || numJugadores >= 100){       //definir    
+        cout << "Ingresa una cantidad valida de jugadores. Numero de jugadores: \n";
+        cin >> numJugadores;
+    }
+    
+    for(int i=0; i<numJugadores; i++){
+        cout << "Ingresa el nombre del jugador " << i+1 << ": ";
+        cin >> nombreJugador;
+
+        Jugador* jugador = new Jugador();
+        listaJugadores->add(jugador);
+        listaJugadores->getLData(i)->setNombre(nombreJugador);
+    }
+
+    //para probar
+    for(int j=0; j<numJugadores; j++){
+        cout << "Nombre de jugador " << j << " es: " << listaJugadores->getLData(j)->getNombre() << "\n";
+    }
+
+    /*
+    cout << "Seleccione un mapa\n- playa - agua - ...\n";
+    cin >> mapaElegido;
+
+    if(mapaElegido == "playa"){
+
+    }
+    */
+}
+
 int main(){
     string cortar = "",ficha = "";
     bool seguir = false;
@@ -266,11 +306,18 @@ int main(){
     coordenadas coordenadaFichaActual = {-1,-1,-1};
     Tablero<Celda*>* tablero = new Tablero<Celda*>(size, size, size);
     cargarMapa(tablero);
+    Lista<Jugador*>* listaJugadores = new Lista<Jugador*>() ;        //agregado
+
+    inicializarJuego(tablero, listaJugadores);
+
     while (!seguir){
+
         buscarCoordenadasFicha((&coordenadaFichaActual),tablero,(&ficha));
         if ((coordenadaFichaActual.x != -1) && (coordenadaFichaActual.y != -1) && (coordenadaFichaActual.z != -1)){
+
             while (movimiento != 't'){
-                procesarMapa(tablero,size);
+                
+                //procesarMapa(tablero,size);
                 usarFicha(tablero,(&coordenadaFichaActual),ficha,(&movimiento));
                 procesarMapa(tablero,size);
             }
