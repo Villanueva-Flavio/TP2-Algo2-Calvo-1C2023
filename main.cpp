@@ -205,9 +205,16 @@ void procesarIntercambioCeldas(Tablero<Celda*>* tablero, coordenadas coordenadaF
 
 // Simula el movimiento de las fichas para evaluar si se sale del mapa o no.
 bool revisarLimitesDelMapa(Tablero<Celda*>* tablero, coordenadas coordenadaFichaActual, Desplazar desplazar) {
-    return (coordenadaFichaActual.x + desplazar.x >= 0 && coordenadaFichaActual.x + desplazar.x < tablero->getTamanioX() 
-        && coordenadaFichaActual.y + desplazar.y >= 0 && coordenadaFichaActual.y + desplazar.y < tablero->getTamanioY() 
-        && coordenadaFichaActual.z + desplazar.z >= 0 && coordenadaFichaActual.z + desplazar.z < tablero->getTamanioZ()) ? true : false;
+    bool rangoValido = false;
+    Coordenada desplazamientoHipotetico = {coordenadaFichaActual.x + desplazar.x,coordenadaFichaActual.y + desplazar.y,coordenadaFichaActual.z + desplazar.z};
+    int topeMaximoX = tablero->getTamanioX(), topeMaximoY = tablero->getTamanioY(), topeMaximoZ = tablero->getTamanioZ();
+
+    if (desplazamientoHipotetico.x >= 0 && desplazamientoHipotetico.x < topeMaximoX
+        && desplazamientoHipotetico.y >= 0 && desplazamientoHipotetico.y < topeMaximoY
+        && desplazamientoHipotetico.z >= 0 && desplazamientoHipotetico.z < topeMaximoZ){
+        rangoValido = true;
+    }
+    return rangoValido;
 }
 
 // Procesa los cambios de las celdas
