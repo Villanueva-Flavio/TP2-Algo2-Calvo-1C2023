@@ -86,21 +86,6 @@ void generarMundo(Mapa* mundoGenerado, std::string tipoDeMundo) {
     } while (verificarOpcion(tipoDeMundo) == false);
 }
 
-void cargarNombres(Jugador* jugadores[], std::string nombres[], int cantidadJugadores) {
-    for(int i = 0; i < cantidadJugadores; i++) {
-        jugadores[i]->setNombre(nombres[i]);
-    }
-}
-
-void cargarTurnos(Jugador* jugadores[], int cantidadJugadores){
-    int indiceTurno = rand() % cantidadJugadores;
-    for(int i = 0; i < cantidadJugadores; i++) {
-        if(i == indiceTurno){
-            jugadores[i]->setTurno(true);
-        }
-    }
-}
-
 void cargarCantidadesDeFicha(Jugador* jugadores[], int cantidadDeJugadores) {
     for(int i = 0; i < cantidadDeJugadores; i++) {
         jugadores[i]->setSoldados(CANTIDAD_FICHAS);
@@ -110,18 +95,15 @@ void cargarCantidadesDeFicha(Jugador* jugadores[], int cantidadDeJugadores) {
 }
 
 void cargarJugadores(Jugador* jugadores[], std::string nombres[], int cantidadJugadores) {
-    cargarNombres(jugadores,nombres,cantidadJugadores);
-    cargarTurnos(jugadores,cantidadJugadores);
-    cargarCantidadesDeFicha(jugadores,cantidadJugadores);
-    //cargar cantidad de las fichas
+
 }
 
-void crearJugadores(Jugador* jugadores[], int cantidadJugadores, std::string nombres[]){
-    for (int i = 0; i < cantidadJugadores; i++) {
-        jugadores[i] = new Jugador;
-        // ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ LIBERAR DESPUES LAS MEMORIAS DE OBJETO CONTENIDAS EN 'jugadores' ⚠ ⚠ ⚠ ⚠ ⚠ ⚠ ⚠
+void crearJugadores(Lista<Jugador*> jugadores, int cantidadJugadores, std::string nombres[]){
+    Jugador* nuevoJugador;
+    for(int i = 0; i < cantidadJugadores; i++){
+        nuevoJugador = new Jugador();
+        jugadores.add(nuevoJugador);
     }
-    cargarJugadores(jugadores,nombres,cantidadJugadores);
 }
 
 bool hayUnaFichaDelTipo(Mapa* mundoDelJuego, int coordenadaX, int coordenadaY, int coordenadaZ){
@@ -156,7 +138,7 @@ void cargarFichas(Mapa* mundoDelJuego, std::string tipoDeMundo, int cantidadJuga
 
 // Precondiciones: Se espera que se 'mundoDelJuego' inicializado en tipo 'CAPA_AIRE', 'jugadores' debe ser un array de punteros a objetos del tipo 'Jugador' declarados de forma dinámica. ('jugadores' es un array estático)
 // Postcondiciones: La función carga todo el juego según lo que pida el usuario.
-void cargarJuego(Mapa* mundoDelJuego,Jugador* jugadores[], int cantidadJugadores, std::string tipoDeMundo, std::string nombres[]) {
+void cargarJuego(Mapa* mundoDelJuego,Lista<Jugador*> jugadores, int cantidadJugadores, std::string tipoDeMundo, std::string nombres[]) {
     srand(unsigned(time(NULL)));
     Mapa* mundoGenerado = new Mapa(cantidadJugadores*3, cantidadJugadores*3, cantidadJugadores*3);
     mundoDelJuego = mundoGenerado;
