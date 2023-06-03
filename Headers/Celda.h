@@ -10,6 +10,7 @@ class Celda {
         bool estado;
         Ficha ficha;
         Mina  mina;
+        int turnosInactiva;
 
     public:
         Celda();
@@ -29,5 +30,11 @@ class Celda {
         Mina* getMina();
 
         Mina getCopiaMina();
+
+        //Post: asigna la cantidad de turnos inactiva que debe permanecer la celda
+        void setTurnosInactiva(int turnosInactiva);
+
+        //Post: obtiene la cantidad de turnos inactiva que debe permanecer la celda
+        int getTurnosInactiva();
 };
 #endif

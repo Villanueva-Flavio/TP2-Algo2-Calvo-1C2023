@@ -36,3 +36,11 @@ Mina* Celda::getMina() {
 Mina Celda::getCopiaMina() {
     return this->mina;
 }
+
+void Celda::setTurnosInactiva(int turnosInactiva){
+    this->turnosInactiva = turnosInactiva;
+}
+
+int Celda::getTurnosInactiva(){
+    return this->turnosInactiva;
+}

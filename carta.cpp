@@ -1,6 +1,6 @@
 #include "./Headers/carta.h"
-#include "./Headers/tablero.h"
-#include "./Headers/celda.h"
+#include "./Headers/Tablero.h"
+#include "./Headers/Celda.h"
 
 #include <string>
 #include <fstream>
@@ -14,8 +14,8 @@ using namespace std;
 Carta::Carta(TipoCarta carta) {
     
     this->cartaActiva = true;
-    this->radioAccion = NULL;
-    this->cantidadBombas = NULL;
+    this->radioAccion = -1;
+    this->cantidadBombas = -1;
 
     switch(carta){
         case AVION_RADAR:
@@ -46,34 +46,34 @@ Carta::Carta(TipoCarta carta) {
     switch(this->carta){
         case OMITIR_TURNO:
             //se pasa por parametros jugador continuo
-            activarAtributosJugador(atributoJugador);
+            this->activarAtributosJugador(atributoJugador);
             break;
         case ESCUDO:
-            activarAtributosJugador(atributoJugador);
+            this->activarAtributosJugador(atributoJugador);
             break;
     }
 } 
-template <class Celda> 
- void Carta::usarCarta(Tablero<Celda> &tablero, int x, int y, int z){
+
+ void Carta::usarCarta(Tablero<Celda*>* tablero, int x, int y, int z){
 
     this->cartaActiva = false;
 
     switch(this->carta){
         case AVION_RADAR:
             this->radioAccion = 8;
-            obtenerReporte(tablero,x,y,z);
+            this->obtenerReporte(tablero,x,y,z);
             break;
         case ATAQUE_QUIMICO:
             this->radioAccion = 5;
-            inactivarCeldas(tablero,x,y,z);
+            this->inactivarCeldas(tablero,x,y,z);
             break;
         case BOMBARDEO:
             this->radioAccion = 5;
             this->cantidadBombas = 4;
-            bombardearCeldas(tablero,x,y,z);
+            this->bombardearCeldas(tablero,x,y,z);
             break;
         case BARCO_MISIL:
-            lanzarMisil(tablero, x , y, z);
+            this->lanzarMisil(tablero, x , y, z);
             break;
     }
 }
@@ -85,11 +85,10 @@ TipoCarta Carta::getTipoCarta() {
 bool Carta::getCartaActiva() {
     return this->cartaActiva;
 }
-template <class Celda> 
-void Carta::inactivarCeldas(Tablero<Celda> &tablero, int x, int y, int z){
 
-    // Falta reactivar celdas dependiendo del radio 
-    int &radio = this->radioAccion; 
+void Carta::inactivarCeldas(Tablero<Celda*>* tablero, int x, int y, int z){
+
+    int radio = this->radioAccion; 
     string reporte = NULL;
 
     for (int n= x - radio; n < x + radio ; n++){
@@ -98,7 +97,7 @@ void Carta::inactivarCeldas(Tablero<Celda> &tablero, int x, int y, int z){
                 
                 if(tablero->inRange(n,m,l)){
 
-                    int turnosInactiva = getTurnosInactiva(n,m,l,x,y,z);
+                    int turnosInactiva = this->getTurnosInactiva(n,m,l,x,y,z);
 
                     if(tablero->getTData(n,m,l)->getFicha()->getTipo() == VACIO){
                         tablero->getTData(n,m,l)->setEstado(false); 
@@ -119,8 +118,7 @@ void Carta::inactivarCeldas(Tablero<Celda> &tablero, int x, int y, int z){
 
     this->imprimirReporte(reporte);
 }
-template <class Celda> 
-void Carta::bombardearCeldas(Tablero<Celda> &tablero, int x, int y, int z){
+void Carta::bombardearCeldas(Tablero<Celda*>* tablero, int x, int y, int z){
 
     int randomX, randomY, randomZ;
     int &radio = this->radioAccion; 
@@ -154,8 +152,7 @@ void Carta::bombardearCeldas(Tablero<Celda> &tablero, int x, int y, int z){
     this->imprimirReporte(reporte);
 }
 
-template <class Celda> 
-void Carta::obtenerReporte(Tablero<Celda> &tablero, int x, int y, int z){
+void Carta::obtenerReporte(Tablero<Celda*>* tablero, int x, int y, int z){
     int &radio = this->radioAccion; 
     string reporte = "";
 
@@ -177,9 +174,8 @@ void Carta::obtenerReporte(Tablero<Celda> &tablero, int x, int y, int z){
     }
     this->imprimirReporte(reporte);
 }
-
-template <class Celda>  
-void Carta::lanzarMisil(Tablero<Celda> &tablero,  int x, int y, int z){
+  
+void Carta::lanzarMisil(Tablero<Celda*>* tablero,  int x, int y, int z){
     
     if(tablero->inRange(x,y,z)){
 
@@ -220,7 +216,7 @@ void Carta::imprimirReporte(string reporte){
 
 }
 
-string getStringTipoFicha(TipoContenido tipo){
+string Carta::getStringTipoFicha(TipoContenido tipo){
 
     string contenido = "";
 
@@ -245,7 +241,7 @@ string getStringTipoFicha(TipoContenido tipo){
     return contenido;
 }
 
-int getTurnosInactiva(int puntoX, int puntoY, int puntoZ, int centroX, int centroY, int centroZ){
+int Carta::getTurnosInactiva(int puntoX, int puntoY, int puntoZ, int centroX, int centroY, int centroZ){
 
     int radio = this->radioAccion;
 

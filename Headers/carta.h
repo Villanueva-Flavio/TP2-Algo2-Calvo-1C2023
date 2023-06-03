@@ -1,6 +1,6 @@
 #include <string>
-#include "tablero.h"
-#include "celda.h"
+#include "Tablero.h"
+#include "Celda.h"
 
 #ifndef __CARTA_H__
 #define __CARTA_H__
@@ -25,8 +25,7 @@ class Carta{
         void usarCarta(bool &atributoJugador);
 
         //Permite al jugador acceder a la accion de la carta dependiendo de su tipo
-        template <class Celda> 
-        void usarCarta(Tablero<Celda> &, int x, int y, int z);
+        void usarCarta(Tablero<Celda*>* tablero, int x, int y, int z);
 
         //Permite saber cual es el tipo de carta
         TipoCarta getTipoCarta();
@@ -37,20 +36,16 @@ class Carta{
     private:
 
         //Se inactivan las celdas del perimetro marcado por el radio
-        template <class Celda> 
-        void inactivarCeldas(Tablero<Celda> &,int x, int y, int z);
+        void inactivarCeldas(Tablero<Celda*>* tablero,int x, int y, int z);
 
         //Inactiva la cantidad de casillas indicadas en cantidad bombas de forma aleatoria dentro del rango
-        template <class Celda>  
-        void bombardearCeldas(Tablero<Celda> &,int x, int y, int z);
+        void bombardearCeldas(Tablero<Celda*>* tablero,int x, int y, int z);
 
-        //Devuelve un reporte que indica si se alcanzo a un objetivo contrario y donde
-        template <class Celda>  
-        void obtenerReporte(Tablero<Celda> &, int x, int y, int z);
+        //Devuelve un reporte que indica si se alcanzo a un objetivo contrario y donde 
+        void obtenerReporte(Tablero<Celda*>* tablero, int x, int y, int z);
 
         //Inactiva la casilla impactada
-        template <class Celda>  
-        void lanzarMisil(Tablero<Celda> &, int x, int y, int z);
+        void lanzarMisil(Tablero<Celda*>* tablero, int x, int y, int z);
 
         //Omite el turno del jugador continuo
         void activarAtributosJugador(bool &atributoJugador);
@@ -61,7 +56,7 @@ class Carta{
         std::string getStringTipoFicha(TipoContenido);
 
         //Devuelve la cantidad de turnos que va a permanecer la casilla dependiendo de la distancia a la que se encuentre del centrio de la explosion
-        int getTurnosInactiva(int, int, int, int, int, int);
+        int getTurnosInactiva(int puntoX, int puntoY, int puntoZ, int centroX, int centroY, int centroZ);
 };
 
 #endif

@@ -25,9 +25,14 @@ void cargarMapa(Tablero<Celda*>* tablero){
             }
         }
     }
-    tablero->getTData(tablero->getTamanioX()-1,tablero->getTamanioY()-1,2)->getFicha()->setTipo(SUBMARINO);
-    tablero->getTData(tablero->getTamanioX()-1,tablero->getTamanioY()-1,2)->getFicha()->setNumFicha(1);
-    tablero->getTData(tablero->getTamanioX()-1,tablero->getTamanioY()-1,2)->setTipo(CAPA_ARENA);
+
+    tablero->getTData(tablero->getTamanioX()-3,tablero->getTamanioY()-2,2)->getFicha()->setTipo(MINA_FICHA);
+    tablero->getTData(tablero->getTamanioX()-3,tablero->getTamanioY()-2,2)->getFicha()->setNumFicha(2);
+    tablero->getTData(tablero->getTamanioX()-3,tablero->getTamanioY()-2,2)->setTipo(CAPA_MINA);
+
+    tablero->getTData(tablero->getTamanioX()-4,tablero->getTamanioY()-1,2)->getFicha()->setTipo(SUBMARINO);
+    tablero->getTData(tablero->getTamanioX()-4,tablero->getTamanioY()-1,2)->getFicha()->setNumFicha(1);
+    tablero->getTData(tablero->getTamanioX()-4,tablero->getTamanioY()-1,2)->setTipo(CAPA_ARENA);
 }
 
 // Pide un tipo de ficha
@@ -119,10 +124,6 @@ void procesarBusqueda(coordenadas* coorFicha, Tablero<Celda*>* tablero, string* 
                     x = tablero->getTamanioX();
                     y = tablero->getTamanioY();
                     z = tablero->getTamanioZ();
-                }
-
-                if(k > batallaDigital->getTamanioX() / 2){
-                    batallaDigital->getTData(i, j, k)->setTipo(CAPA_AIRE);
                 }
             }
         }
@@ -266,15 +267,15 @@ int main(){
     bool seguir = false;
     int size = 20;
     char movimiento;
-    coordenadas coordenadaFichaActual = {-1,-1,-1};
+    coordenadas coordenadaFichaActual = {0,0,3};
     Tablero<Celda*>* tablero = new Tablero<Celda*>(size, size, size);
     cargarMapa(tablero);
     procesarCambiosMapa(tablero,size);
     while (!seguir){
-        buscarCoordenadasFicha((&coordenadaFichaActual),tablero,(&ficha));
-        if ((coordenadaFichaActual.x != -1) && (coordenadaFichaActual.y != -1) && (coordenadaFichaActual.z != -1)){
+       buscarCoordenadasFicha((&coordenadaFichaActual),tablero,(&ficha));
+       if ((coordenadaFichaActual.x != -1) && (coordenadaFichaActual.y != -1) && (coordenadaFichaActual.z != -1)){
             while (movimiento != 't'){
-                usarFicha(tablero,(&coordenadaFichaActual),ficha,(&movimiento),size);
+               usarFicha(tablero,(&coordenadaFichaActual),ficha,(&movimiento),size);
             }
         }
         cout << "\nSeguir?(Puede mandar la letra 'c' para salir)\n-";
