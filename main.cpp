@@ -5,14 +5,17 @@
 #include <iostream>
 using namespace std;
 
+#define NIVEL_MAXIMO 5
+
 struct coordenadas{int x,y,z;};
 struct Niveles{int suelo,mar;};
 struct Desplazar{int x,y,z;};
 
 bool noEsOrillaDelLago(Mapa* mapa, int x, int y, int z, int size) {
     bool orilla = false;
+    double radioAjustado = 1+(0.285*(pow(size/4,1/2.5)));
     int radio = pow(x-mapa->getTamanioX()/2, 2) + (pow(y-mapa->getTamanioY()/2, 2)) + pow(z-mapa->getTamanioZ()/2, 2);
-    if (radio < pow(size,1/0.80)){
+    if (radio < pow(size,radioAjustado)){
         orilla = true;
     }
     return orilla;
@@ -20,8 +23,9 @@ bool noEsOrillaDelLago(Mapa* mapa, int x, int y, int z, int size) {
 
 bool esOrillaDelLago(Mapa* mapa, int x, int y, int z, int size) {
     bool orilla = false;
+    double radioAjustado = 1+(0.285*(pow(size/4,1/2.5)));
     int radio = pow(x-mapa->getTamanioX()/2, 2) + (pow(y-mapa->getTamanioY()/2, 2)) + pow(z-mapa->getTamanioZ()/2, 2);
-    if (radio > pow(size,1/0.80)){
+    if (radio > pow(size,radioAjustado)){
         orilla = true;
     }
     return orilla;
@@ -29,8 +33,9 @@ bool esOrillaDelLago(Mapa* mapa, int x, int y, int z, int size) {
 
 bool esSegmentoLago(Mapa* mapa, int x, int y, int z, int size) {
     bool orilla = false;
+    double radioAjustado = 1+(0.285*(pow(size/4,1/2.5)));
     int radio = pow(x-mapa->getTamanioX()/2, 2) + (pow(y-mapa->getTamanioY()/2, 2)) + pow(z-mapa->getTamanioZ()/2, 2);
-    if (radio == pow(size,1/0.80)){
+    if (radio == pow(size,radioAjustado)){
         orilla = true;
     }
     return orilla;
@@ -40,16 +45,14 @@ bool esSegmentoLago(Mapa* mapa, int x, int y, int z, int size) {
 void dibujarEsfera(Mapa* mapa, int size) {
     for(int x = 0; x < mapa->getTamanioX(); x++) {
         for(int y = 0; y < mapa->getTamanioY(); y++){
-            for(int z = 0; z < mapa->getTamanioZ()/2; z++) {
+            for(int z = 0; z < NIVEL_MAXIMO; z++) {
                 if (noEsOrillaDelLago(mapa,x,y,z,size)){
                     mapa->getTData(x,y,z)->setTipo(CAPA_AGUA);
                 }else if (esOrillaDelLago(mapa,x,y,z,size)){
-                    if (z < mapa->getTamanioZ()/2) mapa->getTData(x,y,z)->setTipo(CAPA_TIERRA);
-                    mapa->getTData(x,y,mapa->getTamanioZ()/2-1)->setTipo(CAPA_PASTO);
+                    if (z < NIVEL_MAXIMO) mapa->getTData(x,y,z)->setTipo(CAPA_TIERRA);
+                    mapa->getTData(x,y,NIVEL_MAXIMO-1)->setTipo(CAPA_PASTO);
                 }
-                if (esSegmentoLago(mapa,x,y,z,size)){
-                    mapa->getTData(x,y,mapa->getTamanioZ()/2-1)->setTipo(CAPA_ARENA);
-                }
+                mapa->getTData(x,y,0)->setTipo(CAPA_ARENA);
             }
         }
     }
@@ -306,8 +309,8 @@ int main(){
     int size = 8;
     Tablero<Celda*>* tablero = new Tablero<Celda*>(size, size, size);
     dibujarEsfera(tablero,size);
-    // procesarCambiosMapa(tablero,size);
-    // moverFichas(tablero,size);
+    procesarCambiosMapa(tablero,size);
+    moverFichas(tablero,size);
     procesarCambiosMapa(tablero,size);
     delete tablero;
     return 0;
