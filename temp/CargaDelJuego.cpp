@@ -98,13 +98,6 @@ void cargarJugadores(Jugador* jugadores[], std::string nombres[], int cantidadJu
 
 }
 
-void crearJugadores(Lista<Jugador*> jugadores, int cantidadJugadores, std::string nombres[]){
-    Jugador* nuevoJugador;
-    for(int i = 0; i < cantidadJugadores; i++){
-        nuevoJugador = new Jugador();
-        jugadores.add(nuevoJugador);
-    }
-}
 
 bool hayUnaFichaDelTipo(Mapa* mundoDelJuego, int coordenadaX, int coordenadaY, int coordenadaZ){
     bool hayDelTipo = true;
@@ -140,10 +133,8 @@ void cargarFichas(Mapa* mundoDelJuego, std::string tipoDeMundo, int cantidadJuga
 // Postcondiciones: La función carga todo el juego según lo que pida el usuario.
 void cargarJuego(Mapa* mundoDelJuego,Lista<Jugador*> jugadores, int cantidadJugadores, std::string tipoDeMundo, std::string nombres[]) {
     srand(unsigned(time(NULL)));
-    Mapa* mundoGenerado = new Mapa(cantidadJugadores*3, cantidadJugadores*3, cantidadJugadores*3);
-    mundoDelJuego = mundoGenerado;
-    delete mundoGenerado;
+    mundoDelJuego = new Mapa(cantidadJugadores*4, cantidadJugadores*4, cantidadJugadores*4);
     generarMundo(mundoDelJuego,tipoDeMundo);
-    crearJugadores(jugadores,cantidadJugadores,nombres);
+    // inicializar jugadores
     cargarFichas(mundoDelJuego,tipoDeMundo,cantidadJugadores);
 }

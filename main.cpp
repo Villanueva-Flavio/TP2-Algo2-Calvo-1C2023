@@ -1,6 +1,7 @@
 #include "./Headers/Tablero.h"
 #include "./Headers/Celda.h"
 #include "./Headers/Renderizador.h"
+#include <cmath>
 #include <iostream>
 using namespace std;
 
@@ -8,26 +9,50 @@ struct coordenadas{int x,y,z;};
 struct Niveles{int suelo,mar;};
 struct Desplazar{int x,y,z;};
 
+bool noEsOrillaDelLago(Mapa* mapa, int x, int y, int z, int size) {
+    bool orilla = false;
+    int radio = pow(x-mapa->getTamanioX()/2, 2) + (pow(y-mapa->getTamanioY()/2, 2)) + pow(z-mapa->getTamanioZ()/2, 2);
+    if (radio < pow(size,1/0.80)){
+        orilla = true;
+    }
+    return orilla;
+}
+
+bool esOrillaDelLago(Mapa* mapa, int x, int y, int z, int size) {
+    bool orilla = false;
+    int radio = pow(x-mapa->getTamanioX()/2, 2) + (pow(y-mapa->getTamanioY()/2, 2)) + pow(z-mapa->getTamanioZ()/2, 2);
+    if (radio > pow(size,1/0.80)){
+        orilla = true;
+    }
+    return orilla;
+}
+
+bool esSegmentoLago(Mapa* mapa, int x, int y, int z, int size) {
+    bool orilla = false;
+    int radio = pow(x-mapa->getTamanioX()/2, 2) + (pow(y-mapa->getTamanioY()/2, 2)) + pow(z-mapa->getTamanioZ()/2, 2);
+    if (radio == pow(size,1/0.80)){
+        orilla = true;
+    }
+    return orilla;
+}
+
 // Carga el terreno de juego
-void cargarMapa(Tablero<Celda*>* tablero){
-    for(int x = 0; x < tablero->getTamanioX(); x++){
-        for(int y = 0; y < tablero->getTamanioY(); y++){
-            if (x < (tablero->getTamanioX()/1.5)){
-                tablero->getTData(x, y, 0)->setTipo(CAPA_TIERRA);
-                tablero->getTData(x, y, 1)->setTipo(CAPA_TIERRA);
-                tablero->getTData(x, y, 2)->setTipo(CAPA_TIERRA);
-                tablero->getTData(x, y, 3)->setTipo(CAPA_PASTO);
-            }else {
-                tablero->getTData(x, y, 0)->setTipo(CAPA_AGUA);
-                tablero->getTData(x, y, 1)->setTipo(CAPA_AGUA);
-                tablero->getTData(x, y, 2)->setTipo(CAPA_AGUA);
-                tablero->getTData(x, y, 3)->setTipo(CAPA_AGUA);
+void dibujarEsfera(Mapa* mapa, int size) {
+    for(int x = 0; x < mapa->getTamanioX(); x++) {
+        for(int y = 0; y < mapa->getTamanioY(); y++){
+            for(int z = 0; z < mapa->getTamanioZ()/2; z++) {
+                if (noEsOrillaDelLago(mapa,x,y,z,size)){
+                    mapa->getTData(x,y,z)->setTipo(CAPA_AGUA);
+                }else if (esOrillaDelLago(mapa,x,y,z,size)){
+                    if (z < mapa->getTamanioZ()/2) mapa->getTData(x,y,z)->setTipo(CAPA_TIERRA);
+                    mapa->getTData(x,y,mapa->getTamanioZ()/2-1)->setTipo(CAPA_PASTO);
+                }
+                if (esSegmentoLago(mapa,x,y,z,size)){
+                    mapa->getTData(x,y,mapa->getTamanioZ()/2-1)->setTipo(CAPA_ARENA);
+                }
             }
         }
     }
-    tablero->getTData(tablero->getTamanioX()-1,tablero->getTamanioY()-1,2)->getFicha()->setTipo(SUBMARINO);
-    tablero->getTData(tablero->getTamanioX()-1,tablero->getTamanioY()-1,2)->getFicha()->setNumFicha(1);
-    tablero->getTData(tablero->getTamanioX()-1,tablero->getTamanioY()-1,2)->setTipo(CAPA_ARENA);
 }
 
 // Pide un tipo de ficha
@@ -278,10 +303,11 @@ void moverFichas(Tablero<Celda*>* tablero, int size) {
 }
 
 int main(){
-    int size = 20;
+    int size = 8;
     Tablero<Celda*>* tablero = new Tablero<Celda*>(size, size, size);
-    cargarMapa(tablero);
-    moverFichas(tablero,size);
+    dibujarEsfera(tablero,size);
+    // procesarCambiosMapa(tablero,size);
+    // moverFichas(tablero,size);
     procesarCambiosMapa(tablero,size);
     delete tablero;
     return 0;
