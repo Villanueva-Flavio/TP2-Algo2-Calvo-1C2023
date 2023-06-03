@@ -5,6 +5,7 @@ Jugador::Jugador() {
     this->armamentos = 0;
     this->escudoActivo = false;
     this->omitirTurno = false;
+    this->turnoActual = false;
    // this->cartas = new Carta;
 }
 
@@ -58,4 +59,8 @@ void Jugador::reactivarJugador(){
     if(this->omitirTurno){
         this->omitirTurno = false;
     }
+}
+
+void Jugador::setTurno(bool turno){
+    this->turnoActual = turno;
 }
