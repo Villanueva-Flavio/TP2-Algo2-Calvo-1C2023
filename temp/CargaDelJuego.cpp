@@ -6,8 +6,84 @@
 #include <cstdlib>
 #include <iostream>
 
-#define CAPA_MAXIMA 6
+#define CAPA_MAXIMA 5
 #define CANTIDAD_FICHAS 10
+
+struct coordenadas{int x,y,z;};
+struct Niveles{int suelo,mar;};
+struct Desplazar{int x,y,z;};
+
+bool noEsOrillaRio(Mapa* mapa, int x, int y, int z, int size) {
+    bool orilla = false;
+    double radioAjustado = 1+(0.227*(pow(size/4,1/2.5)));
+    double radio = pow(y-mapa->getTamanioY()/2, 2) + pow(z-mapa->getTamanioZ()/2, 2);
+    if (radio <= pow(size,radioAjustado)){
+        orilla = true;
+    }
+    return orilla;
+}
+
+bool esOrillaRio(Mapa* mapa, int x, int y, int z, int size) {
+    bool orilla = false;
+    double radioAjustado = 1+(0.227*(pow(size/4,1/2.5)));
+    double radio = pow(y-mapa->getTamanioY()/2, 2) + pow(z-mapa->getTamanioZ()/2, 2);
+    if (radio > pow(size,radioAjustado)){
+        orilla = true;
+    }
+    return orilla;
+}
+
+void cargarRio(Mapa* mapa, int size) {
+    for(int x = 0; x < mapa->getTamanioX(); x++) {
+        for(int y = 0; y < mapa->getTamanioY(); y++){
+            for(int z = 0; z < CAPA_MAXIMA; z++) {
+                if (noEsOrillaRio(mapa,x,y,z,size)){
+                    mapa->getTData(x,y,z)->setTipo(CAPA_AGUA);
+                }else if (esOrillaRio(mapa,x,y,z,size)){
+                    if (z < CAPA_MAXIMA) mapa->getTData(x,y,z)->setTipo(CAPA_TIERRA);
+                    mapa->getTData(x,y,CAPA_MAXIMA-1)->setTipo(CAPA_PASTO);
+                }
+                mapa->getTData(x,y,0)->setTipo(CAPA_ARENA);
+            }
+        }
+    }
+}
+
+bool noEsOrillaDelLago(Mapa* mapa, int x, int y, int z, int size) {
+    bool orilla = false;
+    double radioAjustado = 1+(0.285*(pow(size/4,1/2.5)));
+    double radio = pow(x-mapa->getTamanioX()/2, 2) + (pow(y-mapa->getTamanioY()/2, 2)) + pow(z-mapa->getTamanioZ()/2, 2);
+    if (radio <= pow(size,radioAjustado)){
+        orilla = true;
+    }
+    return orilla;
+}
+
+bool esOrillaDelLago(Mapa* mapa, int x, int y, int z, int size) {
+    bool orilla = false;
+    double radioAjustado = 1+(0.285*(pow(size/4,1/2.5)));
+    double radio = pow(x-mapa->getTamanioX()/2, 2) + (pow(y-mapa->getTamanioY()/2, 2)) + pow(z-mapa->getTamanioZ()/2, 2);
+    if (radio > pow(size,radioAjustado)){
+        orilla = true;
+    }
+    return orilla;
+}
+
+void cargarLago(Mapa* mapa, int size) {
+    for(int x = 0; x < mapa->getTamanioX(); x++) {
+        for(int y = 0; y < mapa->getTamanioY(); y++){
+            for(int z = 0; z < CAPA_MAXIMA; z++) {
+                if (noEsOrillaDelLago(mapa,x,y,z,size)){
+                    mapa->getTData(x,y,z)->setTipo(CAPA_AGUA);
+                }else if (esOrillaDelLago(mapa,x,y,z,size)){
+                    if (z < CAPA_MAXIMA) mapa->getTData(x,y,z)->setTipo(CAPA_TIERRA);
+                    mapa->getTData(x,y,CAPA_MAXIMA-1)->setTipo(CAPA_PASTO);
+                }
+                mapa->getTData(x,y,0)->setTipo(CAPA_ARENA);
+            }
+        }
+    }
+}
 
 void cargarPlaya(Mapa* playa){
     for(int i = 0; i < playa->getTamanioX(); i++){
@@ -131,7 +207,7 @@ void cargarFichas(Mapa* mundoDelJuego, std::string tipoDeMundo, int cantidadJuga
 
 // Precondiciones: Se espera que se 'mundoDelJuego' inicializado en tipo 'CAPA_AIRE', 'jugadores' debe ser un array de punteros a objetos del tipo 'Jugador' declarados de forma dinámica. ('jugadores' es un array estático)
 // Postcondiciones: La función carga todo el juego según lo que pida el usuario.
-void cargarJuego(Mapa* mundoDelJuego,Lista<Jugador*> jugadores, int cantidadJugadores, std::string tipoDeMundo, std::string nombres[]) {
+void cargarJuego(Mapa* mundoDelJuego,Lista<Jugador*> jugadores, int cantidadJugadores, std::string tipoDeMundo, std::string* nombres[]) {
     srand(unsigned(time(NULL)));
     mundoDelJuego = new Mapa(cantidadJugadores*4, cantidadJugadores*4, cantidadJugadores*4);
     generarMundo(mundoDelJuego,tipoDeMundo);

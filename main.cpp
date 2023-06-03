@@ -13,9 +13,9 @@ struct Desplazar{int x,y,z;};
 
 bool noEsOrillaDelLago(Mapa* mapa, int x, int y, int z, int size) {
     bool orilla = false;
-    double radioAjustado = 1+(0.285*(pow(size/4,1/2.5)));
-    int radio = pow(x-mapa->getTamanioX()/2, 2) + (pow(y-mapa->getTamanioY()/2, 2)) + pow(z-mapa->getTamanioZ()/2, 2);
-    if (radio < pow(size,radioAjustado)){
+    double radioAjustado = 1+(0.227*(pow(size/4,1/2.5)));
+    double radio = pow(y-mapa->getTamanioY()/2, 2) + pow(z-mapa->getTamanioZ()/2, 2);
+    if (radio <= pow(size,radioAjustado)){
         orilla = true;
     }
     return orilla;
@@ -23,25 +23,14 @@ bool noEsOrillaDelLago(Mapa* mapa, int x, int y, int z, int size) {
 
 bool esOrillaDelLago(Mapa* mapa, int x, int y, int z, int size) {
     bool orilla = false;
-    double radioAjustado = 1+(0.285*(pow(size/4,1/2.5)));
-    int radio = pow(x-mapa->getTamanioX()/2, 2) + (pow(y-mapa->getTamanioY()/2, 2)) + pow(z-mapa->getTamanioZ()/2, 2);
+    double radioAjustado = 1+(0.227*(pow(size/4,1/2.5)));
+    double radio = pow(y-mapa->getTamanioY()/2, 2) + pow(z-mapa->getTamanioZ()/2, 2);
     if (radio > pow(size,radioAjustado)){
         orilla = true;
     }
     return orilla;
 }
 
-bool esSegmentoLago(Mapa* mapa, int x, int y, int z, int size) {
-    bool orilla = false;
-    double radioAjustado = 1+(0.285*(pow(size/4,1/2.5)));
-    int radio = pow(x-mapa->getTamanioX()/2, 2) + (pow(y-mapa->getTamanioY()/2, 2)) + pow(z-mapa->getTamanioZ()/2, 2);
-    if (radio == pow(size,radioAjustado)){
-        orilla = true;
-    }
-    return orilla;
-}
-
-// Carga el terreno de juego
 void dibujarEsfera(Mapa* mapa, int size) {
     for(int x = 0; x < mapa->getTamanioX(); x++) {
         for(int y = 0; y < mapa->getTamanioY(); y++){
@@ -306,12 +295,12 @@ void moverFichas(Tablero<Celda*>* tablero, int size) {
 }
 
 int main(){
-    int size = 8;
+    int size = 40;
     Tablero<Celda*>* tablero = new Tablero<Celda*>(size, size, size);
     dibujarEsfera(tablero,size);
     procesarCambiosMapa(tablero,size);
-    moverFichas(tablero,size);
-    procesarCambiosMapa(tablero,size);
+    // moverFichas(tablero,size);
+    // procesarCambiosMapa(tablero,size);
     delete tablero;
     return 0;
 }
