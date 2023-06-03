@@ -1,8 +1,10 @@
 #include "./Headers/Tablero.h"
 #include "./Headers/Celda.h"
 #include "./Headers/Renderizador.h"
-#include "./Headers/Jugador.h"                 //???
+#include "./Headers/Jugador.h"
+#include "./Headers/DatosIngresados.h"
 #include <iostream>
+#include <string>
 using namespace std;
 
 struct coordenadas{int x,y,z;};
@@ -259,45 +261,6 @@ void procesarMapa(Tablero<Celda*>* tablero, int size) {
     imagen.WriteToFile("Partida.bmp");
 }
 
-void inicializarJuego(Tablero<Celda*>* tablero, Lista<Jugador*>* listaJugadores){
-
-    int numJugadores = 0;
-    string nombreJugador = " ", mapaElegido = " ";
-
-    cout << "---BATALLA DIGITAL---\n";
-    
-    cout << "---Ingrese el numero de jugadores: ";
-    cin >> numJugadores;
-
-    while (numJugadores <= 0 || numJugadores >= 100){       //definir    
-        cout << "Ingresa una cantidad valida de jugadores. Numero de jugadores: \n";
-        cin >> numJugadores;
-    }
-    
-    for(int i=0; i<numJugadores; i++){
-        cout << "Ingresa el nombre del jugador " << i+1 << ": ";
-        cin >> nombreJugador;
-
-        Jugador* jugador = new Jugador();
-        listaJugadores->add(jugador);
-        listaJugadores->getLData(i)->setNombre(nombreJugador);
-    }
-
-    //para probar
-    for(int j=0; j<numJugadores; j++){
-        cout << "\nEl nombre de jugador " << j+1 << " es: " << listaJugadores->getLData(j)->getNombre() << "\n";
-    }
-
-    /*
-    cout << "Seleccione un mapa\n- playa - agua - ...\n";
-    cin >> mapaElegido;
-
-    if(mapaElegido == "playa"){
-        //cargar playa
-    }
-    */
-}
-
 int main(){
     string cortar = "",ficha = "";
     bool seguir = false;
@@ -306,26 +269,29 @@ int main(){
     coordenadas coordenadaFichaActual = {-1,-1,-1};
     Tablero<Celda*>* tablero = new Tablero<Celda*>(size, size, size);
     cargarMapa(tablero);
+
     Lista<Jugador*>* listaJugadores = new Lista<Jugador*>() ;        //agregado
+    int cantJugadores;
+    int r = 0, g = 0, b = 0;
+    string tipoDeMapa = "";
 
-    inicializarJuego(tablero, listaJugadores);
 
-    /*while (!seguir){
+    solicitarJugadores(&cantJugadores);
 
-        buscarCoordenadasFicha((&coordenadaFichaActual),tablero,(&ficha));
-        if ((coordenadaFichaActual.x != -1) && (coordenadaFichaActual.y != -1) && (coordenadaFichaActual.z != -1)){
+    string* nombreJugadores = new string[cantJugadores];
+    int* valoresR = new int[cantJugadores];
+    int* valoresG = new int[cantJugadores];
+    int* valoresB = new int[cantJugadores];
 
-            while (movimiento != 't'){
-                
-                //procesarMapa(tablero,size);
-                usarFicha(tablero,(&coordenadaFichaActual),ficha,(&movimiento));
-                procesarMapa(tablero,size);
-            }
-        }
-        cout << "\nSeguir?(Puede mandar la letra 'c' para salir)\n-";
-        cin >> cortar;
-        seguir = (cortar == "c") ? true : false;
-    }*/
+    pedirDatosIniciales(cantJugadores, tipoDeMapa, nombreJugadores, valoresR, valoresG ,valoresB);
+
+    //cargarJuego(listaJugadores);
+    delete[] valoresR;
+    delete[] valoresG;
+    delete[] valoresB;
+    delete[] nombreJugadores;
+
     delete tablero;
+    delete listaJugadores;
     return 0;
 }
