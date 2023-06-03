@@ -5,6 +5,12 @@
         "ostream": "cpp",
         "iostream": "cpp",
         "array": "cpp",
+<<<<<<< HEAD
+=======
+        "string_view": "cpp",
+        "initializer_list": "cpp",
+        "utility": "cpp",
+>>>>>>> moszpi
         "atomic": "cpp",
         "bit": "cpp",
         "*.tcc": "cpp",
@@ -23,6 +29,10 @@
         "cwctype": "cpp",
         "deque": "cpp",
         "map": "cpp",
+<<<<<<< HEAD
+=======
+        "string": "cpp",
+>>>>>>> moszpi
         "unordered_map": "cpp",
         "vector": "cpp",
         "exception": "cpp",
@@ -32,6 +42,7 @@
         "memory": "cpp",
         "memory_resource": "cpp",
         "numeric": "cpp",
+<<<<<<< HEAD
         "optional": "cpp",
         "random": "cpp",
         "string": "cpp",
@@ -49,5 +60,20 @@
         "stdexcept": "cpp",
         "streambuf": "cpp",
         "typeinfo": "cpp"
+=======
+        "random": "cpp",
+        "system_error": "cpp",
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "iosfwd": "cpp",
+        "istream": "cpp",
+        "limits": "cpp",
+        "numbers": "cpp",
+        "sstream": "cpp",
+        "stdexcept": "cpp",
+        "streambuf": "cpp",
+        "typeinfo": "cpp",
+        "ctime": "cpp"
+>>>>>>> moszpi
     }
 }

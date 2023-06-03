@@ -11,6 +11,7 @@ class Jugador{
         int armamentos;
         bool escudoActivo; //yenny nuevo
         bool omitirTurno;//yenny nuevo
+        bool turnoActual;
         //Carta *cartas;
     public:
             
@@ -33,7 +34,9 @@ class Jugador{
             void setMinas(int minas);
     
             void setArmamentos(int armamentos);
-    
+
+            void setTurno(bool turno);
+
             // void setCartas(Carta* cartas);
 
             //Memueve el escudo activado por una carta
