@@ -140,7 +140,7 @@ void procesarCambiosMapa(Tablero<Celda*>* tablero, int size) {
     BMP imagen;
     imagen.SetSize(imgSize.x, imgSize.y);
     cargarPlaya(batallaDigital);
-    imprimirAngulo(imgSize, &imagen, batallaDigital, getMap());
+    imprimirBMP(imgSize, &imagen, batallaDigital, getMap());
     imagen.WriteToFile("Partida.bmp");
 }
 
