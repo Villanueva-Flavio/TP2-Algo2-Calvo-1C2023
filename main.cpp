@@ -1,67 +1,51 @@
 #include "./Headers/Tablero.h"
 #include "./Headers/Celda.h"
 #include "./Headers/Renderizador.h"
-#include <cmath>
 #include <iostream>
+#include <map>
 using namespace std;
 
-#define NIVEL_MAXIMO 5
-
-struct coordenadas{int x,y,z;};
+struct Coordenada{int x,y,z;};
 struct Niveles{int suelo,mar;};
-struct Desplazar{int x,y,z;};
 
-bool noEsOrillaDelLago(Mapa* mapa, int x, int y, int z, int size) {
-    bool orilla = false;
-    double radioAjustado = 1+(0.285*(pow(size/4,1/2.5)));
-    int radio = pow(x-mapa->getTamanioX()/2, 2) + (pow(y-mapa->getTamanioY()/2, 2)) + pow(z-mapa->getTamanioZ()/2, 2);
-    if (radio < pow(size,radioAjustado)){
-        orilla = true;
-    }
-    return orilla;
-}
+typedef map<string, Coordenada> MapaCoordenadas;
 
-bool esOrillaDelLago(Mapa* mapa, int x, int y, int z, int size) {
-    bool orilla = false;
-    double radioAjustado = 1+(0.285*(pow(size/4,1/2.5)));
-    int radio = pow(x-mapa->getTamanioX()/2, 2) + (pow(y-mapa->getTamanioY()/2, 2)) + pow(z-mapa->getTamanioZ()/2, 2);
-    if (radio > pow(size,radioAjustado)){
-        orilla = true;
-    }
-    return orilla;
-}
-
-bool esSegmentoLago(Mapa* mapa, int x, int y, int z, int size) {
-    bool orilla = false;
-    double radioAjustado = 1+(0.285*(pow(size/4,1/2.5)));
-    int radio = pow(x-mapa->getTamanioX()/2, 2) + (pow(y-mapa->getTamanioY()/2, 2)) + pow(z-mapa->getTamanioZ()/2, 2);
-    if (radio == pow(size,radioAjustado)){
-        orilla = true;
-    }
-    return orilla;
+MapaCoordenadas getMapaCoordenadas(){
+    MapaCoordenadas mapa;
+    mapa["w"] = {0,0,1};
+    mapa["a"] = {-1,0,0};
+    mapa["s"] = {0,0,-1};
+    mapa["d"] = {1,0,0};
+    mapa["W"] = {0,0,1};
+    mapa["A"] = {-1,0,0};
+    mapa["S"] = {0,0,-1};
+    mapa["D"] = {1,0,0};
 }
 
 // Carga el terreno de juego
-void dibujarEsfera(Mapa* mapa, int size) {
-    for(int x = 0; x < mapa->getTamanioX(); x++) {
-        for(int y = 0; y < mapa->getTamanioY(); y++){
-            for(int z = 0; z < NIVEL_MAXIMO; z++) {
-                if (noEsOrillaDelLago(mapa,x,y,z,size)){
-                    mapa->getTData(x,y,z)->setTipo(CAPA_AGUA);
-                }else if (esOrillaDelLago(mapa,x,y,z,size)){
-                    if (z < NIVEL_MAXIMO) mapa->getTData(x,y,z)->setTipo(CAPA_TIERRA);
-                    mapa->getTData(x,y,NIVEL_MAXIMO-1)->setTipo(CAPA_PASTO);
-                }
-                mapa->getTData(x,y,0)->setTipo(CAPA_ARENA);
+void cargarMapa(Tablero<Celda*>* tablero){
+    for(int x = 0; x < tablero->getTamanioX(); x++){
+        for(int y = 0; y < tablero->getTamanioY(); y++){
+            for(int z = 0; z < 4; z++){
+                bool rango = (x < tablero->getTamanioX()/1.5) ? true : false;
+                tablero->getTData(x, y, z)->setTipo((rango && z != 3)? CAPA_TIERRA : (rango && z==3)? CAPA_PASTO : CAPA_AGUA);
             }
         }
     }
+    tablero->getTData(tablero->getTamanioX()-1,tablero->getTamanioY()-1,2)->getFicha()->setTipo(SUBMARINO);
+    tablero->getTData(tablero->getTamanioX()-1,tablero->getTamanioY()-1,2)->getFicha()->setJugadorOwner(5);
+    tablero->getTData(tablero->getTamanioX()-1,tablero->getTamanioY()-1,2)->getFicha()->setNumFicha(1);
+    tablero->getTData(tablero->getTamanioX()-1,tablero->getTamanioY()-1,2)->setTipo(CAPA_ARENA);
+
+    tablero->getTData(tablero->getTamanioX()-2,tablero->getTamanioY()-2,2)->getFicha()->setTipo(MINA_FICHA);
+    tablero->getTData(tablero->getTamanioX()-2,tablero->getTamanioY()-2,2)->getFicha()->setNumFicha(2);
+    tablero->getTData(tablero->getTamanioX()-2,tablero->getTamanioY()-2,2)->setTipo(CAPA_MINA);
 }
 
 // Pide un tipo de ficha
 string pedirOpcion() {
     string opcion;
-    cout << "Escriba el tipo de ficha que desea seleccionar:\n-avion\n-soldado\n-tanque\n-barco\n-submarino\n";
+    cout << "Elegir: Avion Soldado Tanque Barco [Submarino]" << endl;
     cin >> opcion;
     return opcion;
 }
@@ -69,7 +53,7 @@ string pedirOpcion() {
 // Pide el número de la ficha para distinguirlas del mismo tipo en el resto
 int pedirEnumeracion() {
     int opcion;
-    cout << "Ahora por favor elija el número de ficha que quiere buscar, esto para diferenciarla de las otras.\n-";
+    cout << "Ingresar numero (1)" << endl;
     cin >> opcion;
     return opcion;
 }
@@ -107,33 +91,15 @@ Niveles buscarNiveles(Tablero<Celda*>* tablero) {
 }
 
 int nivelMinimoDeBusqueda(string ficha,Niveles nivel) {
-    int nivelMinimo = 0;
-    if (ficha == "soldado" || ficha == "tanque"){
-        nivelMinimo = nivel.suelo;
-    } else if (ficha == "barco"){
-        nivelMinimo = nivel.mar;
-    } else if (ficha == "avion"){
-        nivelMinimo = nivel.mar;
-    } // Submarino no aparece porque el agua llega hasta abajo del mapa
-    return nivelMinimo;
+    return (ficha == "soldado" || ficha == "tanque") ? nivel.suelo : (ficha == "barco" || ficha == "avion") ? nivel.mar : 0;
 }
 
 int nivelMaximoDeBusqueda(string ficha, Niveles nivel, int nivelMaxTablero) {
-    int nivelMaximo = nivelMaxTablero - 1;
-    if (ficha == "soldado" || ficha == "tanque"){
-        nivelMaximo = nivel.suelo;
-    } else if (ficha == "barco"){
-        nivelMaximo = nivel.mar;
-    } else if (ficha == "avion"){
-        nivelMaximo = nivelMaxTablero - 1;
-    } else if (ficha ==  "submarino"){
-        nivelMaximo = nivel.mar;
-    }
-    return nivelMaximo;
+    return (ficha == "soldado" || ficha == "tanque") ? nivel.suelo : (ficha == "barco" || ficha == "avion" || ficha == "submarino") ? nivel.mar : nivelMaxTablero - 1;
 }
 
 // Realiza el barrido del mapa según los valores de 'minimo', 'maximo' más que los otros datos que reciben la función.
-void procesarBusqueda(coordenadas* coorFicha, Tablero<Celda*>* tablero, string* ficha, int numeroFicha){
+void procesarBusqueda(Coordenada* coorFicha, Tablero<Celda*>* tablero, string* ficha, int numeroFicha){
     int minimo, maximo;
     minimo = 0, maximo = tablero->getTamanioZ();
     Niveles nivel;
@@ -147,26 +113,14 @@ void procesarBusqueda(coordenadas* coorFicha, Tablero<Celda*>* tablero, string* 
                     x = tablero->getTamanioX();
                     y = tablero->getTamanioY();
                     z = tablero->getTamanioZ();
-void cargarPlaya(Mapa* batallaDigital){
-    for(int i = 0; i < batallaDigital->getTamanioX(); i++){
-        for(int j = 0; j < batallaDigital->getTamanioY(); j++){
-            for(int k = 0; k < batallaDigital->getTamanioZ(); k++){
-                if(i < k+4 ){
-                    batallaDigital->getTData(i, j, k)->setTipo(CAPA_ARENA);
-                } else if (i >= k+4){
-                    batallaDigital->getTData(i, j, k)->setTipo(CAPA_AGUA);
-                }
-
-                if(k > batallaDigital->getTamanioX() / 2){
-                    batallaDigital->getTData(i, j, k)->setTipo(CAPA_AIRE);
                 }
             }
         }
     }
 }
 
-// Busca las coordenadas de la celda en donde está parada la ficha
-void buscarCoordenadasFicha(coordenadas* coorFicha, Tablero<Celda*>* tablero, string* ficha){
+// Busca las Coordenada de la celda en donde está parada la ficha
+void buscarCoordenadasFicha(Coordenada* coorFicha, Tablero<Celda*>* tablero, string* ficha){
     int nivelAire = 0, nivelMaximo = 0, enumeracionFicha = 0;
     string salir = "";
     do{ 
@@ -188,35 +142,16 @@ void pedirAccion(char* movimiento){
 }
 
 // Revisa que las celdas cercanas sean de un tipo coherente a donde se va a mover la ficha (celda)
-bool escanearCeldasPerifericasCompatibles(Tablero<Celda*>* tablero, coordenadas coordFicha, string ficha, char movimiento, Desplazar desplazarPor) {
+bool escanearCeldasPerifericasCompatibles(Tablero<Celda*>* tablero, Coordenada coordFicha, string ficha, char movimiento, Coordenada desplazarPor) {
     bool permitido = false;
-    if (tablero->getTData(coordFicha.x + desplazarPor.x,coordFicha.y + desplazarPor.y,coordFicha.z + desplazarPor.z)->getEstado() == true){
-        if (ficha == "soldado" || ficha == "tanque"){
-            permitido = true;
-        }
-        else if (ficha == "barco"){
-            if (tablero->getTData(coordFicha.x + desplazarPor.x,coordFicha.y + desplazarPor.y,coordFicha.z - 1)->getTipo() == CAPA_AGUA){
-                permitido = true;
-            }
-        }
-        else if (ficha == "avion" || ficha == "submarino"){
-            if (ficha == "avion"){  
-                if (tablero->getTData(coordFicha.x + desplazarPor.x,coordFicha.y + desplazarPor.y,coordFicha.z + desplazarPor.z)->getTipo() == CAPA_AIRE){
-                    permitido = true;
-                }
-            }
-            else if (ficha == "submarino"){
-                if (tablero->getTData(coordFicha.x + desplazarPor.x,coordFicha.y + desplazarPor.y,coordFicha.z + desplazarPor.z)->getTipo() == CAPA_AGUA){
-                    permitido = true;
-                }
-            }
-        }
-    }
-    return permitido;
+    bool estado = tablero->getTData(coordFicha.x + desplazarPor.x,coordFicha.y + desplazarPor.y,coordFicha.z + desplazarPor.z)->getEstado();
+    Capa tipo = tablero->getTData(coordFicha.x + desplazarPor.x,coordFicha.y + desplazarPor.y,coordFicha.z + desplazarPor.z)->getTipo();
+    Capa tipoSiguiente = tablero->getTData(coordFicha.x + desplazarPor.x + desplazarPor.x,coordFicha.y + desplazarPor.y + desplazarPor.y,coordFicha.z + desplazarPor.z + desplazarPor.z)->getTipo();
+    return ((ficha == "soldado" || ficha == "tanque") || (ficha == "barco" && tipoSiguiente == CAPA_AGUA) || (ficha == "avion" && tipo == CAPA_AIRE) || (ficha == "submarino" && tipo == CAPA_AGUA) && estado) ? true : false;
 }
 
 // Segun el movimiento que le ingrese el usuario se modifican los valores del estuct 'desplazar'
-void ajustarDesplazamientosPorMovimiento(Desplazar* desplazar, string ficha, char movimiento) {
+void ajustarDesplazamientosPorMovimiento(Coordenada* desplazar, string ficha, char movimiento) {
     if (movimiento == 'w' || movimiento == 's'){
         desplazar->x = (movimiento == 'w') ? 1 : -1;
     }else if (movimiento == 'a' || movimiento == 'd'){
@@ -226,13 +161,13 @@ void ajustarDesplazamientosPorMovimiento(Desplazar* desplazar, string ficha, cha
     }
 }
 
-void actualizarCoordenadasDeFicha(coordenadas* coordenadaFichaActual,Desplazar desplazar) {
+void actualizarCoordenadasDeFicha(Coordenada* coordenadaFichaActual,Coordenada desplazar) {
     coordenadaFichaActual->x += desplazar.x;
     coordenadaFichaActual->y += desplazar.y;
     coordenadaFichaActual->z += desplazar.z;
 }
 
-void procesarIntercambioCeldas(Tablero<Celda*>* tablero, coordenadas coordenadaFichaActual, Desplazar desplazar, string ficha) {
+void procesarIntercambioCeldas(Tablero<Celda*>* tablero, Coordenada coordenadaFichaActual, Coordenada desplazar, string ficha) {
     tablero->getTData((coordenadaFichaActual.x + desplazar.x),(coordenadaFichaActual.y + desplazar.y),(coordenadaFichaActual.z + desplazar.z))->setTipo(tablero->getTData((coordenadaFichaActual.x),(coordenadaFichaActual.y),(coordenadaFichaActual.z))->getTipo());
     *tablero->getTData((coordenadaFichaActual.x + desplazar.x),(coordenadaFichaActual.y + desplazar.y),(coordenadaFichaActual.z + desplazar.z))->getFicha() = *tablero->getTData((coordenadaFichaActual.x),(coordenadaFichaActual.y),(coordenadaFichaActual.z))->getFicha();
     tablero->getTData((coordenadaFichaActual.x + desplazar.x),(coordenadaFichaActual.y + desplazar.y),(coordenadaFichaActual.z + desplazar.z))->getFicha()->setTipo(VACIO);
@@ -244,33 +179,59 @@ void procesarIntercambioCeldas(Tablero<Celda*>* tablero, coordenadas coordenadaF
 }
 
 // Simula el movimiento de las fichas para evaluar si se sale del mapa o no.
-bool revisarLimitesDelMapa(Tablero<Celda*>* tablero, coordenadas coordenadaFichaActual, Desplazar desplazar) {
-    bool rangoValido = false;
-    Coordenada desplazamientoHipotetico = {coordenadaFichaActual.x + desplazar.x,coordenadaFichaActual.y + desplazar.y,coordenadaFichaActual.z + desplazar.z};
-    int topeMaximoX = tablero->getTamanioX(), topeMaximoY = tablero->getTamanioY(), topeMaximoZ = tablero->getTamanioZ();
+bool revisarLimitesDelMapa(Tablero<Celda*>* tablero, Coordenada coordenadaFichaActual, Coordenada desplazar) {
+    return (coordenadaFichaActual.x + desplazar.x >= 0 && coordenadaFichaActual.x + desplazar.x < tablero->getTamanioX() 
+        && coordenadaFichaActual.y + desplazar.y >= 0 && coordenadaFichaActual.y + desplazar.y < tablero->getTamanioY() 
+        && coordenadaFichaActual.z + desplazar.z >= 0 && coordenadaFichaActual.z + desplazar.z < tablero->getTamanioZ()) ? true : false;
+}
 
-    if (desplazamientoHipotetico.x >= 0 && desplazamientoHipotetico.x < topeMaximoX
-        && desplazamientoHipotetico.y >= 0 && desplazamientoHipotetico.y < topeMaximoY
-        && desplazamientoHipotetico.z >= 0 && desplazamientoHipotetico.z < topeMaximoZ){
-        rangoValido = true;
+//Valida el cambio de celda dependiendo del contenido
+void validarCambioDeCelda(Tablero<Celda*>* tablero,  Coordenada* coordenadaFichaActual, Coordenada desplazar, string ficha){
+    
+    string resultado = validarContenidoFicha(tablero->getTData(coordenadaFichaActual->x,coordenadaFichaActual->y, coordenadaFichaActual->z)
+    ,tablero->getTData(coordenadaFichaActual->x + desplazar.x,coordenadaFichaActual->y + desplazar.y, coordenadaFichaActual->z + desplazar.z));
+    cout << "entro validarCambioDeCelda"<<endl;
+    if(resultado == "inactiva"){
+        errorEnCeldaElegida(resultado);
+    }else if(resultado == "vacia"){
+        cout << "entro vacia"<<endl;
+        procesarIntercambioCeldas(tablero,(*coordenadaFichaActual),desplazar,ficha);
+        actualizarCoordenadasDeFicha(coordenadaFichaActual,desplazar);
+
+    }else if(resultado == "destruir"){
+        cout << "entro destruir"<<endl;
+        tablero->getTData(coordenadaFichaActual->x,coordenadaFichaActual->y, coordenadaFichaActual->z)->getFicha()->setTipo(VACIO);
+        tablero->getTData(coordenadaFichaActual->x,coordenadaFichaActual->y, coordenadaFichaActual->z)->getFicha()->setJugadorOwner(-1);
+        tablero->getTData(coordenadaFichaActual->x + desplazar.x,coordenadaFichaActual->y + desplazar.y, coordenadaFichaActual->z + desplazar.z)->setEstado(false);
+    
+    }else if(resultado == "fichaJugador"){
+        cout << "ficha jugador"<<endl;
+        errorEnCeldaElegida(resultado);
+    }else{
+        tablero->getTData(coordenadaFichaActual->x,coordenadaFichaActual->y, coordenadaFichaActual->z)->getFicha()->setTipo(VACIO);
+        tablero->getTData(coordenadaFichaActual->x,coordenadaFichaActual->y, coordenadaFichaActual->z)->getFicha()->setJugadorOwner(-1);
+
+        tablero->getTData(coordenadaFichaActual->x + desplazar.x,coordenadaFichaActual->y + desplazar.y, coordenadaFichaActual->z + desplazar.z)->getFicha()->setTipo(VACIO);
+        tablero->getTData(coordenadaFichaActual->x + desplazar.x,coordenadaFichaActual->y + desplazar.y, coordenadaFichaActual->z + desplazar.z)->getFicha()->setJugadorOwner(-1);
+            
+        //Inactivar Celda
+        tablero->getTData(coordenadaFichaActual->x + desplazar.x,coordenadaFichaActual->y + desplazar.y, coordenadaFichaActual->z + desplazar.z)->setEstado(false);
     }
-    return rangoValido;
 }
 
 // Procesa los cambios de las celdas
-void procesarMovimiento(char movimiento, Tablero<Celda*>* tablero, coordenadas* coordenadaFichaActual, string ficha){
+void procesarMovimiento(char movimiento, Tablero<Celda*>* tablero, Coordenada* coordenadaFichaActual, string ficha){
     Celda celdaAuxiliar;
-    Desplazar desplazar = {0,0,0};
+    Coordenada desplazar = {0,0,0};
     ajustarDesplazamientosPorMovimiento(&desplazar,ficha,movimiento);
     if (revisarLimitesDelMapa(tablero,(*coordenadaFichaActual),desplazar)){
         if (escanearCeldasPerifericasCompatibles(tablero,(*coordenadaFichaActual),ficha,movimiento,desplazar)){
-            procesarIntercambioCeldas(tablero,(*coordenadaFichaActual),desplazar,ficha);
-            actualizarCoordenadasDeFicha(coordenadaFichaActual,desplazar);
+            validarCambioDeCelda(tablero,coordenadaFichaActual,desplazar,ficha);
         }
     }
 }
 
-void colocarMina(Tablero<Celda*>* tablero, coordenadas coordenadaFichaActual, string ficha, char movimiento) {
+void colocarMina(Tablero<Celda*>* tablero, Coordenada coordenadaFichaActual, string ficha, char movimiento) {
     if (coordenadaFichaActual.z - 1 >= 0){
         if (ficha == "soldado" || ficha == "tanque"){
             tablero->getTData(coordenadaFichaActual.x,coordenadaFichaActual.y,coordenadaFichaActual.z - 1)->getMina()->setTipoMina(MINA_TERRESTRE);
@@ -288,42 +249,42 @@ void procesarCambiosMapa(Tablero<Celda*>* tablero, int size) {
     Coordenada imgSize = {size*100, size*70};
     BMP imagen;
     imagen.SetSize(imgSize.x,imgSize.y);
-    imprimirBMP(imgSize,(&imagen),tablero, getMap());
+    imprimirAngulo(imgSize,(&imagen),tablero, getMap());
     imagen.WriteToFile("Partida.bmp");
 }
 
 // Cambia la casilla en la que se encuentra la ficha por la siguiente y viceversa, siempre y cuando se cumplan ciertas restricciones.
-void moverFichas(Tablero<Celda*>* tablero, int size) {
+void usarFicha(Tablero<Celda*>* tablero, Coordenada* coordenadaFichaActual, string ficha, char* movimiento, int size) {
+    // Después declarar movimiento acá. Por ahora no porque se usa para salir del while y limpiar la memoria.
+    pedirAccion(movimiento);
+    if ((*movimiento) == 'w' || (*movimiento) == 'a' || (*movimiento) == 's' || (*movimiento) == 'd' || (*movimiento) == 'e' || (*movimiento) == 'x'){
+        procesarMovimiento((*movimiento),tablero,coordenadaFichaActual,ficha);
+    }else if (*movimiento == 'q'){
+        colocarMina(tablero,(*coordenadaFichaActual),ficha,(*movimiento));
+    }
+    procesarCambiosMapa(tablero,size);
+}
+
+int main(){
     string cortar = "",ficha = "";
-    coordenadas coordenadaFichaActual = {-1,-1,-1};
     bool seguir = false;
+    int size = 20;
     char movimiento;
+    Coordenada coordenadaFichaActual = {-1,-1,-1};
+    Tablero<Celda*>* tablero = new Tablero<Celda*>(size, size, size);
+    cargarMapa(tablero);
+    procesarCambiosMapa(tablero,size);
     while (!seguir){
         buscarCoordenadasFicha((&coordenadaFichaActual),tablero,(&ficha));
         if ((coordenadaFichaActual.x != -1) && (coordenadaFichaActual.y != -1) && (coordenadaFichaActual.z != -1)){
             while (movimiento != 't'){
-                pedirAccion(&movimiento);
-                if ((movimiento) == 'w' || (movimiento) == 'a' || (movimiento) == 's' || (movimiento) == 'd' || (movimiento) == 'e' || (movimiento) == 'x'){
-                    procesarMovimiento((movimiento),tablero,&coordenadaFichaActual,ficha);
-                }else if (movimiento == 'q'){
-                    colocarMina(tablero,(coordenadaFichaActual),ficha,(movimiento));
-                }
-                procesarCambiosMapa(tablero,size);
+                usarFicha(tablero,(&coordenadaFichaActual),ficha,(&movimiento),size);
             }
         }
-        cout << "\nSeguir?(Puede mandar la letra 'c' para salir)\n-";
+        cout << "\nSeguir?('c' para salir)\n-";
         cin >> cortar;
         seguir = (cortar == "c") ? true : false;
     }
-}
-
-int main(){
-    int size = 8;
-    Tablero<Celda*>* tablero = new Tablero<Celda*>(size, size, size);
-    dibujarEsfera(tablero,size);
-    procesarCambiosMapa(tablero,size);
-    moverFichas(tablero,size);
-    procesarCambiosMapa(tablero,size);
     delete tablero;
     return 0;
 }
