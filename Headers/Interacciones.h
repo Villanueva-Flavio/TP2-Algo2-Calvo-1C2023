@@ -29,4 +29,11 @@ bool esFichaDelJugadorActual(Celda* celdaJugador, Celda* celdaElegida);
 //Post: devuelve una alarte por consola al ussuario para que solucione el error
 void errorEnCeldaElegida(std::string resultado);
 
+//Pre: recibe las celdas en donde se encuentra la fu}icha del jugador y la celda ea d donde deseaba moverse
+//Post: elimina la ficha del jugador e inactiva la celda en donde se produjo el encuentro
+void destruirFicha(Ficha* ficha);
+
+//Pre: recibe como parametro la celda que se desea inactivar
+//Post: inactiva la celda pasada por una cantidad definida de partidas
+void inactivarCelda(Celda* celda);
 #endif

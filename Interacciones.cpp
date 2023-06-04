@@ -4,10 +4,10 @@
 using namespace std;
 
 string validarContenidoFicha(Celda* celdaJugador, Celda* celdaElegida){
-    
     // soldadoJugadorContrario - armamentoJugadorContrario - inactiva- vacia - fichaJugador - destruir
     string resultado= "inactiva"; 
-    if(celdaElegida->getEstado()){
+
+    if(celdaElegida->getEstado()!=false){
 
         TipoContenido fichaDeJugador = celdaJugador->getFicha()->getTipo();
 
@@ -58,6 +58,7 @@ bool esArmamento(TipoContenido contenidoFicha){
 
 bool esFichaDelJugadorActual(Celda* celdaJugador, Celda* celdaElegida){
     bool resultado = false;
+
     if(celdaJugador->getFicha()->getJugadorOwner() == celdaElegida->getFicha()->getJugadorOwner() ){
         resultado = true;
     }
@@ -65,7 +66,16 @@ bool esFichaDelJugadorActual(Celda* celdaJugador, Celda* celdaElegida){
 }
 
 void errorEnCeldaElegida(string resultado){
+    cout << "La celda seleccionada se encuentra ocupada por otra de sus fichas elija otra celda"<< endl;
+}
 
-    string mensaje = resultado == "inactiva" ? "ocupada por otra de sus fichas" : resultado;
-    cout << "La celda seleccionada se encuentra " << resultado << " elija otra celda"<< endl;
+void destruirFicha(Ficha* ficha){
+    ficha->setTipo(VACIO);
+    ficha->setJugadorOwner(-1);
+    ficha->setNumFicha(-1);
+
+}
+
+void inactivarCelda(Celda* celda){
+    celda->setEstado(false);
 }

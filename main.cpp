@@ -33,7 +33,8 @@ void cargarMapa(Tablero<Celda*>* tablero){
 
     tablero->getTData(tablero->getTamanioX()-2,tablero->getTamanioY()-2,2)->getFicha()->setTipo(MINA_FICHA);
     tablero->getTData(tablero->getTamanioX()-2,tablero->getTamanioY()-2,2)->getFicha()->setNumFicha(2);
-    tablero->getTData(tablero->getTamanioX()-2,tablero->getTamanioY()-2,2)->setTipo(CAPA_MINA);
+    tablero->getTData(tablero->getTamanioX()-2,tablero->getTamanioY()-2,2)->setEstado(false);
+    tablero->getTData(tablero->getTamanioX()-2,tablero->getTamanioY()-2,2)->setTipo(CAPA_ARENA);
 }
 
 // Pide un tipo de ficha
@@ -153,29 +154,30 @@ void pedirAccion(char* movimiento){
     cin >> *movimiento;
 }
 
+// Devuelve un string que describe la naturaleza de la celda
+string naturalezaDeCelda(Capa tipoCelda){
+    string contenido ="terrestre";
+    if(tipoCelda == CAPA_AIRE){
+        contenido ="aerea";
+    }else if(tipoCelda == CAPA_AGUA){ //eliminar arema post testeo
+        contenido ="maritima";
+    }else if (tipoCelda == CAPA_BORDE){
+        contenido ="borde";
+    }
+//Capa {CAPA_ARENA, CAPA_AGUA, CAPA_TIERRA, CAPA_PASTO, CAPA_BORDE, CAPA_FUEGO, CAPA_AIRE};
+    return contenido;
+}
 // Revisa que las celdas cercanas sean de un tipo coherente a donde se va a mover la ficha (celda)
-bool escanearCeldasPerifericasCompatibles(Tablero<Celda*>* tablero, coordenadas coordFicha, string ficha, char movimiento, Desplazar desplazarPor) {
+bool escanearCeldasPerifericasCompatibles(Tablero<Celda*>* tablero, coordenadas coordFicha, Desplazar desplazar) {
     bool permitido = false;
-    if (tablero->getTData(coordFicha.x + desplazarPor.x,coordFicha.y + desplazarPor.y,coordFicha.z + desplazarPor.z)->getEstado() == true){
-        if (ficha == "soldado" || ficha == "tanque"){
+    Celda*  celdaElegida = tablero->getTData(coordFicha.x + desplazar.x,coordFicha.y + desplazar.y,coordFicha.z + desplazar.z);
+
+    if (celdaElegida->getEstado() == true){
+        Capa celdaSeleccionada = celdaElegida->getTipo();
+        Capa celdaActual = tablero->getTData(coordFicha.x,coordFicha.y,coordFicha.z)->getTipo();
+        
+        if (naturalezaDeCelda(celdaSeleccionada) == naturalezaDeCelda(celdaActual)){
             permitido = true;
-        }
-        else if (ficha == "barco"){
-            if (tablero->getTData(coordFicha.x + desplazarPor.x,coordFicha.y + desplazarPor.y,coordFicha.z - 1)->getTipo() == CAPA_AGUA){
-                permitido = true;
-            }
-        }
-        else if (ficha == "avion" || ficha == "submarino"){
-            if (ficha == "avion"){  
-                if (tablero->getTData(coordFicha.x + desplazarPor.x,coordFicha.y + desplazarPor.y,coordFicha.z + desplazarPor.z)->getTipo() == CAPA_AIRE){
-                    permitido = true;
-                }
-            }
-            else if (ficha == "submarino"){
-                if (tablero->getTData(coordFicha.x + desplazarPor.x,coordFicha.y + desplazarPor.y,coordFicha.z + desplazarPor.z)->getTipo() == CAPA_AGUA){
-                    permitido = true;
-                }
-            }
         }
     }
     return permitido;
@@ -218,35 +220,24 @@ bool revisarLimitesDelMapa(Tablero<Celda*>* tablero, coordenadas coordenadaFicha
 
 //Valida el cambio de celda dependiendo del contenido
 void validarCambioDeCelda(Tablero<Celda*>* tablero,  coordenadas* coordenadaFichaActual, Desplazar desplazar, string ficha){
+    Celda* celdaActual =tablero->getTData(coordenadaFichaActual->x,coordenadaFichaActual->y, coordenadaFichaActual->z);
+    Celda* celdaSeleccionada =tablero->getTData(coordenadaFichaActual->x + desplazar.x,coordenadaFichaActual->y + desplazar.y, coordenadaFichaActual->z + desplazar.z);
     
-    string resultado = validarContenidoFicha(tablero->getTData(coordenadaFichaActual->x,coordenadaFichaActual->y, coordenadaFichaActual->z)
-    ,tablero->getTData(coordenadaFichaActual->x + desplazar.x,coordenadaFichaActual->y + desplazar.y, coordenadaFichaActual->z + desplazar.z));
-    cout << "entro validarCambioDeCelda"<<endl;
-    if(resultado == "inactiva"){
-        errorEnCeldaElegida(resultado);
-    }else if(resultado == "vacia"){
-        cout << "entro vacia"<<endl;
+    string resultado = validarContenidoFicha(celdaActual, celdaSeleccionada);
+    
+    if(resultado == "vacia"){
         procesarIntercambioCeldas(tablero,(*coordenadaFichaActual),desplazar,ficha);
         actualizarCoordenadasDeFicha(coordenadaFichaActual,desplazar);
 
     }else if(resultado == "destruir"){
-        cout << "entro destruir"<<endl;
-        tablero->getTData(coordenadaFichaActual->x,coordenadaFichaActual->y, coordenadaFichaActual->z)->getFicha()->setTipo(VACIO);
-        tablero->getTData(coordenadaFichaActual->x,coordenadaFichaActual->y, coordenadaFichaActual->z)->getFicha()->setJugadorOwner(-1);
-        tablero->getTData(coordenadaFichaActual->x + desplazar.x,coordenadaFichaActual->y + desplazar.y, coordenadaFichaActual->z + desplazar.z)->setEstado(false);
-    
+        destruirFicha(celdaActual->getFicha());
+        inactivarCelda(celdaSeleccionada);
     }else if(resultado == "fichaJugador"){
-        cout << "ficha jugador"<<endl;
         errorEnCeldaElegida(resultado);
     }else{
-        tablero->getTData(coordenadaFichaActual->x,coordenadaFichaActual->y, coordenadaFichaActual->z)->getFicha()->setTipo(VACIO);
-        tablero->getTData(coordenadaFichaActual->x,coordenadaFichaActual->y, coordenadaFichaActual->z)->getFicha()->setJugadorOwner(-1);
-
-        tablero->getTData(coordenadaFichaActual->x + desplazar.x,coordenadaFichaActual->y + desplazar.y, coordenadaFichaActual->z + desplazar.z)->getFicha()->setTipo(VACIO);
-        tablero->getTData(coordenadaFichaActual->x + desplazar.x,coordenadaFichaActual->y + desplazar.y, coordenadaFichaActual->z + desplazar.z)->getFicha()->setJugadorOwner(-1);
-            
-        //Inactivar Celda
-        tablero->getTData(coordenadaFichaActual->x + desplazar.x,coordenadaFichaActual->y + desplazar.y, coordenadaFichaActual->z + desplazar.z)->setEstado(false);
+        destruirFicha(celdaActual->getFicha());
+        destruirFicha(celdaSeleccionada->getFicha()); 
+        inactivarCelda(celdaSeleccionada);
     }
 }
 
@@ -256,7 +247,7 @@ void procesarMovimiento(char movimiento, Tablero<Celda*>* tablero, coordenadas* 
     Desplazar desplazar = {0,0,0};
     ajustarDesplazamientosPorMovimiento(&desplazar,ficha,movimiento);
     if (revisarLimitesDelMapa(tablero,(*coordenadaFichaActual),desplazar)){
-        if (escanearCeldasPerifericasCompatibles(tablero,(*coordenadaFichaActual),ficha,movimiento,desplazar)){
+        if (escanearCeldasPerifericasCompatibles(tablero,(*coordenadaFichaActual),desplazar)){
             validarCambioDeCelda(tablero,coordenadaFichaActual,desplazar,ficha);
         }
     }
