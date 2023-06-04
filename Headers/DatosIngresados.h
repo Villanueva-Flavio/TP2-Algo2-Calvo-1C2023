@@ -3,9 +3,10 @@
 
 #include <string>
 
-// muestra por pantalla un mensaje el nombre del juego y pide la cantidad de jugadores
+// Muestra por pantalla un mensaje el nombre del juego y pide la cantidad de jugadores
 void solicitarJugadores(int* cantJugadores);
 
+//  Para cada jugador, pide al usuario que ingrese el nombre y los valores RGB para el color del jugador
 void pedirDatosIniciales(int cantJugadores, std::string tipoDemapa, std::string* nombreJugadores, int* r, int* g , int* b);
 
 //void realizarMovimiento();
