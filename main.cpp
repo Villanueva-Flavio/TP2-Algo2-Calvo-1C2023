@@ -275,7 +275,6 @@ int main(){
     int r = 0, g = 0, b = 0;
     string tipoDeMapa = "";
 
-
     solicitarJugadores(&cantJugadores);
 
     string* nombreJugadores = new string[cantJugadores];
@@ -284,6 +283,11 @@ int main(){
     int* valoresB = new int[cantJugadores];
 
     pedirDatosIniciales(cantJugadores, tipoDeMapa, nombreJugadores, valoresR, valoresG ,valoresB);
+
+    for(int i=0; i<cantJugadores; i++){
+        cout << "\nnombre jugador " << i+1 << ": " << nombreJugadores[i] << "\n";
+        cout << "colores: " << valoresR[i] << valoresG[i] << valoresB[i];
+    }
 
     //cargarJuego(listaJugadores);
     delete[] valoresR;

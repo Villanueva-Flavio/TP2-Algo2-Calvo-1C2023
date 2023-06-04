@@ -12,5 +12,5 @@ void pedirDatosIniciales(int cantJugadores, std::string tipoDemapa, std::string*
 
 //void colocarMina();
 
-#include "../TPPs/Jugador.tpp"
+#include "../TPPs/DatosIngresados.tpp"
 #endif //__DATOS_INGRESADOS_H__
