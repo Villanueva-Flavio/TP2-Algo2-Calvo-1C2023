@@ -133,33 +133,18 @@ RGBApixel getColor(Celda celda, MapaColores colores){
            (celda.getFicha()->getTipo() == SOLDADO)?           colores[celda.getFicha()->getJugadorOwner()] : BLANCO;
 }
 
-void getAux(int lado, Coordenada* aux){
-    aux->x = (lado == ATRAS)? -1: 1;
-    aux->y = (lado == ATRAS)? -1: 1;
-    aux->z = (lado == ATRAS)? -1: 1;
-}
-
-void getPixel(CoordenadaDouble* pixel, Coordenada matrixPos){
-    pixel->x = (double)matrixPos.x; 
-    pixel->y = (double)matrixPos.y; 
-    pixel->z = (double)matrixPos.z;
-}
-
-int matrixPosStarter(int lado, int size){
-    return (lado == IZQUIERDA)? 0 : (lado == DERECHA)? 0 : size-1;
-}
-
-void imprimirBMP(Coordenada imgSize, BMP* image, Mapa* tablero, MapaColores colores){
+void imprimirAngulo(Coordenada imgSize, BMP* image, Mapa* tablero, MapaColores colores){
     RGBApixel color;
-    Coordenada pixelOffset, matrixPos, pixelPos, aux;
+    Coordenada pixelOffset, matrixPos, pixelPos;
     CoordenadaDouble pixel;
     for(int lado = 0; lado < 3; lado ++){
-        getAux(lado, &aux);
-        pixelOffset = getPixelOffset(lado, tablero->getTamanioX());
-        for(matrixPos.x = matrixPosStarter(lado, tablero->getTamanioX()); matrixPos.x < tablero->getTamanioX() && matrixPos.x >= 0; matrixPos.x += aux.x){
-            for(matrixPos.y =  matrixPosStarter(lado, tablero->getTamanioY()); matrixPos.y < tablero->getTamanioY() && matrixPos.y >= 0; matrixPos.y += aux.y){
-                for(matrixPos.z = matrixPosStarter(lado, tablero->getTamanioZ()); matrixPos.z < tablero->getTamanioZ() && matrixPos.z >= 0; matrixPos.z += aux.z){
-                    getPixel(&pixel, matrixPos);
+        pixelOffset = getPixelOffset(lado, tablero->getTamanioX());            
+        for(matrixPos.x = 0; matrixPos.x < tablero->getTamanioX(); matrixPos.x++){
+            for(matrixPos.y = 0; matrixPos.y < tablero->getTamanioY(); matrixPos.y++){
+                for(matrixPos.z = 0; matrixPos.z < tablero->getTamanioZ(); matrixPos.z++){
+                    pixel.x = (double)matrixPos.x; 
+                    pixel.y = (double)matrixPos.y; 
+                    pixel.z = (double)matrixPos.z;
                     aplicarProyeccionIsometrica(&pixel, lado);
                     pixelPos.x = static_cast<int>(pixel.x * 20 + pixelOffset.x); 
                     pixelPos.y = static_cast<int>(pixel.y * 20 + pixelOffset.y);
