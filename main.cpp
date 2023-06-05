@@ -2,11 +2,11 @@
 #include "./Headers/Celda.h"
 #include "./Headers/Renderizador.h"
 #include "./Headers/Interacciones.h"
+#include "./Headers/Structs/Niveles.h"
+#include "./Headers/Structs/Coordenadas.h"
 #include <iostream>
 using namespace std;
 
-struct coordenadas{int x,y,z;};
-struct Niveles{int suelo,mar;};
 struct Desplazar{int x,y,z;};
 
 // Carga el terreno de juego
@@ -228,7 +228,6 @@ void validarCambioDeCelda(Tablero<Celda*>* tablero,  coordenadas* coordenadaFich
     if(resultado == "vacia"){
         procesarIntercambioCeldas(tablero,(*coordenadaFichaActual),desplazar,ficha);
         actualizarCoordenadasDeFicha(coordenadaFichaActual,desplazar);
-
     }else if(resultado == "destruir"){
         destruirFicha(celdaActual->getFicha());
         inactivarCelda(celdaSeleccionada);

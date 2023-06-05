@@ -1,8 +1,9 @@
 #include "Ficha.h"
 #include "Mina.h"
+#include "Enums.h"
+
 #ifndef __CELDA_H__
 #define __CELDA_H__
-enum Capa {CAPA_ARENA, CAPA_AGUA, CAPA_TIERRA, CAPA_PASTO, CAPA_BORDE, CAPA_MINA, CAPA_FUEGO, CAPA_AIRE};
 
 class Celda {
     private:

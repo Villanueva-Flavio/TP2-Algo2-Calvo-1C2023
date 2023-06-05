@@ -1,7 +1,6 @@
+#include "Enums.h"
 #ifndef __FICHA_H__
 #define __FICHA_H__
-
-enum TipoContenido {SOLDADO, TANQUE, BARCO, SUBMARINO, AVION, MINA_FICHA, CARTA, VACIO};
 
 class Ficha{
     private:
