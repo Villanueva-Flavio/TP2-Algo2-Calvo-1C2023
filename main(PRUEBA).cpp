@@ -297,10 +297,33 @@ void moverFichas(Tablero<Celda*>* tablero, int size) {
 int main(){
     int size = 40;
     Tablero<Celda*>* tablero = new Tablero<Celda*>(size, size, size);
+    /* agregado 1
+    Lista<Jugador*>* listaJugadores = new Lista<Jugador*>();        
+    int cantJugadores;
+    int r = 0, g = 0, b = 0;
+    string tipoDeMapa = "";
+    char movimiento;
+    coordenadasMina ubicacionMina;
+
+    solicitarJugadores(&cantJugadores);
+
+    string* nombreJugadores = new string[cantJugadores];
+    int* valoresR = new int[cantJugadores];
+    int* valoresG = new int[cantJugadores];
+    int* valoresB = new int[cantJugadores];
+    */
+
     dibujarEsfera(tablero,size);
     procesarCambiosMapa(tablero,size);
     // moverFichas(tablero,size);
     // procesarCambiosMapa(tablero,size);
+
+    /*  agregado 2
+    delete[] valoresR;
+    delete[] valoresG;
+    delete[] valoresB;
+    delete[] nombreJugadores;
+    */
     delete tablero;
     return 0;
 }
