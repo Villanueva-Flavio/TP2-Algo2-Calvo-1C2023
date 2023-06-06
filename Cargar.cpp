@@ -1,10 +1,11 @@
 #include "Cargar.h"
 
-Cargar::Cargar(Tablero<Celda*>* mundoDelJuego, Lista<Jugador*>* jugadores, std::string tipoDeMundo, std::string** nombres){
+Cargar::Cargar(Tablero<Celda*>* mundo, Lista<Jugador*>* jugadores, std::string tipoDeMundo, std::string** nombres){
     this->jugadores = jugadores;
     this->nombres = nombres;
     this->tipoDeMundo = tipoDeMundo;
-    this->mundoDelJuego = new Tablero<Celda*>(this->numeroDeJugadores*4, this->numeroDeJugadores*4, this->numeroDeJugadores*4);
+    mundo = new Tablero<Celda*>(this->numeroDeJugadores*4, this->numeroDeJugadores*4, this->numeroDeJugadores*4);
+    this->mundoDelJuego = mundo;
     srand(unsigned(time(NULL)));
 }
 

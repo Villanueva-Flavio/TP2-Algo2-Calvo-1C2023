@@ -256,7 +256,7 @@ void moverFichas(Tablero<Celda*>* tablero, int size) {
 
 int main(){
     int size = 40;
-    Tablero<Celda*>* tablero;
+    Tablero<Celda*>* tablero = nullptr;
     // agregado 1
     Lista<Jugador*>* listaJugadores = new Lista<Jugador*>();        
     int cantJugadores;
@@ -272,6 +272,9 @@ int main(){
     int* valoresR = new int[cantJugadores];
     int* valoresG = new int[cantJugadores];
     int* valoresB = new int[cantJugadores];
+
+    Cargar juego(tablero, listaJugadores, tipoDeMapa, &nombreJugadores);
+    juego.cargarJuego();
 
     // procesarCambiosMapa(tablero,size);
     // moverFichas(tablero,size);
