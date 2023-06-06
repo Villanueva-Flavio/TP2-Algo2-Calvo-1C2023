@@ -1,7 +1,12 @@
 #include<iostream>
 #include <string>
 
-using namespace std; //
+using namespace std;
+
+const char MOVIMIENTO_ARRIBA = 'w';
+const char MOVIMIENTO_IZQUIERDA = 'a';
+const char MOVIMIENTO_ABAJO = 's';
+const char MOVIMIENTO_DERECHAA = 'd';
 
 void solicitarJugadores(int* cantJugadores){
     char comenzar = ' ';
@@ -21,8 +26,15 @@ void solicitarJugadores(int* cantJugadores){
 
 }
 
-void pedirDatosIniciales(int cantJugadores, string tipoDemapa, std::string* nombreJugadores, int* valoresR, int* valoresG ,int* valoresB){
-    
+void pedirDatosIniciales(int cantJugadores, string& tipoDemapa, std::string* nombreJugadores, int* valoresR, int* valoresG ,int* valoresB){
+    cout << "\nSeleccione un tipo de mapa. (playa - mar - tierra - desierto - rio - lago)\n(escriba su respuesta): ";
+    cin >> tipoDemapa;
+
+    while(tipoDemapa != "playa" && tipoDemapa != "mar" && tipoDemapa != "tierra" && tipoDemapa != "desierto" && tipoDemapa != "rio" && tipoDemapa != "lago"){
+        cout << "\nNo se ingrese un tipo de mapa valido.\nSeleccione un tipo de mapa. (playa - mar - tierra - desierto - rio - lago)\n(escriba su respuesta): ";
+        cin >> tipoDemapa;
+    }
+
     for (int i = 0; i < cantJugadores; i++) {
         bool nombreValido = false;
         
@@ -31,7 +43,7 @@ void pedirDatosIniciales(int cantJugadores, string tipoDemapa, std::string* nomb
             cin >> nombreJugadores[i];
 
             if (nombreJugadores[i] != "") {
-                (nombreValido) = true;
+                nombreValido = true;
             }
         }
 
@@ -43,6 +55,26 @@ void pedirDatosIniciales(int cantJugadores, string tipoDemapa, std::string* nomb
             cin >> valoresR[i] >> valoresG[i] >> valoresB[i];
         }
     }
+}
 
-    //system("clear");
+void pedirMovimiento(char* movimiento){
+    bool movimientoValido = false;
+
+    cout << "\nIngrese un movimiento (w-a-s-d): ";
+    cin >> *movimiento;
+
+    while(*movimiento != MOVIMIENTO_ARRIBA && *movimiento != MOVIMIENTO_IZQUIERDA && *movimiento != MOVIMIENTO_ABAJO && *movimiento != MOVIMIENTO_DERECHAA) {
+        cout << "No se ingrese un movimiento valido.\nIngrese un movimiento (w-a-s-d): ";
+        cin >> *movimiento;
+    }
+}
+
+void pedirUbicacionMina(coordenadas* ubicacionMina, int size){
+    cout << "\nIngrese las coordenadas x y z: ";
+    cin >> ubicacionMina->x >> ubicacionMina->y >> ubicacionMina->z;
+
+    while(ubicacionMina->x < 0 || ubicacionMina->x > size || ubicacionMina->y < 0 || ubicacionMina->y > size || ubicacionMina->z < 0 || ubicacionMina->z > size){
+        cout << "No se ingresaron 3 valores validos.\nIngrese las coordenadas x y z: ";
+        cin >> ubicacionMina->x >> ubicacionMina->y >> ubicacionMina->z;
+    }
 }
