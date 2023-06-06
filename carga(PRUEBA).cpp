@@ -6,6 +6,8 @@
 #include <cstdlib>
 #include <iostream>
 
+#include "carga(PRUEBA).h"
+
 #define CAPA_MAXIMA 5
 #define CANTIDAD_FICHAS 10
 
@@ -158,17 +160,17 @@ bool hayUnaFichaDelTipo(Mapa* mundoDelJuego, int coordenadaX, int coordenadaY, i
 }
 
 // Carga los soldados en cualquier mapa menos en el del mar
-void cargarSoldados(Mapa* mundoDelJuego, Lista<Jugador*> jugadores, std::string tipoMundo) {
+void cargarSoldados(Mapa* mundoDelJuego, Lista<Jugador*>* jugadores, std::string tipoMundo) {
     // No puede haber soldados en el mapa de mar
     if (tipoMundo != "mar"){
-        jugadores.resetIter(); // Para evitar errores restauro el iterador
+        jugadores->resetIter(); // Para evitar errores restauro el iterador
         // Me guardo previamente las coordenadas de la celda a donde quiero ejectuar el cambio
         int x = rand() % mundoDelJuego->getTamanioX(), y = rand() % mundoDelJuego->getTamanioY(), z = CAPA_MAXIMA; 
         // Este iterador se usa para iterar tantas veces las asignaciones en el mapa como jugadores halla.
-        for(int i = 0; i < jugadores.getSize(); i++){
-            jugadores.iterar(SIGUIENTE);
+        for(int i = 0; i < jugadores->getSize(); i++){
+            jugadores->iterar(SIGUIENTE);
             // Este iterador siver para asignar tantas fichas como en el jugador actual en cantidades se halla.
-            for(int j = 0; j < jugadores.getLData(i)->getSoldados(); j++){
+            for(int j = 0; j < jugadores->getLData(i)->getSoldados(); j++){
                 // Si hay una ficha sin tipado se puede asignar una en la celda revisada, esto para no solapar fichas.
                 if (mundoDelJuego->getTData(x,y,z)->getFicha()->getTipo() == VACIO){
                     mundoDelJuego->getTData(x,y,z)->getFicha()->setJugadorOwner(i);
@@ -192,15 +194,15 @@ int cantidadDistintaDeArmamento(int tipoDeFichaActual){
     return (tipoDeFichaActual == 0) ? 1 : 4 ;
 }
 
-int obtenerCantidadesDeFichas(Lista<Jugador*> jugadores, int tipoDeFichaActual, int jugadorActual) {
-    return (tipoDeFichaActual < 1) ? jugadores.getLData(jugadorActual)->getSoldados() : jugadores.getLData(jugadorActual)->getArmamentos() ;
+int obtenerCantidadesDeFichas(Lista<Jugador*>* jugadores, int tipoDeFichaActual, int jugadorActual) {
+    return (tipoDeFichaActual < 1) ? jugadores->getLData(jugadorActual)->getSoldados() : jugadores->getLData(jugadorActual)->getArmamentos() ;
 }
 
-void cargarFichas(Mapa* mundoDelJuego, Lista<Jugador*> jugadores, std::string tipoMundo) {
-    jugadores.resetIter();
+void cargarFichas(Mapa* mundoDelJuego, Lista<Jugador*>* jugadores, std::string tipoMundo) {
+    jugadores->resetIter();
     int x = 0, y = 0, z = 0;
-    for(int jugadorActual = 0; jugadorActual < jugadores.getSize(); jugadorActual++){
-        jugadores.iterar(SIGUIENTE);
+    for(int jugadorActual = 0; jugadorActual < jugadores->getSize(); jugadorActual++){
+        jugadores->iterar(SIGUIENTE);
         for (int tipoDeFichaActual = 0; tipoDeFichaActual < 5; tipoDeFichaActual++){
             // 0 soldado, 1 tanque, 2 barcos. El resto en cualquier nivel
             x = rand() % mundoDelJuego->getTamanioX(), y = rand() % mundoDelJuego->getTamanioY(), z = (tipoDeFichaActual < 3) ? CAPA_MAXIMA : (rand() % mundoDelJuego->getTamanioZ()) ;
@@ -219,45 +221,45 @@ void cargarFichas(Mapa* mundoDelJuego, Lista<Jugador*> jugadores, std::string ti
 }
 
 // Carga a cada número de jugador de la lista un nombre
-void cargarNombres(Lista<Jugador*> jugadores,std::string* nombres[]) {
-    jugadores.resetIter();
-    for(int i = 0; i < jugadores.getSize(); i++) { // getSize() == cantidadJugadores?
-        (jugadores.getLData(jugadores.getIter()))->setNombre(*nombres[i]);
-        jugadores.iterar(SIGUIENTE);
+void cargarNombres(Lista<Jugador*>* jugadores,std::string* nombres[]) {
+    jugadores->resetIter();
+    for(int i = 0; i < jugadores->getSize(); i++) { // getSize() == cantidadJugadores?
+        (jugadores->getLData(jugadores->getIter()))->setNombre(*nombres[i]);
+        jugadores->iterar(SIGUIENTE);
     }
 }
 
 // Carga cantidades no definidas e iguales a los jugadores de fichas
-void cargarCantidadFichas(Lista<Jugador*> jugadores){
-    jugadores.resetIter();
-    for(int i = 0; i < jugadores.getSize(); i++) { // getSize() == cantidadJugadores?
+void cargarCantidadFichas(Lista<Jugador*>* jugadores){
+    jugadores->resetIter();
+    for(int i = 0; i < jugadores->getSize(); i++) { // getSize() == cantidadJugadores?
         // 2 tipos distintos de armamentos para un total de 8 armamentos por jugador
-        (jugadores.getLData(jugadores.getIter()))->setArmamentos(8);
+        (jugadores->getLData(jugadores->getIter()))->setArmamentos(8);
         // 10 soldados por jugador
-        (jugadores.getLData(jugadores.getIter()))->setSoldados(10);
+        (jugadores->getLData(jugadores->getIter()))->setSoldados(10);
         // 36 minas en total, 2 para cada ficha
-        (jugadores.getLData(jugadores.getIter()))->setMinas(36);
-        jugadores.iterar(SIGUIENTE);
+        (jugadores->getLData(jugadores->getIter()))->setMinas(36);
+        jugadores->iterar(SIGUIENTE);
     }    
 }
 
 // Carga el turno del primer jugador en true
-void cargarTurnos(Lista<Jugador*> jugadores) {
-    jugadores.resetIter();
-    (jugadores.getLData(jugadores.getIter()))->setTurno(true);
+void cargarTurnos(Lista<Jugador*>* jugadores) {
+    jugadores->resetIter();
+    (jugadores->getLData(jugadores->getIter()))->setTurno(true);
 }
 
 // Carga la información de los jugadores
-void cargarJugadores(Lista<Jugador*> jugadores,std::string* nombres[]) {
+void cargarJugadores(Lista<Jugador*>* jugadores,std::string* nombres[]) {
     cargarNombres(jugadores,nombres);
     cargarCantidadFichas(jugadores);
     cargarTurnos(jugadores);
 }
 
 // Pre: Se debe recibir 'mundoDelJuego' que es un puntero a 'Tablero<Celda*>' definido 'Mapa', luego se debe recibir 'jugadores' que es una lista de jugadores previamente agregados, además se debe recibir un array de string dinámico con los nombres de los jugadores, un string del mundo que va a elegir el jugador y el dato de la cantidad de jugadores.
-void cargarJuego(Mapa* mundoDelJuego,Lista<Jugador*> jugadores, int cantidadJugadores, std::string tipoDeMundo, std::string* nombres[]) {
+void cargarJuego(Mapa* mundoDelJuego,Lista<Jugador*>* jugadores, int cantidadJugadores, std::string tipoDeMundo, std::string* nombres[]) {
     srand(unsigned(time(NULL)));
-    mundoDelJuego = new Mapa(jugadores.getSize() * 4, jugadores.getSize() * 4, jugadores.getSize() * 4);
+    mundoDelJuego = new Mapa(jugadores->getSize() * 4, jugadores->getSize() * 4, jugadores->getSize() * 4);
     generarMundo(mundoDelJuego,tipoDeMundo);
     cargarJugadores(jugadores,nombres);
     cargarFichas(mundoDelJuego,jugadores,tipoDeMundo);

@@ -69,7 +69,7 @@ void pedirMovimiento(char* movimiento){
     }
 }
 
-void pedirUbicacionMina(coordenadasMina* ubicacionMina, int size){
+void pedirUbicacionMina(coordenadas* ubicacionMina, int size){
     cout << "\nIngrese las coordenadas x y z: ";
     cin >> ubicacionMina->x >> ubicacionMina->y >> ubicacionMina->z;
 

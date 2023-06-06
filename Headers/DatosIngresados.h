@@ -3,7 +3,7 @@
 
 #include <string>
 
-struct coordenadasMina { int x, y, z; };
+struct coordenadas { int x, y, z; };
 
 // Muestra por pantalla un mensaje el nombre del juego y pide la cantidad de jugadores
 void solicitarJugadores(int* cantJugadores);
@@ -14,7 +14,7 @@ void pedirDatosIniciales(int cantJugadores, std::string& tipoDemapa, std::string
 //
 void pedirMovimiento(char* movimiento);
 
-void pedirUbicacionMina(coordenadasMina* ubicacionMina, int size);
+void pedirUbicacionMina(coordenadas* ubicacionMina, int size);
 
 #include "../TPPs/DatosIngresados.tpp"
 #endif //__DATOS_INGRESADOS_H__
