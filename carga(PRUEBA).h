@@ -1,7 +1,9 @@
 #ifndef __CARGA_H__
 #define __CARGA_H__
-#include "carga(PRUEBA).cpp"
+#include "./Headers/Jugador.h"
+#include "./Headers/Tablero.h"
+#include <cmath>
 
-void cargarJuego(Mapa* mundoDelJuego,Lista<Jugador*> jugadores, int cantidadJugadores, std::string tipoDeMundo, std::string* nombres[]);
-// cargarJuego(mundoDelJuego,jugadores,cantidadJugadores,tipoDeMundo,nombres)
+void cargarJuego(Tablero<Celda*>* mundoDelJuego,Lista<Jugador*>* jugadores, int cantidadJugadores, std::string tipoDeMundo, std::string* nombres[]);
+
 #endif 

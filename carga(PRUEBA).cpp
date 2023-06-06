@@ -1,21 +1,9 @@
-#include "./Headers/Tablero.h"
-#include "./Headers/Celda.h"
-#include "./Headers/Jugador.h"
-#include "./Headers/Renderizador.h"
-#include <ctime>
-#include <cstdlib>
-#include <iostream>
-
 #include "carga(PRUEBA).h"
-
+#include "./Headers/Tablero.h"
 #define CAPA_MAXIMA 5
 #define CANTIDAD_FICHAS 10
 
-struct coordenadas{int x,y,z;};
-struct Niveles{int suelo,mar;};
-struct Desplazar{int x,y,z;};
-
-bool noEsOrillaRio(Mapa* mapa, int x, int y, int z, int size) {
+bool noEsOrillaRio(Tablero<Celda*>* mapa, int x, int y, int z, int size) {
     bool orilla = false;
     double radioAjustado = 1+(0.227*(pow(size/4,1/2.5)));
     double radio = pow(y-mapa->getTamanioY()/2, 2) + pow(z-mapa->getTamanioZ()/2, 2);
@@ -25,7 +13,7 @@ bool noEsOrillaRio(Mapa* mapa, int x, int y, int z, int size) {
     return orilla;
 }
 
-void cargarRio(Mapa* mapa, int size) {
+void cargarRio(Tablero<Celda*>* mapa, int size) {
     for(int x = 0; x < mapa->getTamanioX(); x++) {
         for(int y = 0; y < mapa->getTamanioY(); y++){
             for(int z = 0; z < CAPA_MAXIMA; z++) {
@@ -41,7 +29,7 @@ void cargarRio(Mapa* mapa, int size) {
     }
 }
 
-bool noEsOrillaDelLago(Mapa* mapa, int x, int y, int z, int size) {
+bool noEsOrillaDelLago(Tablero<Celda*>* mapa, int x, int y, int z, int size) {
     bool orilla = false;
     double radioAjustado = 1+(0.285*(pow(size/4,1/2.5)));
     double radio = pow(x-mapa->getTamanioX()/2, 2) + (pow(y-mapa->getTamanioY()/2, 2)) + pow(z-mapa->getTamanioZ()/2, 2);
@@ -51,7 +39,7 @@ bool noEsOrillaDelLago(Mapa* mapa, int x, int y, int z, int size) {
     return orilla;
 }
 
-void cargarLago(Mapa* mapa, int size) {
+void cargarLago(Tablero<Celda*>* mapa, int size) {
     for(int x = 0; x < mapa->getTamanioX(); x++) {
         for(int y = 0; y < mapa->getTamanioY(); y++){
             for(int z = 0; z < CAPA_MAXIMA; z++) {
@@ -67,7 +55,7 @@ void cargarLago(Mapa* mapa, int size) {
     }
 }
 
-void cargarPlaya(Mapa* playa){
+void cargarPlaya(Tablero<Celda*>* playa){
     for(int i = 0; i < playa->getTamanioX(); i++){
         for(int j = 0; j < playa->getTamanioY(); j++){
             for(int k = 0; k < playa->getTamanioZ(); k++){
@@ -85,7 +73,7 @@ void cargarPlaya(Mapa* playa){
     }
 }
 
-void cargarMar(Mapa* mar) {
+void cargarMar(Tablero<Celda*>* mar) {
     for (int i = 0; i < mar->getTamanioX(); i++){
         for (int j = 0; j < mar->getTamanioY(); j++){
             for (int k = 0; k < CAPA_MAXIMA; k++){
@@ -95,7 +83,7 @@ void cargarMar(Mapa* mar) {
     }
 }
 
-void cargarTierra(Mapa* tierraConPasto) {
+void cargarTierra(Tablero<Celda*>* tierraConPasto) {
     for (int i = 0; i < tierraConPasto->getTamanioX(); i++){
         for (int j = 0; j < tierraConPasto->getTamanioY(); j++){
             for (int k = 0; k < CAPA_MAXIMA; k++){
@@ -109,7 +97,7 @@ void cargarTierra(Mapa* tierraConPasto) {
     }
 }
 
-void cargarDesierto(Mapa* desierto) {
+void cargarDesierto(Tablero<Celda*>* desierto) {
     for (int i = 0; i < desierto->getTamanioX(); i++){
         for (int j = 0; j < desierto->getTamanioY(); j++){
             for (int k = 0; k < CAPA_MAXIMA; k++){
@@ -127,7 +115,7 @@ bool verificarOpcion(std::string tipoDeMundo){
     return opcionVerificada;
 }
 
-void generarMundo(Mapa* mundoGenerado, std::string tipoDeMundo) {
+void generarMundo(Tablero<Celda*>* mundoGenerado, std::string tipoDeMundo) {
      do{ // if (verificarOpcion(tipoDeMundo) == false){
                 //tipoDeMundo = pedirTipoDeMundo();
          // }
@@ -152,7 +140,7 @@ void cargarCantidadesDeFicha(Jugador* jugadores[], int cantidadDeJugadores) {
     }
 }
 
-bool hayUnaFichaDelTipo(Mapa* mundoDelJuego, int coordenadaX, int coordenadaY, int coordenadaZ){
+bool hayUnaFichaDelTipo(Tablero<Celda*>* mundoDelJuego, int coordenadaX, int coordenadaY, int coordenadaZ){
     bool hayDelTipo = true;
     hayDelTipo = (mundoDelJuego->getTData(coordenadaX,coordenadaY,coordenadaZ)->getFicha()->getTipo() == VACIO 
         && mundoDelJuego->getTData(coordenadaX,coordenadaY,coordenadaZ)->getFicha()->getTipo()) ? true : false;
@@ -160,7 +148,7 @@ bool hayUnaFichaDelTipo(Mapa* mundoDelJuego, int coordenadaX, int coordenadaY, i
 }
 
 // Carga los soldados en cualquier mapa menos en el del mar
-void cargarSoldados(Mapa* mundoDelJuego, Lista<Jugador*>* jugadores, std::string tipoMundo) {
+void cargarSoldados(Tablero<Celda*>* mundoDelJuego, Lista<Jugador*>* jugadores, std::string tipoMundo) {
     // No puede haber soldados en el mapa de mar
     if (tipoMundo != "mar"){
         jugadores->resetIter(); // Para evitar errores restauro el iterador
@@ -185,7 +173,7 @@ void cargarSoldados(Mapa* mundoDelJuego, Lista<Jugador*>* jugadores, std::string
 }
 
 // Verifica que no se esten superponiendo las fichas una encima de la otra y si es en un terreno válido
-bool verificarSolapamientos(Mapa* mundoDelJuego, int tipoDeFichaActual, std::string tipoMundo, int x, int y, int z) {
+bool verificarSolapamientos(Tablero<Celda*>* mundoDelJuego, int tipoDeFichaActual, std::string tipoMundo, int x, int y, int z) {
     return ((tipoDeFichaActual == 0 && tipoMundo != "mar" && mundoDelJuego->getTData(x,y,z)->getFicha()->getTipo() == VACIO) || (tipoDeFichaActual == 1 && (tipoMundo != "mar" && tipoMundo != "lago") && mundoDelJuego->getTData(x,y,z-1)->getTipo() != CAPA_AGUA && mundoDelJuego->getTData(x,y,z)->getFicha()->getTipo() == VACIO) || (tipoDeFichaActual == 2 && (tipoMundo != "tierra" && tipoMundo != "desierto") && (mundoDelJuego->getTData(x,y,z-1)->getTipo() != CAPA_TIERRA && mundoDelJuego->getTData(x,y,z-1)->getTipo() != CAPA_ARENA && mundoDelJuego->getTData(x,y,z-1)->getTipo() != CAPA_PASTO) && mundoDelJuego->getTData(x,y,z)->getFicha()->getTipo() == VACIO) || (tipoDeFichaActual == 3 && mundoDelJuego->getTData(x,y,z)->getFicha()->getTipo() == VACIO && mundoDelJuego->getTData(x,y,z)->getTipo() == CAPA_AIRE) || (tipoDeFichaActual == 4 && (tipoMundo != "tierra" && tipoMundo != "desierto" && tipoMundo != "lago" && tipoMundo != "rio") && mundoDelJuego->getTData(x,y,z)->getFicha()->getTipo() == VACIO && mundoDelJuego->getTData(x,y,z)->getTipo() == CAPA_AGUA)) ? true : false;
 }
 
@@ -198,7 +186,7 @@ int obtenerCantidadesDeFichas(Lista<Jugador*>* jugadores, int tipoDeFichaActual,
     return (tipoDeFichaActual < 1) ? jugadores->getLData(jugadorActual)->getSoldados() : jugadores->getLData(jugadorActual)->getArmamentos() ;
 }
 
-void cargarFichas(Mapa* mundoDelJuego, Lista<Jugador*>* jugadores, std::string tipoMundo) {
+void cargarFichas(Tablero<Celda*>* mundoDelJuego, Lista<Jugador*>* jugadores, std::string tipoMundo) {
     jugadores->resetIter();
     int x = 0, y = 0, z = 0;
     for(int jugadorActual = 0; jugadorActual < jugadores->getSize(); jugadorActual++){
@@ -257,9 +245,9 @@ void cargarJugadores(Lista<Jugador*>* jugadores,std::string* nombres[]) {
 }
 
 // Pre: Se debe recibir 'mundoDelJuego' que es un puntero a 'Tablero<Celda*>' definido 'Mapa', luego se debe recibir 'jugadores' que es una lista de jugadores previamente agregados, además se debe recibir un array de string dinámico con los nombres de los jugadores, un string del mundo que va a elegir el jugador y el dato de la cantidad de jugadores.
-void cargarJuego(Mapa* mundoDelJuego,Lista<Jugador*>* jugadores, int cantidadJugadores, std::string tipoDeMundo, std::string* nombres[]) {
+void cargarJuego(Tablero<Celda*>* mundoDelJuego,Lista<Jugador*>* jugadores, int cantidadJugadores, std::string tipoDeMundo, std::string* nombres[]) {
     srand(unsigned(time(NULL)));
-    mundoDelJuego = new Mapa(jugadores->getSize() * 4, jugadores->getSize() * 4, jugadores->getSize() * 4);
+    mundoDelJuego = new Tablero<Celda*>(jugadores->getSize() * 4, jugadores->getSize() * 4, jugadores->getSize() * 4);
     generarMundo(mundoDelJuego,tipoDeMundo);
     cargarJugadores(jugadores,nombres);
     cargarFichas(mundoDelJuego,jugadores,tipoDeMundo);
