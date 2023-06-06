@@ -1,8 +1,8 @@
 #ifndef __CARGA_H__
 #define __CARGA_H__
 
-#include "./Headers/Tablero.h"
-#include "./Headers/Jugador.h"
+#include "Tablero.h"
+#include "Jugador.h"
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
@@ -25,9 +25,9 @@ class Cargar{
     public:
 
         // Recibe el mundo del juego, la lista de jugadores, el tipo de mundo y la lista con nombres
-        Cargar(Tablero<Celda*>* mundoDelJuego, Lista<Jugador*>* jugadores, std::string tipoDeMundo, std::string** nombres);
+        Cargar();
 
-        void cargarJuego();
+        void cargarJuego(Tablero<Celda*>* mundoRecibido, Lista<Jugador*>* jugadores, std::string** nombres, std::string nombreMundo, int numeroDeJugadores);
 
     private:
 
