@@ -1,8 +1,10 @@
 #include <iostream>
+#include <string>
 #include "./Headers/Tablero.h"
 #include "./Headers/Renderizador.h"
 #include "./Headers/DatosIngresados.h"
 #include "./Headers/Cargar.h"
+#include "./Headers/Jugador.h"
 
 #define NIVEL_MAXIMO 5
 
@@ -256,8 +258,6 @@ void procesarCambiosMapa(Tablero<Celda*>* tablero, int size) {
 // }
 
 int main(){
-    int size = 40;
-    Tablero<Celda*>* tablero = nullptr;
     // agregado 1
     Lista<Jugador*>* listaJugadores = new Lista<Jugador*>();        
     int cantJugadores;
@@ -267,17 +267,19 @@ int main(){
     // Coordenada ubicacionMina;
 
     solicitarJugadores(&cantJugadores);
+    int mapSize = cantJugadores*4;
 
+    Tablero<Celda*>* tablero = new Tablero<Celda*>(mapSize, mapSize, mapSize);
     std::string* nombreJugadores = new std::string[cantJugadores]; 
-
     int* valoresR = new int[cantJugadores];
     int* valoresG = new int[cantJugadores];
     int* valoresB = new int[cantJugadores];
 
-    Cargar BatallaDigital;
-    BatallaDigital.cargarJuego(tablero,listaJugadores,&nombreJugadores,tipoDeMapa,cantJugadores);
+    pedirDatosIniciales(cantJugadores, tipoDeMapa, nombreJugadores, valoresR, valoresG ,valoresB);
 
-    procesarCambiosMapa(tablero,size);
+    cargarJuego(tablero, listaJugadores, nombreJugadores, tipoDeMapa, cantJugadores);
+
+    procesarCambiosMapa(tablero,mapSize);
     // moverFichas(tablero,size);
     // procesarCambiosMapa(tablero,size);
 
