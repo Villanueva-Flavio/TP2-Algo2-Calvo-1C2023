@@ -2,25 +2,12 @@
 #include "./Headers/Celda.h"
 #include "./Headers/Renderizador.h"
 #include <iostream>
-#include <map>
 using namespace std;
 
 struct Coordenada{int x,y,z;};
 struct Niveles{int suelo,mar;};
 
-typedef map<string, Coordenada> MapaCoordenadas;
 
-MapaCoordenadas getMapaCoordenadas(){
-    MapaCoordenadas mapa;
-    mapa["w"] = {0,0,1};
-    mapa["a"] = {-1,0,0};
-    mapa["s"] = {0,0,-1};
-    mapa["d"] = {1,0,0};
-    mapa["W"] = {0,0,1};
-    mapa["A"] = {-1,0,0};
-    mapa["S"] = {0,0,-1};
-    mapa["D"] = {1,0,0};
-}
 
 // Carga el terreno de juego
 void cargarMapa(Tablero<Celda*>* tablero){
