@@ -203,17 +203,30 @@ int obtenerCantidadesDeFichas(Lista<Jugador*>* jugadores, int tipoDeFichaActual,
 
 void cargarFichas(Tablero<Celda*>* tablero, Lista<Jugador*>* jugadores, std::string tipoMundo) {
     jugadores->resetIter();
+
     int x = 0, y = 0, z = 0;
     for(int jugadorActual = 0; jugadorActual < jugadores->getSize(); jugadorActual++){
+
+        system("clear");
+            std::cout << "\n\n Cargándole fichas del jugador: " << jugadorActual << std::endl; std::cin.ignore();
+
         jugadores->iterar(SIGUIENTE);
         for (int tipoDeFichaActual = 0; tipoDeFichaActual < 5; tipoDeFichaActual++){
+                
+            system("clear");
+                std::cout << "\n\n Cargándole un tipo de ficha del jugador: " << jugadorActual << std::endl; std::cin.ignore();
+
             // 0 soldado, 1 tanque, 2 barcos. El resto en cualquier nivel
             x = rand() % tablero->getTamanioX(), y = rand() % tablero->getTamanioY(), z = (tipoDeFichaActual < 3) ? CAPA_MAXIMA : (rand() % tablero->getTamanioZ()) ;
             for(int j = 0; j < obtenerCantidadesDeFichas(jugadores,tipoDeFichaActual,jugadorActual) / cantidadDistintaDeArmamento(tipoDeFichaActual); j++){ 
+
                 if (verificarSolapamientos(tablero,tipoDeFichaActual,tipoMundo,x,y,z)){
                     tablero->getTData(x,y,z)->getFicha()->setJugadorOwner(jugadorActual);
+
+                    system("clear");
+                        std::cout << "\n\n Se cargó una ficha del jugador: " << jugadorActual << std::endl; std::cin.ignore();
                 } else{
-                    j--;
+                    // j--;
                     x = rand() % tablero->getTamanioX();
                     y = rand() % tablero->getTamanioY();
                     z = (tipoDeFichaActual < 3) ? CAPA_MAXIMA : (rand() % tablero->getTamanioZ());
@@ -229,13 +242,19 @@ void cargarJuego(Tablero<Celda*>* tablero, Lista<Jugador*>* jugadores, std::stri
     generarMundo(tipoMundo, tablero);
     std::cout << "\nGeneracion de mundo completado\n";
 
+    std::cout<<"Hay "<<jugadores->getSize()<<" jugadores.\n";
+
     std::cout << "\nCargando jugadores.\n";
     cargarJugadores(jugadores, nombres, numeroDeJugadores);
     std::cout << "\nCarga de jugadores completado\n";
 
+    std::cout<<"Hay "<<jugadores->getSize()<<" jugadores.\n";
+
     std::cout << "\nCarga de fichas.\n";
     cargarFichas(tablero,jugadores,tipoMundo);
     std::cout << "\nCarga de fichas completado\n";
+
+    std::cout<<"Hay "<<jugadores->getSize()<<" jugadores.\n";
 }
 
 #endif

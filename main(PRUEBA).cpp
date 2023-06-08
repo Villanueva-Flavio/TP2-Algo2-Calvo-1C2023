@@ -275,6 +275,11 @@ int main(){
     int* valoresG = new int[cantJugadores];
     int* valoresB = new int[cantJugadores];
 
+    // append de jugadores
+    for (int i = 0; i < cantJugadores; i++){
+        listaJugadores->add(new Jugador);
+    }
+
     pedirDatosIniciales(cantJugadores, tipoDeMapa, nombreJugadores, valoresR, valoresG ,valoresB);
 
     cargarJuego(tablero, listaJugadores, nombreJugadores, tipoDeMapa, cantJugadores);
@@ -287,8 +292,11 @@ int main(){
     delete[] valoresR;
     delete[] valoresG;
     delete[] valoresB;
+
     delete[] nombreJugadores;
-    
+
     delete tablero;
+    delete listaJugadores;
+
     return 0;
 }
