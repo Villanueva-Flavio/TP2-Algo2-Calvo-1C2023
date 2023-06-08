@@ -80,14 +80,12 @@ void Carta::inactivarCeldas(Tablero<Celda*>* tablero, coordenadas centro){
                     if(tablero->getTData(n,m,l)->getFicha()->getTipo() == VACIO){
                         tablero->getTData(n,m,l)->setEstado(false); 
                         tablero->getTData(n,m,l)->setTurnosInactiva(turnosInactiva);
+                        this->inactivarCelda(tablero,punto,turnosInactiva);
                     }else{
                         int owner = tablero->getTData(n,m,l)->getFicha()->getJugadorOwner();
                         string contenido = this->getStringTipoFicha(tablero->getTData(n,m,l)->getFicha()->getTipo());
                         reporte = reporte + "Posicion: (" + to_string(n) + ","+ to_string(m) + ","+ to_string(l) + ") - Contenido: " + contenido + " - Jugador: " + to_string(owner) + "/";
-                        
-                        tablero->getTData(n,m,l)->setEstado(false);
-                        tablero->getTData(n,m,l)->setTurnosInactiva(turnosInactiva);
-                        tablero->getTData(n,m,l)->getFicha()->setTipo(VACIO);
+                        this->inactivarCelda(tablero,punto,turnosInactiva);
                     }
                 }
             }
@@ -110,7 +108,8 @@ void Carta::bombardearCeldas(Tablero<Celda*>* tablero, coordenadas centro){
             int owner = tablero->getTData(puntoAlAzar.x,puntoAlAzar.y,puntoAlAzar.z)->getFicha()->getJugadorOwner();
             string contenido = this->getStringTipoFicha(tablero->getTData(puntoAlAzar.x,puntoAlAzar.y,puntoAlAzar.z)->getFicha()->getTipo());
             reporte = reporte + "Posicion: (" + to_string(puntoAlAzar.x) + ","+ to_string(puntoAlAzar.y) + ","+ to_string(puntoAlAzar.z) + ") - Contenido: " + contenido + " - Jugador: " + to_string(owner) + "/";
-            tablero->getTData(puntoAlAzar.x,puntoAlAzar.y,puntoAlAzar.z)->setEstado(false);
+            
+            this->inactivarCelda(tablero,puntoAlAzar,4);
         }
     }
 
@@ -146,7 +145,7 @@ void Carta::lanzarMisil(Tablero<Celda*>* tablero,  coordenadas centro){
         int owner = tablero->getTData(centro.x,centro.y,centro.z)->getFicha()->getJugadorOwner();
         string contenido = this->getStringTipoFicha(tablero->getTData(centro.x,centro.y,centro.z)->getFicha()->getTipo());
         string reporte = "Posicion: (" + to_string(centro.x) + ","+ to_string(centro.y) + ","+ to_string(centro.z) + ") - Contenido: " + contenido + " - Jugador: " + to_string(owner) + "/"; 
-        tablero->getTData(centro.x,centro.y,centro.z)->setEstado(false);
+        this->inactivarCelda(tablero,centro,4);
         this->imprimirReporte(reporte);
     }
     
@@ -209,6 +208,12 @@ int Carta::getTurnosInactiva(coordenadas centro, coordenadas punto){
         return 10; 
     }
 
+}
+
+void Carta::inactivarCelda(Tablero<Celda*>* tablero, coordenadas punto, int turnosInactiva){
+    tablero->getTData(punto.x,punto.y,punto.z)->setEstado(false);
+    tablero->getTData(punto.x,punto.y,punto.z)->setTurnosInactiva(4);
+    tablero->getTData(punto.x,punto.y,punto.z)->getFicha()->setTipo(VACIO);
 }
 
 mapaTiposDeCartas Carta::getMapaTipoDeCartas(){
