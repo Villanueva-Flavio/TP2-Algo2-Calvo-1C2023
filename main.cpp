@@ -1,40 +1,57 @@
-//hacer sleeps y marcar prints
-#include "./Headers/tablero.h"
-#include "./Headers/celda.h"
-#include "./Headers/renderizador.h"
-#include <typeinfo>
+#include "./Headers/Tablero.h"
+#include "./Headers/Celda.h"
+#include "./Headers/Jugador.h"
+#include "./Headers/BatallaDigital.h"
+#include "./Headers/DatosIngresados.h"
 #include <iostream>
-#include <unistd.h>
-
+#include <string>
 using namespace std;
 
-void cargarPlaya(Mapa* batallaDigital){
-    for(int i = 0; i < batallaDigital->getTamanioX(); i++){
-        for(int j = 0; j < batallaDigital->getTamanioY(); j++){
-            for(int k = 0; k < batallaDigital->getTamanioZ(); k++){
-                if(i < k+4 ){
-                    batallaDigital->getTData(i, j, k)->setTipo(CAPA_ARENA);
-                } else if (i >= k+4){
-                    batallaDigital->getTData(i, j, k)->setTipo(CAPA_AGUA);
-                }
-
-                if(k > batallaDigital->getTamanioX() / 2){
-                    batallaDigital->getTData(i, j, k)->setTipo(CAPA_AIRE);
-                }
-            }
-        }
-    }
-}
 
 int main(){
-    int size = 20;
-    Coordenada imgSize = {size*100, size*70};
-    Mapa* batallaDigital = new Mapa(size, size, size);
-    BMP imagen;
-    imagen.SetSize(imgSize.x, imgSize.y);
-    cargarPlaya(batallaDigital);
-    imprimirAngulo(imgSize, &imagen, batallaDigital, getMap());
-    imagen.WriteToFile("Partida.bmp");
-    delete batallaDigital;
+    Lista<Jugador*>* listaJugadores = new Lista<Jugador*>();
+    int cantJugadores = 0;
+    int turnoDelJugador = 1;
+    int r = 0, g = 0, b = 0;
+    string tipoDeMapa = "";
+    EstadoJuego estadoBatallaDigital = COMENZADO;
+    char movimiento;
+    coordenadas ubicacionMina;
+
+    solicitarJugadores(&cantJugadores);
+    int mapSize = cantJugadores*4;
+
+    Tablero<Celda*>* tablero = new Tablero<Celda*>(mapSize, mapSize, mapSize);
+    
+    string* nombreJugadores = new string[cantJugadores];
+    int* valoresR = new int[cantJugadores];
+    int* valoresG = new int[cantJugadores];
+    int* valoresB = new int[cantJugadores];
+
+
+    pedirDatosIniciales(cantJugadores, tipoDeMapa, nombreJugadores, valoresR, valoresG ,valoresB);
+    cargarJuego(tablero, listaJugadores, nombreJugadores, tipoDeMapa, cantJugadores);
+
+    while(estadoBatallaDigital != FINALIZADO){
+        pedirMovimiento(&movimiento);
+        pedirUbicacionMina(&ubicacionMina, mapSize);
+        //actualizarJuego(tablero, listaJugadores, turnoDelJugador);
+        mostrarTerreno(tablero,mapSize);
+        estadoBatallaDigital = estadoDelJuego(listaJugadores, cantJugadores);
+        
+        if(turnoDelJugador != cantJugadores) {
+            turnoDelJugador++;
+        } else {
+            turnoDelJugador = 1;
+        }
+    }
+
+
+    delete[] valoresR;
+    delete[] valoresG;
+    delete[] valoresB;
+    delete[] nombreJugadores;
+    delete tablero;
+    delete listaJugadores;
     return 0;
 }
