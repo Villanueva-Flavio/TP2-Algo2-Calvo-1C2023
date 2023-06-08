@@ -32,16 +32,18 @@ int main(){
     int* valoresG = new int[cantJugadores];
     int* valoresB = new int[cantJugadores];
 
+            mostrarTerreno(tablero,mapSize);
+
 
     pedirDatosIniciales(cantJugadores, tipoDeMapa, nombreJugadores, valoresR, valoresG ,valoresB);
-    cargarJuego(tablero, listaJugadores, nombreJugadores, tipoDeMapa, cantJugadores);
+    cargarJuego(tablero, listaJugadores, nombreJugadores, tipoDeMapa, cantJugadores);   //revisar
 
     while(estadoBatallaDigital != FINALIZADO){
-        pedirMovimiento(&movimiento);
+        pedirMovimiento(&movimiento);                                      //modificar
         pedirUbicacionMina(&ubicacionMina, mapSize);
         //actualizarJuego(tablero, listaJugadores, turnoDelJugador);
-        mostrarTerreno(tablero,mapSize);
-        estadoBatallaDigital = estadoDelJuego(listaJugadores, cantJugadores);
+        mostrarTerreno(tablero,mapSize);                                      //revisar
+        estadoBatallaDigital = estadoDelJuego(listaJugadores, cantJugadores);   //terminar
         
         if(turnoDelJugador != cantJugadores) {
             turnoDelJugador++;

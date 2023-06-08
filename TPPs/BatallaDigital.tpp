@@ -227,26 +227,24 @@ void mostrarTerreno(Tablero<Celda*>* tablero, int size) {
     imagen.WriteToFile("Partida.bmp");
 }
 
-EstadoJuego estadoDelJuego(Lista<Jugador*>* listaJugadores, int cantJugadores){
+EstadoJuego estadoDelJuego(Lista<Jugador*>* listaJugadores, int cantJugadores){     // (acomodar)
     Jugador* ganador = nullptr;
+    int contador = 0;
 
     listaJugadores->resetIter();
-    for (int i = 0; i < listaJugadores->getSize(); i++) {
+    for (int i = 0; i < cantJugadores; i++) {
         Jugador* jugador = listaJugadores->getLData(i);
 
-        int contador = 0;
-        for (int j = 0; j < listaJugadores->getSize(); j++) {
+        for (int j = 0; j < cantJugadores; j++) {
             Jugador* otroJugador = listaJugadores->getLData(j);
             if (jugador != otroJugador && otroJugador->getSoldados() == 0 && otroJugador->getArmamentos() == 0) {
                 contador++;
             }
         }
 
-        if (contador == cantJugadores - 1) {
-            ganador = jugador;
-            return FINALIZADO;
-            break;
-        }
+    }
+    if (contador == cantJugadores - 1) {
+        return FINALIZADO;
     }
     return COMENZADO;
 }
