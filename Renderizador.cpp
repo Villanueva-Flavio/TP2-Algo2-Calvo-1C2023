@@ -16,6 +16,7 @@ const RGBApixel TIERRA_OSCURA = {9, 32, 64, 0};
 const RGBApixel BORDE = {0, 0, 0, 0};
 const RGBApixel MINA = {0, 0, 0, 0};
 const RGBApixel FUEGO = {12, 92, 232, 0};
+const RGBApixel QUIMICO = {32,240,32,0};
 
 typedef std::map<int, RGBApixel> MapaColores;
 

@@ -1,13 +1,25 @@
 #include "./Headers/Tablero.h"
 #include "./Headers/Celda.h"
+#include "./Headers/carta.h"
 #include "./Headers/Renderizador.h"
 #include "./Headers/Interacciones.h"
 #include "./Headers/Structs/Niveles.h"
-#include "./Headers/Structs/Coordenadas.h"
+#include "./Headers/Structs/Coordenadas.h" 
 #include <iostream>
 using namespace std;
 
 struct Desplazar{int x,y,z;};
+
+
+void añadirFichaTablero(Tablero<Celda*>* tablero,coordenadas coordenada,TipoContenido tipoDeFicha,int ownerId, int fichaId){
+    Ficha* fichaElegida= tablero->getTData(coordenada.x,coordenada.y,coordenada.z)->getFicha();
+    
+    fichaElegida->setTipo(tipoDeFicha);
+    fichaElegida->setJugadorOwner(ownerId);
+    fichaElegida->setNumFicha(fichaId);
+    
+    tablero->getTData(coordenada.x,coordenada.y,coordenada.z)->setTipo(CAPA_ARENA);
+}
 
 // Carga el terreno de juego
 void cargarMapa(Tablero<Celda*>* tablero){
@@ -26,15 +38,14 @@ void cargarMapa(Tablero<Celda*>* tablero){
             }
         }
     }
-    tablero->getTData(tablero->getTamanioX()-1,tablero->getTamanioY()-1,2)->getFicha()->setTipo(SUBMARINO);
-    tablero->getTData(tablero->getTamanioX()-1,tablero->getTamanioY()-1,2)->getFicha()->setJugadorOwner(5);
-    tablero->getTData(tablero->getTamanioX()-1,tablero->getTamanioY()-1,2)->getFicha()->setNumFicha(1);
-    tablero->getTData(tablero->getTamanioX()-1,tablero->getTamanioY()-1,2)->setTipo(CAPA_ARENA);
 
-    tablero->getTData(tablero->getTamanioX()-2,tablero->getTamanioY()-2,2)->getFicha()->setTipo(MINA_FICHA);
-    tablero->getTData(tablero->getTamanioX()-2,tablero->getTamanioY()-2,2)->getFicha()->setNumFicha(2);
-    tablero->getTData(tablero->getTamanioX()-2,tablero->getTamanioY()-2,2)->setEstado(false);
-    tablero->getTData(tablero->getTamanioX()-2,tablero->getTamanioY()-2,2)->setTipo(CAPA_ARENA);
+    coordenadas coordenadaFicha= {tablero->getTamanioX()-1,tablero->getTamanioY()-1,2};
+    coordenadas coordenadaFichaDos= {tablero->getTamanioX()-4,tablero->getTamanioY()-2,2};
+    coordenadas coordenadaFichaTres= {tablero->getTamanioX()-4,tablero->getTamanioY()-4,2};
+
+    añadirFichaTablero(tablero,coordenadaFicha,SUBMARINO,1, 1);
+    añadirFichaTablero(tablero,coordenadaFichaDos,SOLDADO,1, 2);
+    añadirFichaTablero(tablero,coordenadaFichaTres,SUBMARINO,2,3);
 }
 
 // Pide un tipo de ficha
@@ -159,7 +170,7 @@ string naturalezaDeCelda(Capa tipoCelda){
     string contenido ="terrestre";
     if(tipoCelda == CAPA_AIRE){
         contenido ="aerea";
-    }else if(tipoCelda == CAPA_AGUA){ //eliminar arema post testeo
+    }else if(tipoCelda == CAPA_AGUA || tipoCelda == CAPA_ARENA){ //eliminar arema post testeo
         contenido ="maritima";
     }else if (tipoCelda == CAPA_BORDE){
         contenido ="borde";

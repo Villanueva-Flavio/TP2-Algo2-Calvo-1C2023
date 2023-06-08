@@ -18,7 +18,6 @@ class Carta{
         bool cartaActiva;
         int radioAccion;
         int cantidadBombas;
-        int cantidadRondas;
 
     public:
 
@@ -39,7 +38,7 @@ class Carta{
 
     private:
 
-        //Se inactivan las celdas del perimetro marcado por el radio
+       //Se inactivan las celdas del perimetro marcado por el radio
         void inactivarCeldas(Tablero<Celda*>* tablero,coordenadas centro);
 
         //Inactiva la cantidad de casillas indicadas en cantidad bombas de forma aleatoria dentro del rango

@@ -12,12 +12,10 @@
 using namespace std;
 
 Carta::Carta(TipoCarta carta) {
-    mapaTiposDeCartas mapaTipoCarta = this->getMapaTipoDeCartas();
-    
     this->cartaActiva = true;
     this->radioAccion = -1;
     this->cantidadBombas = -1;
-    this->carta = mapaTipoCarta[carta];
+    this->carta = carta;
 }
 
  void Carta::usarCarta(bool &atributoJugador){
@@ -49,7 +47,7 @@ Carta::Carta(TipoCarta carta) {
             this->inactivarCeldas(tablero,centro);
             break;
         case BOMBARDEO:
-            this->radioAccion = 5;
+            this->radioAccion = 3;
             this->cantidadBombas = 4;
             this->bombardearCeldas(tablero,centro);
             break;
@@ -70,12 +68,11 @@ bool Carta::getCartaActiva() {
 void Carta::inactivarCeldas(Tablero<Celda*>* tablero, coordenadas centro){
 
     int radio = this->radioAccion; 
-    string reporte = NULL;
+    string reporte = "";
 
     for (int n= centro.x - radio; n < centro.x + radio ; n++){
         for (int m= centro.y - radio; m < centro.y + radio ; m++){
             for (int l = centro.z - radio; l < centro.z + radio ; l++){
-                
                 if(tablero->inRange(n,m,l)){
                     coordenadas punto = {n,m,l};
                     int turnosInactiva = this->getTurnosInactiva(centro,punto);
@@ -86,7 +83,7 @@ void Carta::inactivarCeldas(Tablero<Celda*>* tablero, coordenadas centro){
                     }else{
                         int owner = tablero->getTData(n,m,l)->getFicha()->getJugadorOwner();
                         string contenido = this->getStringTipoFicha(tablero->getTData(n,m,l)->getFicha()->getTipo());
-                        reporte = reporte + "(" + to_string(n) + ","+ to_string(m) + ","+ to_string(l) + ") - " + contenido + " " + to_string(owner) + "/";
+                        reporte = reporte + "Posicion: (" + to_string(n) + ","+ to_string(m) + ","+ to_string(l) + ") - Contenido: " + contenido + " - Jugador: " + to_string(owner) + "/";
                         
                         tablero->getTData(n,m,l)->setEstado(false);
                         tablero->getTData(n,m,l)->setTurnosInactiva(turnosInactiva);
@@ -103,21 +100,17 @@ void Carta::bombardearCeldas(Tablero<Celda*>* tablero, coordenadas centro){
 
     int &radio = this->radioAccion; 
     string reporte = "";
-    coordenadas limiteSuperior = {centro.x + radio, centro.y + radio, centro.z + radio};
+    coordenadas limiteSuperior = {2*radio,2*radio,2*radio};
     coordenadas limiteInferior = {centro.x -radio, centro.y - radio, centro.z - radio};
 
     for(int i= 0; i<this->cantidadBombas; i++){
-        
-        coordenadas puntoAlAzar = {limiteInferior.x + rand() % limiteSuperior.x,limiteInferior.y + rand() % limiteSuperior.y, limiteInferior.z + rand() % limiteSuperior.z};
-
+        coordenadas puntoAlAzar = {rand() % limiteSuperior.x + limiteInferior.x, rand() % limiteSuperior.y + limiteInferior.y, rand() % limiteSuperior.z +limiteInferior.z};
         if(tablero->inRange(puntoAlAzar.x,puntoAlAzar.y,puntoAlAzar.z)){
-
+            cout << "entro"<<endl;
             int owner = tablero->getTData(puntoAlAzar.x,puntoAlAzar.y,puntoAlAzar.z)->getFicha()->getJugadorOwner();
             string contenido = this->getStringTipoFicha(tablero->getTData(puntoAlAzar.x,puntoAlAzar.y,puntoAlAzar.z)->getFicha()->getTipo());
-            reporte = reporte + "(" + to_string(puntoAlAzar.x) + ","+ to_string(puntoAlAzar.y) + ","+ to_string(puntoAlAzar.z) + ") - " + contenido + " " + to_string(owner) + "/";
-            
+            reporte = reporte + "Posicion: (" + to_string(puntoAlAzar.x) + ","+ to_string(puntoAlAzar.y) + ","+ to_string(puntoAlAzar.z) + ") - Contenido: " + contenido + " - Jugador: " + to_string(owner) + "/";
             tablero->getTData(puntoAlAzar.x,puntoAlAzar.y,puntoAlAzar.z)->setEstado(false);
-            
         }
     }
 
@@ -131,13 +124,12 @@ void Carta::obtenerReporte(Tablero<Celda*>* tablero,  coordenadas centro){
     for (int n= centro.x - radio; n < centro.x + radio ; n++){
         for (int m= centro.y - radio; m < centro.y + radio ; m++){
             for (int l = centro.z - radio; l < centro.z + radio ; l++){
-
                 if(tablero->inRange(n,m,l)){
 
                     if(tablero->getTData(n,m,l)->getFicha()->getTipo() != VACIO){
                         int owner = tablero->getTData(n,m,l)->getFicha()->getJugadorOwner();
                         string contenido = this->getStringTipoFicha(tablero->getTData(n,m,l)->getFicha()->getTipo());
-                        reporte = reporte + "(" + to_string(n) + ","+ to_string(m) + ","+ to_string(l) + ") - " + contenido + " " + to_string(owner) + "/";
+                        reporte = reporte + "Posicion: (" + to_string(n) + ","+ to_string(m) + ","+ to_string(l) + ") - Contenido: " + contenido + " - Jugador: " + to_string(owner) + "/";
                     }
                 }
         
@@ -153,7 +145,7 @@ void Carta::lanzarMisil(Tablero<Celda*>* tablero,  coordenadas centro){
 
         int owner = tablero->getTData(centro.x,centro.y,centro.z)->getFicha()->getJugadorOwner();
         string contenido = this->getStringTipoFicha(tablero->getTData(centro.x,centro.y,centro.z)->getFicha()->getTipo());
-        string reporte = "(" + to_string(centro.x) + ","+ to_string(centro.y) + ","+ to_string(centro.z) + ") - " + contenido + " " + to_string(owner) + "/"; 
+        string reporte = "Posicion: (" + to_string(centro.x) + ","+ to_string(centro.y) + ","+ to_string(centro.z) + ") - Contenido: " + contenido + " - Jugador: " + to_string(owner) + "/"; 
         tablero->getTData(centro.x,centro.y,centro.z)->setEstado(false);
         this->imprimirReporte(reporte);
     }
@@ -172,17 +164,21 @@ void Carta::imprimirReporte(string reporte){
     ofstream file;
 
     file.open(txtName.c_str(), fstream::out);
+    if(reporte!= ""){
+        for(int i=0; i < reporte.size() ; i++){
 
-    for(int i=0; i < reporte.size() ; i++){
-
-        //47-> Codigo ANSI para (/)
-        if (reporte[i] != 47) {
-            file << reporte[i];
-            
-        }else{
-            file <<"\n";
+            //47-> Codigo ANSI para (/)
+            if (reporte[i] != 47) {
+                file << reporte[i];
+                
+            }else{
+                file <<"\n";
+            }
         }
+    }else{
+        file << "No hubieron fichas afectadas por el ataque :("; 
     }
+    
 
     file.close();
 
@@ -232,7 +228,7 @@ mapaTiposContenido Carta::getMapaTiposContenido(){
     mapa[SOLDADO]="soldado";
     mapa[TANQUE]="tanque";
     mapa[BARCO]="barco";
-    mapa[BOMBARDEO]="bombardeo";
+    mapa[SUBMARINO]="submarino";
     mapa[AVION]="avion";
     mapa[MINA_FICHA]="mina";
     mapa[VACIO]="vacio";
