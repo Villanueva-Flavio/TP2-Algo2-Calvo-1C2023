@@ -128,25 +128,31 @@ void cargarRio(Tablero<Celda*>* mapa, int size) {
 }
 
 void generarMundo(std::string tipoDeMundo, Tablero<Celda*>* tablero){
-     do{ 
-        // if (verificarOpcion(tipoDeMundo) == false){
-                //tipoDeMundo = pedirTipoDeMundo();
-         // }
-        if (tipoDeMundo == "playa"){
-            cargarPlaya(tablero);
-        }else if (tipoDeMundo == "mar") {
-            cargarMar(tablero);
-        }else if (tipoDeMundo == "tierra"){
-            cargarTierra(tablero);
-        }else if (tipoDeMundo == "desierto"){
-            cargarDesierto(tablero);
-        }else if (tipoDeMundo == "lago"){
-            cargarLago(tablero, tablero->getTamanioX());
-        }else if (tipoDeMundo == "rio"){
-            cargarRio(tablero, tablero->getTamanioX());
-        }
-        break; // Sacar el braque al descomentar el if de arriba
-    } while (!verificarOpcion(tipoDeMundo));     
+    if (tipoDeMundo == "playa"){
+        
+        cargarPlaya(tablero);
+        std::cout << "\nPlaya cargado\n";
+    }else if (tipoDeMundo == "mar") {
+
+        cargarMar(tablero);
+        std::cout << "\nMar cargado\n";
+    }else if (tipoDeMundo == "tierra"){
+
+        cargarTierra(tablero);
+        std::cout << "\nTierra cargado\n";
+    }else if (tipoDeMundo == "desierto"){
+
+        cargarDesierto(tablero);
+        std::cout << "\nDesierto cargado\n";
+    }else if (tipoDeMundo == "lago"){
+
+        cargarLago(tablero, tablero->getTamanioX());
+        std::cout << "\nLago cargado\n";
+    }else if (tipoDeMundo == "rio"){
+
+        cargarRio(tablero, tablero->getTamanioX());
+        std::cout << "\nRio cargado\n";
+    }    
 }
 
 void cargarNombres(Lista<Jugador*>* jugadores,std::string* nombres) {
@@ -159,8 +165,9 @@ void cargarNombres(Lista<Jugador*>* jugadores,std::string* nombres) {
 
 void cargarCantidadFichas(Lista<Jugador*>* jugadores, int numeroDeJugadores){
     jugadores->resetIter();
-    for(int i = 0; i < numeroDeJugadores; i++) {
-        Jugador* jugadorActual = jugadores->getLData(jugadores->getIter());             //tira seg fault en este bucle
+    Jugador* jugadorActual = nullptr;
+    for(int i = 0; i < jugadores->getSize(); i++) {
+        jugadorActual = jugadores->getLData(jugadores->getIter());             //tira seg fault en este bucle
         // 2 tipos distintos de armamentos para un total de 8 armamentos por jugador
         jugadorActual->setArmamentos(8);
         // 10 soldados por jugador
@@ -171,16 +178,15 @@ void cargarCantidadFichas(Lista<Jugador*>* jugadores, int numeroDeJugadores){
     }    
 }
 
-void cargarTurnos(Lista<Jugador*>* jugadores) {
-    jugadores->resetIter();
-    (jugadores->getLData(jugadores->getIter()))->setTurno(true);
-}
-
 void cargarJugadores(Lista<Jugador*>* jugadores,std::string* nombres, int numeroDeJugadores) {
 
+    std::cout << "\nCargando nombres.\n";
     cargarNombres(jugadores, nombres);
+    std::cout << "\nCarga completada\n";
+
+    std::cout << "\nCargando fichas.\n";
     cargarCantidadFichas(jugadores, numeroDeJugadores);
-    cargarTurnos(jugadores);
+    std::cout << "\nCarga completada\n";
 }
 
 bool verificarSolapamientos(Tablero<Celda*>* tablero, int tipoDeFichaActual, std::string tipoMundo, int x, int y, int z) {
@@ -219,9 +225,17 @@ void cargarFichas(Tablero<Celda*>* tablero, Lista<Jugador*>* jugadores, std::str
 
 void cargarJuego(Tablero<Celda*>* tablero, Lista<Jugador*>* jugadores, std::string* nombres, std::string tipoMundo, int numeroDeJugadores) {
     
+    std::cout << "\nGenerando mundo.\n";
     generarMundo(tipoMundo, tablero);
+    std::cout << "\nGeneracion de mundo completado\n";
+
+    std::cout << "\nCargando jugadores.\n";
     cargarJugadores(jugadores, nombres, numeroDeJugadores);
+    std::cout << "\nCarga de jugadores completado\n";
+
+    std::cout << "\nCarga de fichas.\n";
     cargarFichas(tablero,jugadores,tipoMundo);
+    std::cout << "\nCarga de fichas completado\n";
 }
 
 #endif
