@@ -1,6 +1,6 @@
 // #include <string>
-// #include "tablero.h"
-// #include "celda.h"
+// #include "Tablero.h"
+// #include "Celda.h"
 
 // #ifndef __CARTA_H__
 // #define __CARTA_H__

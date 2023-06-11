@@ -1,3 +1,4 @@
+#include "./Headers/Jugador.h"
 Jugador::Jugador() {
     this->nombre = "";
     this->soldados = 0;
@@ -5,6 +6,7 @@ Jugador::Jugador() {
     this->armamentos = 0;
     this->escudoActivo = false;
     this->omitirTurno = false;
+    this->color = {0,0,0,0};
    // this->cartas = new Carta;
 }
 
@@ -58,4 +60,12 @@ void Jugador::reactivarJugador(){
     if(this->omitirTurno){
         this->omitirTurno = false;
     }
+}
+
+void Jugador::setColor(RGBApixel rgb){
+    this->color = rgb;
+}
+
+RGBApixel Jugador::getColor(){
+    return this->color;
 }
