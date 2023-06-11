@@ -1,15 +1,15 @@
 {
     "files.associations": {
         "*.tpp": "cpp",
-        "new": "cpp",
-        "ostream": "cpp",
-        "iostream": "cpp",
         "array": "cpp",
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
         "string_view": "cpp",
         "initializer_list": "cpp",
         "utility": "cpp",
+>>>>>>> moszpi
+=======
 >>>>>>> moszpi
         "atomic": "cpp",
         "bit": "cpp",
@@ -25,6 +25,7 @@
         "cstdio": "cpp",
         "cstdlib": "cpp",
         "cstring": "cpp",
+        "ctime": "cpp",
         "cwchar": "cpp",
         "cwctype": "cpp",
         "deque": "cpp",
@@ -62,18 +63,28 @@
         "typeinfo": "cpp"
 =======
         "random": "cpp",
+        "string_view": "cpp",
         "system_error": "cpp",
         "tuple": "cpp",
         "type_traits": "cpp",
+        "utility": "cpp",
+        "initializer_list": "cpp",
         "iosfwd": "cpp",
+        "iostream": "cpp",
         "istream": "cpp",
         "limits": "cpp",
+        "new": "cpp",
         "numbers": "cpp",
+        "ostream": "cpp",
         "sstream": "cpp",
         "stdexcept": "cpp",
         "streambuf": "cpp",
+<<<<<<< HEAD
         "typeinfo": "cpp",
         "ctime": "cpp"
+>>>>>>> moszpi
+=======
+        "typeinfo": "cpp"
 >>>>>>> moszpi
     }
 }
