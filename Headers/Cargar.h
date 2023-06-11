@@ -10,6 +10,4 @@
 
 void cargarJuego(Tablero<Celda*>* tablero, Lista<Jugador*>* jugadores, std::string* nombres, std::string nombreMundo, int numeroDeJugadores);
 
-#include "../TPPs/Cargar.tpp"
-
 #endif

@@ -16,5 +16,4 @@ void pedirMovimiento(char* movimiento);
 
 void pedirUbicacionMina(coordenadas* ubicacionMina, int size);
 
-#include "../TPPs/DatosIngresados.tpp"
 #endif //__DATOS_INGRESADOS_H__

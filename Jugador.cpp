@@ -1,3 +1,4 @@
+#include "./Headers/Jugador.h"
 Jugador::Jugador() {
     this->nombre = "";
     this->soldados = 0;

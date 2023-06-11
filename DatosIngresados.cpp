@@ -1,5 +1,6 @@
-#include<iostream>
+#include <iostream>
 #include <string>
+#include "./Headers/DatosIngresados.h"
 
 using namespace std;
 

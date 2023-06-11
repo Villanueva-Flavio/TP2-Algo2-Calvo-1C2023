@@ -17,7 +17,6 @@ struct Niveles{int suelo,mar;};
 //     std::cin >> opcion;
 //     return opcion;
 // }
-
 // // Pide el número de la ficha para distinguirlas del mismo tipo en el resto
 // int pedirEnumeracion() {
 //     int opcion;
@@ -25,7 +24,6 @@ struct Niveles{int suelo,mar;};
 //     std::cin >> opcion;
 //     return opcion;
 // }
-
 // // Si la ficha se encuentra en el mundo se retorna verdadero
 // bool seEncuentraLaFicha(Tablero<Celda*>* tablero, std::string opcion, int enumeracionFicha, int x, int y, int z) {
 //     bool seEncontro = false;
@@ -47,7 +45,6 @@ struct Niveles{int suelo,mar;};
 //     }
 //     return seEncontro; 
 // }
-
 // // Busca la capa máxima de suelo y mar. Cuidado que solo sirve para esta versión de mapa
 // Niveles buscarNiveles(Tablero<Celda*>* tablero) {
 //     Niveles nivel = {1,1};
@@ -57,7 +54,6 @@ struct Niveles{int suelo,mar;};
 //     }
 //     return nivel;
 // }
-
 // int nivelMinimoDeBusqueda(std::string ficha,Niveles nivel) {
 //     int nivelMinimo = 0;
 //     if (ficha == "soldado" || ficha == "tanque"){
@@ -69,7 +65,6 @@ struct Niveles{int suelo,mar;};
 //     } // Submarino no aparece porque el agua llega hasta abajo del mapa
 //     return nivelMinimo;
 // }
-
 // int nivelMaximoDeBusqueda(std::string ficha, Niveles nivel, int nivelMaxTablero) {
 //     int nivelMaximo = nivelMaxTablero - 1;
 //     if (ficha == "soldado" || ficha == "tanque"){
@@ -83,7 +78,6 @@ struct Niveles{int suelo,mar;};
 //     }
 //     return nivelMaximo;
 // }
-
 // // Realiza el barrido del mapa según los valores de 'minimo', 'maximo' más que los otros datos que reciben la función.
 // void procesarBusqueda(Coordenada* coorFicha, Tablero<Celda*>* tablero, std::string* ficha, int numeroFicha){
 //     int minimo, maximo;
@@ -104,7 +98,6 @@ struct Niveles{int suelo,mar;};
 //         }
 //     }
 // }
-
 // // Busca las Coordenada de la celda en donde está parada la ficha
 // void buscarCoordenadaFicha(Coordenada* coorFicha, Tablero<Celda*>* tablero, std::string* ficha){
 //     int nivelAire = 0, nivelMaximo = 0, enumeracionFicha = 0;
@@ -119,14 +112,12 @@ struct Niveles{int suelo,mar;};
 //         }
 //     } while ((coorFicha->x == -1 && coorFicha->y == -1 && coorFicha->z == -1) && (salir != "t"));
 // }
-
 // // Pide los movimientos longitudinales y horizontales (WASD). No existen movimientos diagonales ni de alturas.
 // void pedirAccion(char* movimiento){
 //         system("clear");
 //     std::cout << "Ingrese el movimiento:\n-Frontal y tracero: W y S\nLaterales: A y D\n(Puede mandar la letra 't' para salir)\n-";
 //     std::cin >> *movimiento;
 // }
-
 // // Revisa que las celdas cercanas sean de un tipo coherente a donde se va a mover la ficha (celda)
 // bool escanearCeldasPerifericasCompatibles(Tablero<Celda*>* tablero, Coordenada coordFicha, std::string ficha, char movimiento, Coordenada desplazarPor) {
 //     bool permitido = false;
@@ -154,7 +145,6 @@ struct Niveles{int suelo,mar;};
 //     }
 //     return permitido;
 // }
-
 // // Segun el movimiento que le ingrese el usuario se modifican los valores del estuct 'desplazar'
 // void ajustarDesplazamientosPorMovimiento(Coordenada* desplazar, std::string ficha, char movimiento) {
 //     if (movimiento == 'w' || movimiento == 's'){
@@ -165,13 +155,11 @@ struct Niveles{int suelo,mar;};
 //         desplazar->z = (movimiento == 'e') ? 1 : -1;
 //     }
 // }
-
 // void actualizarCoordenadaDeFicha(Coordenada* coordenadaFichaActual,Coordenada desplazar) {
 //     coordenadaFichaActual->x += desplazar.x;
 //     coordenadaFichaActual->y += desplazar.y;
 //     coordenadaFichaActual->z += desplazar.z;
 // }
-
 // void procesarIntercambioCeldas(Tablero<Celda*>* tablero, Coordenada coordenadaFichaActual, Coordenada desplazar, std::string ficha) {
 //     tablero->getTData((coordenadaFichaActual.x + desplazar.x),(coordenadaFichaActual.y + desplazar.y),(coordenadaFichaActual.z + desplazar.z))->setTipo(tablero->getTData((coordenadaFichaActual.x),(coordenadaFichaActual.y),(coordenadaFichaActual.z))->getTipo());
 //     *tablero->getTData((coordenadaFichaActual.x + desplazar.x),(coordenadaFichaActual.y + desplazar.y),(coordenadaFichaActual.z + desplazar.z))->getFicha() = *tablero->getTData((coordenadaFichaActual.x),(coordenadaFichaActual.y),(coordenadaFichaActual.z))->getFicha();
@@ -182,13 +170,11 @@ struct Niveles{int suelo,mar;};
 //         tablero->getTData((coordenadaFichaActual.x),(coordenadaFichaActual.y),(coordenadaFichaActual.z))->setTipo(CAPA_AGUA);
 //     }
 // }
-
 // // Simula el movimiento de las fichas para evaluar si se sale del mapa o no.
 // bool revisarLimitesDelMapa(Tablero<Celda*>* tablero, Coordenada coordenadaFichaActual, Coordenada desplazar) {
 //     bool rangoValido = false;
 //     Coordenada desplazamientoHipotetico = {coordenadaFichaActual.x + desplazar.x,coordenadaFichaActual.y + desplazar.y,coordenadaFichaActual.z + desplazar.z};
 //     int topeMaximoX = tablero->getTamanioX(), topeMaximoY = tablero->getTamanioY(), topeMaximoZ = tablero->getTamanioZ();
-
 //     if (desplazamientoHipotetico.x >= 0 && desplazamientoHipotetico.x < topeMaximoX
 //         && desplazamientoHipotetico.y >= 0 && desplazamientoHipotetico.y < topeMaximoY
 //         && desplazamientoHipotetico.z >= 0 && desplazamientoHipotetico.z < topeMaximoZ){
@@ -196,7 +182,6 @@ struct Niveles{int suelo,mar;};
 //     }
 //     return rangoValido;
 // }
-
 // // Procesa los cambios de las celdas
 // void procesarMovimiento(char movimiento, Tablero<Celda*>* tablero, Coordenada* coordenadaFichaActual, std::string ficha){
 //     Celda celdaAuxiliar;
@@ -209,7 +194,6 @@ struct Niveles{int suelo,mar;};
 //         }
 //     }
 // }
-
 // void colocarMina(Tablero<Celda*>* tablero, Coordenada coordenadaFichaActual, std::string ficha, char movimiento) {
 //     if (coordenadaFichaActual.z - 1 >= 0){
 //         if (ficha == "soldado" || ficha == "tanque"){
@@ -267,9 +251,8 @@ int main(){
     // Coordenada ubicacionMina;
 
     solicitarJugadores(&cantJugadores);
-    int mapSize = cantJugadores*4;
 
-    Tablero<Celda*>* tablero = new Tablero<Celda*>(mapSize, mapSize, mapSize);
+    Tablero<Celda*>* tablero = nullptr;
     std::string* nombreJugadores = new std::string[cantJugadores]; 
     int* valoresR = new int[cantJugadores];
     int* valoresG = new int[cantJugadores];
@@ -284,7 +267,7 @@ int main(){
 
     cargarJuego(tablero, listaJugadores, nombreJugadores, tipoDeMapa, cantJugadores);
 
-    procesarCambiosMapa(tablero,mapSize);
+    procesarCambiosMapa(tablero,listaJugadores->getSize()*6);
     // moverFichas(tablero,size);
     // procesarCambiosMapa(tablero,size);
 

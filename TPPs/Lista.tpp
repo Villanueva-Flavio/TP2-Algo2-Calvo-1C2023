@@ -14,7 +14,7 @@ template <class T> Lista<T>::~Lista() {
 		destructor = this->primero;
 		this->size --;
 	}
-}
+} 
 
 template <class T> void Lista<T>::assign(T data){
 	this->iterador->setNData(data);
@@ -92,13 +92,3 @@ template <class T> void Lista<T>::irANodo(int x){
 		}
 	}
 }
-/* 
-template <class T> void Lista<T>::irANodo(int x){
-	if(x < this->getIter()){
-		this->resetIter();
-	} else {
-		for(int i = this->getIter(); i < x; i++){
-				this->iterar(SIGUIENTE);
-		}
-	}
-} */
