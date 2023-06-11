@@ -122,8 +122,12 @@ void cargarRio(Tablero<Celda*>* mapa, int size) {
         }
     }
 }
-
+s
 void generarMundo(std::string tipoDeMundo, Tablero<Celda*>* tablero){
+    (tipoDeMundo == "playa" && tipoDeMundo != "mar") ? : ;
+    () ? : ;
+    () ? : ;
+    () ? : ;
     if (tipoDeMundo == "playa"){
         cargarPlaya(tablero);
     }else if (tipoDeMundo == "mar") {
@@ -160,25 +164,20 @@ void cargarJugadores(Lista<Jugador*>* jugadores,std::string* nombres) {
     cargarCantidadFichas(jugadores);
 }
 
-// Dependiendo de la cantidades de fichas se le asignarán al tablero ciertas cantidades de fichas
 void cargarFichaDelTipo(Tablero<Celda*>* tablero, Lista<Jugador*>* jugadores, int cantidadDeCarga, TipoContenido tipoDeFicha, int jugadorOwner){
-    
-    int x, y, z, i = 0, a = 0; // coordendas, i representa la iteración de la cantidad
+    int x, y, z, i = 0, a = 0;
 
     while (i <= cantidadDeCarga){
         x = std::rand()%(tablero->getTamanioX()-1);
         y = std::rand()%(tablero->getTamanioY()-1);
         z = (tipoDeFicha == SOLDADO || tipoDeFicha == TANQUE || tipoDeFicha == BARCO) ? CAPA_MAXIMA : std::rand()%(tablero->getTamanioZ()-1);
         a = (tipoDeFicha == SOLDADO || tipoDeFicha == TANQUE || tipoDeFicha == BARCO) ? -1 : 0;
-        std::cout << "Coordenada (" << x <<", "<< y << ", " << z << ")\n";
 
-        // if (tablero->getTData(x,y,z)->getFicha()->getTipo() == VACIO && ((tipoDeFicha == BARCO && tablero->getTData(x,y,CAPA_MAXIMA-1)->getTipo() == CAPA_AGUA) || (tipoDeFicha == SUBMARINO && tablero->getTData(x,y,z)->getTipo() == CAPA_AGUA) || (tipoDeFicha == AVION && tablero->getTData(x,y,z)->getTipo() == CAPA_AIRE) || (tipoDeFicha == SOLDADO && tablero->getTData(x,y,z)->getTipo() == CAPA_AIRE) || (tipoDeFicha == SOLDADO && tablero->getTData(x,y,z)->getTipo() == CAPA_AIRE))){
-        if (tablero->getTData(x,y,z)->getFicha()->getTipo() == VACIO && tablero->getTData(x,y,z+a)->getTipo() == CAPA_TIERRA){
+        if (tablero->getTData(x,y,z)->getFicha()->getTipo() == VACIO && ((tipoDeFicha == BARCO && tablero->getTData(x,y,CAPA_MAXIMA-1)->getTipo() == CAPA_AGUA) || (tipoDeFicha == SUBMARINO && tablero->getTData(x,y,z)->getTipo() == CAPA_AGUA) || (tipoDeFicha == AVION && tablero->getTData(x,y,z)->getTipo() == CAPA_AIRE) || (tipoDeFicha == SOLDADO && tablero->getTData(x,y,z)->getTipo() == CAPA_AIRE) || (tipoDeFicha == SOLDADO && tablero->getTData(x,y,z)->getTipo() == CAPA_AIRE))){
             tablero->getTData(x,y,z)->getFicha()->setTipo(tipoDeFicha);
             tablero->getTData(x,y,z)->getFicha()->setJugadorOwner(jugadorOwner);
             tablero->getTData(x,y,z)->getFicha()->setNumFicha(i+1);
-
-            i++; // el incremento está adentro del if porque se necesita que si o si se pueda cargar la ficha en el tablero
+            i++;
         }
     }
 }
