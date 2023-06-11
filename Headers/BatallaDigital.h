@@ -17,5 +17,7 @@ class BatallaDigital{
         BatallaDigital(int cantidad);
         ~BatallaDigital();
         void cargarJuego();
+    private:
+        
 };
 #endif
