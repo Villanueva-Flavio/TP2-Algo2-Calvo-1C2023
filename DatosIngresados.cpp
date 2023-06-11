@@ -8,25 +8,6 @@ const char MOVIMIENTO_ARRIBA = 'w';
 const char MOVIMIENTO_IZQUIERDA = 'a';
 const char MOVIMIENTO_ABAJO = 's';
 const char MOVIMIENTO_DERECHAA = 'd';
-
-void solicitarJugadores(int* cantJugadores){
-    char comenzar = ' ';
-
-    cout << "\n--------------------Batala Digital--------------------\n\nPresiona cualquier tecla para comenzar: ";
-    cin >> comenzar;
-
-    //system("clear");
-
-    cout << "\nIngrese la cantidad de jugadores: ";
-    cin >> *cantJugadores;
-
-    while ((*cantJugadores) <= 0 || (*cantJugadores) >= 30){       //definir    
-        cout << "Ingrese una cantidad valida de jugadores: ";
-        cin >> *cantJugadores;
-    }
-
-}
-
 void pedirDatosIniciales(int cantJugadores, string& tipoDemapa, std::string* nombreJugadores, int* valoresR, int* valoresG ,int* valoresB){
     cout << "\nSeleccione un tipo de mapa. (playa - mar - tierra - desierto - rio - lago)\n(escriba su respuesta): ";
     cin >> tipoDemapa;

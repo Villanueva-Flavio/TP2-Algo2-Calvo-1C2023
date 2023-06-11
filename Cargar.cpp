@@ -126,27 +126,16 @@ void cargarRio(Tablero<Celda*>* mapa, int size) {
 void generarMundo(std::string tipoDeMundo, Tablero<Celda*>* tablero){
     if (tipoDeMundo == "playa"){
         cargarPlaya(tablero);
-        std::cout << "\nPlaya cargado\n";
     }else if (tipoDeMundo == "mar") {
-
         cargarMar(tablero);
-        std::cout << "\nMar cargado\n";
     }else if (tipoDeMundo == "tierra"){
-
         cargarTierra(tablero);
-        std::cout << "\nTierra cargado\n";
     }else if (tipoDeMundo == "desierto"){
-
         cargarDesierto(tablero);
-        std::cout << "\nDesierto cargado\n";
     }else if (tipoDeMundo == "lago"){
-
         cargarLago(tablero, tablero->getTamanioX());
-        std::cout << "\nLago cargado\n";
     }else if (tipoDeMundo == "rio"){
-
         cargarRio(tablero, tablero->getTamanioX());
-        std::cout << "\nRio cargado\n";
     }    
 }
 
@@ -174,20 +163,20 @@ void cargarJugadores(Lista<Jugador*>* jugadores,std::string* nombres) {
 // Dependiendo de la cantidades de fichas se le asignarán al tablero ciertas cantidades de fichas
 void cargarFichaDelTipo(Tablero<Celda*>* tablero, Lista<Jugador*>* jugadores, int cantidadDeCarga, TipoContenido tipoDeFicha, int jugadorOwner){
     
-    int x, y, z, i = 0; // coordendas, i representa la iteración de la cantidad
+    int x, y, z, i = 0, a = 0; // coordendas, i representa la iteración de la cantidad
 
     while (i <= cantidadDeCarga){
-        x = std::rand()%tablero->getTamanioX()-1;
-        y = std::rand()%tablero->getTamanioY()-1;
-        z = (tipoDeFicha == SOLDADO || tipoDeFicha == TANQUE || tipoDeFicha == BARCO) ? CAPA_MAXIMA : std::rand()%tablero->getTamanioZ()-1;
+        x = std::rand()%(tablero->getTamanioX()-1);
+        y = std::rand()%(tablero->getTamanioY()-1);
+        z = (tipoDeFicha == SOLDADO || tipoDeFicha == TANQUE || tipoDeFicha == BARCO) ? CAPA_MAXIMA : std::rand()%(tablero->getTamanioZ()-1);
+        a = (tipoDeFicha == SOLDADO || tipoDeFicha == TANQUE || tipoDeFicha == BARCO) ? -1 : 0;
+        std::cout << "Coordenada (" << x <<", "<< y << ", " << z << ")\n";
 
         // if (tablero->getTData(x,y,z)->getFicha()->getTipo() == VACIO && ((tipoDeFicha == BARCO && tablero->getTData(x,y,CAPA_MAXIMA-1)->getTipo() == CAPA_AGUA) || (tipoDeFicha == SUBMARINO && tablero->getTData(x,y,z)->getTipo() == CAPA_AGUA) || (tipoDeFicha == AVION && tablero->getTData(x,y,z)->getTipo() == CAPA_AIRE) || (tipoDeFicha == SOLDADO && tablero->getTData(x,y,z)->getTipo() == CAPA_AIRE) || (tipoDeFicha == SOLDADO && tablero->getTData(x,y,z)->getTipo() == CAPA_AIRE))){
-        if (tablero->getTData(x,y,z)->getFicha()->getTipo() == VACIO && tablero->getTData(x,y,z-1)->getTipo() == CAPA_TIERRA){
+        if (tablero->getTData(x,y,z)->getFicha()->getTipo() == VACIO && tablero->getTData(x,y,z+a)->getTipo() == CAPA_TIERRA){
             tablero->getTData(x,y,z)->getFicha()->setTipo(tipoDeFicha);
             tablero->getTData(x,y,z)->getFicha()->setJugadorOwner(jugadorOwner);
             tablero->getTData(x,y,z)->getFicha()->setNumFicha(i+1);
-
-            std::cout << "Cargado/da en la coordenada (" << x <<", "<< y << ", " << z << ")\n";
 
             i++; // el incremento está adentro del if porque se necesita que si o si se pueda cargar la ficha en el tablero
         }
@@ -197,61 +186,22 @@ void cargarFichaDelTipo(Tablero<Celda*>* tablero, Lista<Jugador*>* jugadores, in
 void cargarFichas(Tablero<Celda*>* tablero, Lista<Jugador*>* jugadores, std::string tipoMundo) {
 
     for (int i = 0; i < jugadores->getSize(); i++){
-
-        if (tipoMundo != "mar"){
-
-            std::cout << "\nSoldados del jugador " << i+1 << " \n";
+        if (tipoMundo != "mar" && i < jugadores->getSize()){
             cargarFichaDelTipo(tablero,jugadores,jugadores->getLData(i)->getSoldados(),SOLDADO,i+1);
-            std::cout << "cargados\n";
-            
-            // std::cout << "\nTanques:";
-            // cargarFichaDelTipo(tablero,jugadores,jugadores->getLData(i)->getArmamentos(),TANQUE,0);
-            // std::cout << "cargados\n";
+            cargarFichaDelTipo(tablero,jugadores,jugadores->getLData(i)->getArmamentos(),TANQUE,i+1);
         }
-        // if (tipoMundo != "tierra" && tipoMundo != "desierto"){
+        if (tipoMundo != "tierra" && tipoMundo != "desierto"){
+            cargarFichaDelTipo(tablero,jugadores,jugadores->getLData(i)->getSoldados(),SUBMARINO,i+1);
+            cargarFichaDelTipo(tablero,jugadores,jugadores->getLData(i)->getSoldados(),BARCO,i+1);
 
-            // std::cout << "\nsubmarinos:";
-            // cargarFichaDelTipo(tablero,jugadores,jugadores->getLData(i)->getSoldados(),SUBMARINO,0);
-            // std::cout << "cargados\n";
-
-            // std::cout << "\nbarcos:";
-            // cargarFichaDelTipo(tablero,jugadores,jugadores->getLData(i)->getSoldados(),BARCO,0);
-            // std::cout << "cargados\n";
-        // }
-        // std::cout << "\nAviones:";
-        // cargarFichaDelTipo(tablero,jugadores,jugadores->getLData(i)->getSoldados(),AVION,i);
-        // std::cout << "cargados\n";
-    }
-}
-
-void mostrarDatosDeJugadores(Lista<Jugador*>* jugadores) {
-    for (int i = 0; i < jugadores->getSize(); i++){
-        std::cout<<"\nEl nombre del jugador "<<i+1<<" es "<<jugadores->getLData(i)->getNombre()<<std::endl;
-        std::cout<<"\nTiene "<<jugadores->getLData(i)->getSoldados()<<" soldados"<<std::endl;
-        std::cout<<"\nTiene "<<jugadores->getLData(i)->getMinas()<<" minas"<<std::endl;
-        std::cout<<"\nTiene "<<jugadores->getLData(i)->getArmamentos()<<" armamentos"<<std::endl;
+        }
+        cargarFichaDelTipo(tablero,jugadores,jugadores->getLData(i)->getSoldados(),AVION,i+1);
     }
 }
 
 void cargarJuego(Tablero<Celda*>* tablero, Lista<Jugador*>* jugadores, std::string* nombres, std::string tipoMundo, int numeroDeJugadores) {
     tablero = new Tablero<Celda*>(jugadores->getSize()*6,jugadores->getSize()*6,jugadores->getSize()*6);
     generarMundo(tipoMundo, tablero);
-
     cargarJugadores(jugadores, nombres);
-
-    // std::cout << "\nFichas:";
     cargarFichas(tablero,jugadores,tipoMundo);
-    // std::cout << "cargados\n";
-
-
-    // std::cout<<"Hay "<<jugadores->getSize()<<" jugadores.\n";
-    // std::cin.ignore();
-    // 
-    // 
-    // int a = jugadores->getIter();
-    // std::cout<<"El jugador "<< a <<" tiene "<<jugadores->getLData(a)->getSoldados() << " fichas de soldados\n";
-    // std::cin.ignore();
-    // 
-    // 
-
 }
