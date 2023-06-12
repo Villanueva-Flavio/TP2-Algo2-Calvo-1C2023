@@ -6,7 +6,6 @@
 
 typedef Tablero<Celda*> Mapa;
 typedef Lista<Jugador*> Jugadores;
-
 class BatallaDigital{
     private:
         Mapa* mapa;
@@ -21,6 +20,7 @@ class BatallaDigital{
         void consultarNombres();
         void consultarTipoDeMapa(string tipoMapa);
         void consultarColores();
+        int jugadoresVivos();
 
 };
 #endif

@@ -86,8 +86,14 @@ void BatallaDigital::consultarColores(){
     }
 }
 
-int jugadoresConFichas(){
-    
+int BatallaDigital::jugadoresVivos(){
+    int vivos = 0, sol = 0, arm = 0;
+    for (int i = 0; i < this->cantidadJugadores; i++) {
+        sol = this->jugadores->getLData(i)->getSoldados();
+        arm = this->jugadores->getLData(i)->getArmamentos();
+        vivos = (sol != 0 && arm != 0)? vivos +1 : vivos;
+    }
+    return vivos;
 }
 
 void BatallaDigital::cargarJuego(){
@@ -120,8 +126,13 @@ void BatallaDigital::ejecutarTurno(){
 }
 
 void BatallaDigital::jugar(){
-    while(this->jugadoresConFichas() > 1){
+    
+    while(jugadoresVivos() > 1){
         this->ejecutarTurno();
     }
     //mensajeVictoria(this->jugadores->getJugador(0)->getNombre()); (Podria quedar para main)
+
+
 }
+
+    
