@@ -177,11 +177,11 @@ void cargarFichas(Tablero<Celda*>* tablero, Lista<Jugador*>* jugadores, std::str
             cargarFichaDelTipo(tablero,jugadores,jugadores->getLData(i)->getArmamentos(),TANQUE,i+1);
         }
         if (tipoMundo != "tierra" && tipoMundo != "desierto"){
-            cargarFichaDelTipo(tablero,jugadores,jugadores->getLData(i)->getSoldados(),SUBMARINO,i+1);
-            cargarFichaDelTipo(tablero,jugadores,jugadores->getLData(i)->getSoldados(),BARCO,i+1);
+            cargarFichaDelTipo(tablero,jugadores,jugadores->getLData(i)->getArmamentos(),SUBMARINO,i+1);
+            cargarFichaDelTipo(tablero,jugadores,jugadores->getLData(i)->getArmamentos(),BARCO,i+1);
 
         }
-        cargarFichaDelTipo(tablero,jugadores,jugadores->getLData(i)->getSoldados(),AVION,i+1);
+        cargarFichaDelTipo(tablero,jugadores,jugadores->getLData(i)->getArmamentos(),AVION,i+1);
     }
 }
 

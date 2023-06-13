@@ -13,11 +13,18 @@ class BatallaDigital{
         Jugadores* jugadores;
         int cantidadJugadores;
         int turno;
+        string tipoMapa;
     public:
         BatallaDigital(int cantidad);
         ~BatallaDigital();
-        void cargarJuego();
+        void cargarMapas();
     private:
+        // Carga del mapa
+        void cargarTerrenoPlano(TipoMapa tipo);
+        void cargarPlaya(TipoMapa tipo);
+        void cargarRioLago(TipoMapa tipo);
+        bool esOrilla(TipoMapa tipo);
+        // Carga de jugadores
         
 };
 #endif
