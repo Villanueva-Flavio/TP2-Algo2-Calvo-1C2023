@@ -62,6 +62,7 @@ void BatallaDigital::consultarNombres(){
 // Gero
 }
 
+// Retorna el tipo de mapa ingresado por el usuario (implementación requerida)
 std::string BatallaDigital::consultarTipoDeMapa(){
 // Gero
     return this->tipoMapa;
@@ -109,6 +110,7 @@ void BatallaDigital::cargarRioLago(int tipo){
     }
 }
 
+// Carga el mapa elegido por el jugador
 void BatallaDigital::cargarMapas() {
     string tipo = this->consultarTipoDeMapa();
     MapaTipos mapita = getMapaTipos();
@@ -127,6 +129,7 @@ void BatallaDigital::cargarMapas() {
     }
 }
 
+// Carga las cantidades de fichas que contiene cada jugador
 void BatallaDigital::cargarCantidadesDeFichasAJugadores(){
     for(int i = 0; i < this->jugadores->getSize(); i++) {
         this->jugadores->getLData(i)->setArmamentos(2), jugadores->getLData(i)->setSoldados(5), jugadores->getLData(i)->setMinas(30);
@@ -136,7 +139,7 @@ void BatallaDigital::cargarCantidadesDeFichasAJugadores(){
 bool BatallaDigital::validarCeldaAInsertarFicha(Coordenada* cordenada, TipoContenido tipoDeFicha) {
     TipoContenido tipo = this->mapa->getTData(cordenada->x,cordenada->y,cordenada->z)->getFicha()->getTipo();
     Capa capa = this->mapa->getTData(cordenada->x,cordenada->y,cordenada->z)->getTipo();
-    
+
     return (tipo == VACIO 
     && ((tipoDeFicha == BARCO && this->mapa->getTData(cordenada->x,cordenada->y,CAPA_MAXIMA-1)->getTipo() == CAPA_AGUA) 
         || (tipoDeFicha == SUBMARINO && capa == CAPA_AGUA) 
