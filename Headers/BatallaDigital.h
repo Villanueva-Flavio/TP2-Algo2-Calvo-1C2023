@@ -13,18 +13,23 @@ class BatallaDigital{
         Jugadores* jugadores;
         int cantidadJugadores;
         int turno;
-        string tipoMapa;
+        std::string tipoMapa;
     public:
         BatallaDigital(int cantidad);
         ~BatallaDigital();
+        void consultarNombres();
+        std::string consultarTipoDeMapa();
         void cargarMapas();
+        void cargarCantidadesDeFichasAJugadores();
     private:
-        // Carga del mapa
-        void cargarTerrenoPlano(TipoMapa tipo);
-        void cargarPlaya(TipoMapa tipo);
-        void cargarRioLago(TipoMapa tipo);
-        bool esOrilla(TipoMapa tipo);
-        // Carga de jugadores
-        
+        // Cargas del mapa
+        void cargarTerrenoPlano(int tipo);
+        void cargarPlaya(int tipo);
+        void cargarRioLago(int tipo);
+        bool esOrilla(int tipo, Coordenada pos);
+        // Cargas de las fichas en el mapa
+        void cargarFichas();
+        void cargarFichaDelTipo(int cantidadDeCarga, TipoContenido tipoDeFicha, int jugadorOwner);
+        bool BatallaDigital::validarCeldaAInsertarFicha(Coordenada* cordenada, TipoContenido tipoDeFicha);
 };
 #endif
