@@ -18,10 +18,11 @@ class BatallaDigital{
         BatallaDigital(int cantidad);
         ~BatallaDigital();
         void consultarNombres();
+        void cargarJuego();       
+    private:
         std::string consultarTipoDeMapa();
         void cargarMapas();
         void cargarCantidadesDeFichasAJugadores();
-    private:
         // Cargas del mapa
         void cargarTerrenoPlano(int tipo);
         void cargarPlaya(int tipo);

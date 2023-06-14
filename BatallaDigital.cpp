@@ -132,7 +132,7 @@ void BatallaDigital::cargarMapas() {
 // Carga las cantidades de fichas que contiene cada jugador
 void BatallaDigital::cargarCantidadesDeFichasAJugadores(){
     for(int i = 0; i < this->jugadores->getSize(); i++) {
-        this->jugadores->getLData(i)->setArmamentos(2), jugadores->getLData(i)->setSoldados(5), jugadores->getLData(i)->setMinas(30);
+        this->jugadores->getLData(i)->setArmamentos(1), jugadores->getLData(i)->setSoldados(5);
     }    
 }
 
@@ -170,6 +170,12 @@ void BatallaDigital::cargarFichas(){
             this->cargarFichaDelTipo(jugadores->getLData(i)->getArmamentos(),BARCO,i+1);
 
         }
-        this->cargarFichaDelTipo(jugadores->getLData(i)->getArmamentos(),AVION,i+1);
+        this->cargarFichaDelTipo(jugadores->getLData(i)->getArmamentos() + 1,AVION,i+1);
     }
+}
+
+void BatallaDigital::cargarJuego() {
+    this->cargarMapas();
+    this->cargarCantidadesDeFichasAJugadores();
+    this->cargarFichas();
 }
