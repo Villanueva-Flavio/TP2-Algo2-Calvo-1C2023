@@ -4,8 +4,6 @@
 #include <cstdlib>
 #include "./Headers/Tablero.h"
 #include "./Headers/Renderizador.h"
-#include "./Headers/DatosIngresados.h"
-#include "./Headers/Cargar.h"
 #include "./Headers/Jugador.h"
 #include "./Headers/BatallaDigital.h"
 
@@ -21,7 +19,7 @@ struct Niveles{int suelo,mar;};
 } */
 
 void solicitarJugadores(int* cantJugadores){
-    cout << "\n--------------------Batala Digital--------------------\n\n";
+    cout << "\n--------------------Batalla Digital--------------------\n\n";
     cin.get();
 
     cout << "Ingrese la cantidad de jugadores: ";
@@ -38,12 +36,5 @@ int main(){
     solicitarJugadores(&cantJugadores);
     BatallaDigital* Juego = new BatallaDigital(cantJugadores);
     Juego->cargarJuego();
-    //pedirDatosIniciales(cantJugadores, tipoDeMapa, nombreJugadores, valoresR, valoresG ,valoresB);
-
-    //cargarJuego(tablero, listaJugadores, nombreJugadores, tipoDeMapa, cantJugadores);
-
-    //procesarCambiosMapa(tablero,listaJugadores->getSize()*6);
-
-
     return 0;
 }

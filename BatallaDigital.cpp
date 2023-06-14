@@ -15,7 +15,6 @@ enum Color {PASTO, TIERRA, ARENA, MINA, FUEGO, AGUA, AIRE, SIN_COLOR};
 enum TipoMapa {M_PLAYA, M_MAR, M_TIERRA, M_DESIERTO, M_RIO, M_LAGO};
 
 typedef map<string, Coordenada> MapaCoordenadas;
-typedef map<Color, RGBApixel> MapaColores;
 typedef map<string, TipoMapa> MapaTipos;
 
 MapaCoordenadas getMapaCoordenadas(){
@@ -112,12 +111,14 @@ void BatallaDigital::cargarRioLago(int tipo){
 
 // Carga el mapa elegido por el jugador
 void BatallaDigital::cargarMapas() {
-    string tipo = this->consultarTipoDeMapa();
+    // string tipo = this->consultarTipoDeMapa();
+    string tipo = ""; 
     MapaTipos mapita = getMapaTipos();
     int enumeradorcito = 0;
     while (mapita.count(tipo) == 0) {
         cout << "Tipo inválido, reingrese el tipo.\n";
-        tipo = this->consultarTipoDeMapa();
+        // tipo = this->consultarTipoDeMapa();
+        tipo = "lago";
     }
     enumeradorcito = mapita[tipo];
     if (enumeradorcito == M_TIERRA || enumeradorcito == M_DESIERTO || enumeradorcito == M_MAR) {

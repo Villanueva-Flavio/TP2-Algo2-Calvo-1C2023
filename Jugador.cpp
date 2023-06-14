@@ -2,7 +2,6 @@
 Jugador::Jugador() {
     this->nombre = "";
     this->soldados = 0;
-    this->minas = 0;
     this->armamentos = 0;
     this->escudoActivo = false;
     this->omitirTurno = false;

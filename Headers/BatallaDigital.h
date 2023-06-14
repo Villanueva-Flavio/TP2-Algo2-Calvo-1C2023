@@ -31,6 +31,6 @@ class BatallaDigital{
         // Cargas de las fichas en el mapa
         void cargarFichas();
         void cargarFichaDelTipo(int cantidadDeCarga, TipoContenido tipoDeFicha, int jugadorOwner);
-        bool BatallaDigital::validarCeldaAInsertarFicha(Coordenada* cordenada, TipoContenido tipoDeFicha);
+        bool validarCeldaAInsertarFicha(Coordenada* cordenada, TipoContenido tipoDeFicha);
 };
 #endif
