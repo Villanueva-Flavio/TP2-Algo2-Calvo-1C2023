@@ -3,8 +3,8 @@
 
 #include "Tablero.h"
 #include "Jugador.h"
+#include "Enums.h"
 
-enum EstadoJuego {COMENZADO, FINALIZADO};
 
 void cargarJuego(Tablero<Celda*>* tablero, Lista<Jugador*>* jugadores, std::string* nombres, std::string nombreMundo, int numeroDeJugadores);
 

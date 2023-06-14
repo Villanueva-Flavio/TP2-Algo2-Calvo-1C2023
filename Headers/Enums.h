@@ -42,6 +42,13 @@ enum Iteracion {
     ANTERIOR
 };
 
+//Batalla digital
+
+enum EstadoJuego {
+    COMENZADO, 
+    FINALIZADO
+};
+
 
 
 #endif

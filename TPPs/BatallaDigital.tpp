@@ -220,7 +220,7 @@ void cargarJuego(Tablero<Celda*>* tablero, Lista<Jugador*>* jugadores, std::stri
 }
 
 void mostrarTerreno(Tablero<Celda*>* tablero, int size) {
-    Coordenada imgSize = {size*100, size*70};
+    coordenadas imgSize = {size*100, size*70};
     BMP imagen;
     imagen.SetSize(imgSize.x,imgSize.y);
     imprimirAngulo(imgSize,(&imagen),tablero, getMap());

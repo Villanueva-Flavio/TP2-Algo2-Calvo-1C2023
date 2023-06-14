@@ -2,8 +2,7 @@
 #define __DATOS_INGRESADOS_H__
 
 #include <string>
-
-struct coordenadas { int x, y, z; };
+#include "Structs/Coordenadas.h"
 
 // Muestra por pantalla un mensaje el nombre del juego y pide la cantidad de jugadores
 void solicitarJugadores(int* cantJugadores);
