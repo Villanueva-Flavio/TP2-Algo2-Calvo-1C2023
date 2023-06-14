@@ -6,7 +6,7 @@ template <class T> class Tablero {
     private:
         Lista<Lista<Lista<T>*>*>* cubo;
         int x, y, z;
-        void setCoordenada(int n, int m, int l);
+        
         
     public:
 
@@ -29,6 +29,9 @@ template <class T> class Tablero {
         int getTamanioZ();
         
         bool inRange(int n, int m, int l);
+        
+    private:
+        void setCoordenada(int n, int m, int l);
 };
 #include "../TPPs/Tablero.tpp"
 #endif

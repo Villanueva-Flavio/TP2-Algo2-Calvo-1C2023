@@ -2,6 +2,7 @@
 #define __JUGADOR_H__
 
 #include <string>
+#include "../EasyBMP/EasyBMP_DataStructures.h"
 
 class Jugador{
     private:
@@ -11,7 +12,7 @@ class Jugador{
         int armamentos;
         bool escudoActivo; //yenny nuevo
         bool omitirTurno;//yenny nuevo
-        bool turnoActual;
+        RGBApixel color;
         //Carta *cartas;
     public:
             
@@ -35,8 +36,6 @@ class Jugador{
     
             void setArmamentos(int armamentos);
 
-            void setTurno(bool turno);
-
             // void setCartas(Carta* cartas);
 
             //Memueve el escudo activado por una carta
@@ -45,7 +44,11 @@ class Jugador{
             //Habilita al jugador a participar en las rondas
             void reactivarJugador();//yenny nuevo
 
+            void setColor(RGBApixel color);
+
+            RGBApixel getColor();
+
 };
-#include "../TPPs/Jugador.tpp"
+
 // #include "../TPPs/Carta.tpp"
 #endif

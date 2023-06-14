@@ -1,20 +1,36 @@
 #ifndef __BATALLA_DIGITAL_H__
 #define __BATALLA_DIGITAL_H__
-
 #include "Tablero.h"
+#include "Celda.h"
 #include "Jugador.h"
-#include "Enums.h"
 
+typedef Tablero<Celda*> Mapa;
+typedef Lista<Jugador*> Jugadores;
 
-void cargarJuego(Tablero<Celda*>* tablero, Lista<Jugador*>* jugadores, std::string* nombres, std::string nombreMundo, int numeroDeJugadores);
-
-void mostrarTerreno(Tablero<Celda*>* tablero, int size);
-
-void actualizarJuego(Tablero<Celda*>* tablero, Lista<Jugador*>* jugadores, int turnoDelJugador);
-
-EstadoJuego estadoDelJuego(Lista<Jugador*>* listaJugadores, int cantJugadores);
-
-
-#include "../TPPs/BatallaDigital.tpp"
-
-#endif  //__BATALLA_DIGITAL_H__
+class BatallaDigital{
+    private:
+        Mapa* mapa;
+        Jugadores* jugadores;
+        int cantidadJugadores;
+        int turno;
+        std::string tipoMapa;
+    public:
+        BatallaDigital(int cantidad);
+        ~BatallaDigital();
+        void consultarNombres();
+        void cargarJuego();       
+    private:
+        std::string consultarTipoDeMapa();
+        void cargarMapas();
+        void cargarCantidadesDeFichasAJugadores();
+        // Cargas del mapa
+        void cargarTerrenoPlano(int tipo);
+        void cargarPlaya(int tipo);
+        void cargarRioLago(int tipo);
+        bool esOrilla(int tipo, Coordenada pos);
+        // Cargas de las fichas en el mapa
+        void cargarFichas();
+        void cargarFichaDelTipo(int cantidadDeCarga, TipoContenido tipoDeFicha, int jugadorOwner);
+        bool validarCeldaAInsertarFicha(Coordenada* cordenada, TipoContenido tipoDeFicha);
+};
+#endif

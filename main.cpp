@@ -1,57 +1,40 @@
-#include "./Headers/Tablero.h"
-#include "./Headers/Celda.h"
-#include "./Headers/Jugador.h"
-#include "./Headers/BatallaDigital.h"
-#include "./Headers/DatosIngresados.h"
 #include <iostream>
 #include <string>
-using namespace std;
+#include <ctime>
+#include <cstdlib>
+#include "./Headers/Tablero.h"
+#include "./Headers/Renderizador.h"
+#include "./Headers/Jugador.h"
+#include "./Headers/BatallaDigital.h"
 
+using namespace std;
+struct Niveles{int suelo,mar;};
+
+/* void procesarCambiosMapa(Tablero<Celda*>* tablero, int size) {
+    Coordenada imgSize = {size*100, size*70};
+    BMP imagen;
+    imagen.SetSize(imgSize.x,imgSize.y);
+    imprimirBMP(imgSize,&imagen,tablero, getMap());
+    imagen.WriteToFile("Partida.bmp");
+} */
+
+void solicitarJugadores(int* cantJugadores){
+    cout << "\n--------------------Batalla Digital--------------------\n\n";
+    cin.get();
+
+    cout << "Ingrese la cantidad de jugadores: ";
+    cin >> *cantJugadores;
+    while(*cantJugadores < 2 || *cantJugadores > 10){
+        cout << "La cantidad de jugadores debe ser entre 2 y 10. Ingrese nuevamente: ";
+        cin >> *cantJugadores;
+    }
+}
 
 int main(){
-    Lista<Jugador*>* listaJugadores = new Lista<Jugador*>();
-    int cantJugadores = 0;
-    int turnoDelJugador = 1;
-    int r = 0, g = 0, b = 0;
-    string tipoDeMapa = "";
-    EstadoJuego estadoBatallaDigital = COMENZADO;
-    char movimiento;
-    coordenadas ubicacionMina;
-
+    srand(time(NULL));
+    int cantJugadores;
     solicitarJugadores(&cantJugadores);
-    int mapSize = cantJugadores*4;
-
-    Tablero<Celda*>* tablero = new Tablero<Celda*>(mapSize, mapSize, mapSize);
-    
-    string* nombreJugadores = new string[cantJugadores];
-    int* valoresR = new int[cantJugadores];
-    int* valoresG = new int[cantJugadores];
-    int* valoresB = new int[cantJugadores];
-
-
-    pedirDatosIniciales(cantJugadores, tipoDeMapa, nombreJugadores, valoresR, valoresG ,valoresB);
-    cargarJuego(tablero, listaJugadores, nombreJugadores, tipoDeMapa, cantJugadores);
-
-    while(estadoBatallaDigital != FINALIZADO){
-        pedirMovimiento(&movimiento);
-        pedirUbicacionMina(&ubicacionMina, mapSize);
-        //actualizarJuego(tablero, listaJugadores, turnoDelJugador);
-        mostrarTerreno(tablero,mapSize);
-        estadoBatallaDigital = estadoDelJuego(listaJugadores, cantJugadores);
-        
-        if(turnoDelJugador != cantJugadores) {
-            turnoDelJugador++;
-        } else {
-            turnoDelJugador = 1;
-        }
-    }
-
-
-    delete[] valoresR;
-    delete[] valoresG;
-    delete[] valoresB;
-    delete[] nombreJugadores;
-    delete tablero;
-    delete listaJugadores;
+    BatallaDigital* Juego = new BatallaDigital(cantJugadores);
+    Juego->cargarJuego();
     return 0;
 }
