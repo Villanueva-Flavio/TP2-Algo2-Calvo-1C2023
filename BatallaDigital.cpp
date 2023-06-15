@@ -13,6 +13,11 @@ enum Color {PASTO, TIERRA, ARENA, MINA, FUEGO, AGUA, AIRE, SIN_COLOR};
 typedef map<string, Coordenada> MapaCoordenadas;
 typedef map<Color, RGBApixel> MapaColores;
 
+/*const char MOVIMIENTO_ARRIBA = 'w';
+const char MOVIMIENTO_ABAJO = 's';
+const char MOVIMIENTO_DERECHA = 'a';
+const char MOVIMIENTO_IZQUIERDA = 'd';*/
+
 MapaCoordenadas getMapaCoordenadas(){
     MapaCoordenadas mapa;
     mapa["w"] = {0,0,1};
@@ -59,7 +64,7 @@ void BatallaDigital::consultarNombres(){
     }
 }
 
-// Pide el tipo de mapa que se usara
+
 void BatallaDigital::consultarTipoDeMapa(string tipoMapa){
 
     cout << "\nSeleccione un tipo de mapa. (playa - mar - tierra - desierto - rio - lago)\n(escriba su respuesta): ";
@@ -105,6 +110,23 @@ void BatallaDigital::cargarJuego(){
     //Posicionar fichas  | enum tipo
 }
 
+void BatallaDigital::pedirMovimiento(){
+    bool movimientoValido = false;
+    string movimiento = "";
+    MapaCoordenadas mapa = getMapaCoordenadas();
+
+    cout << "\nIngrese un movimiento (w-a-s-d): ";
+    cin >> movimiento;
+
+    this->mapa->getTData();
+
+    while((mapa.find(movimiento) == mapa.end())){
+        cout << "No se ingrese un movimiento valido.\nIngrese un movimiento (w-a-s-d): ";
+        cin >> movimiento;
+    }
+    Coordenada coordenada = mapa[movimiento];
+}
+
 void BatallaDigital::ejecutarTurno(){
     for(int i = 0; i < this->cantidadJugadores; i++){
         
@@ -114,6 +136,7 @@ void BatallaDigital::ejecutarTurno(){
         //Print Mapa_Jugador_X.bmp
 
         //Pedir Ficha a mover - Mostrar ficha
+        pedirMovimiento();
         //Pedir movimiento o accion
         //Ejecutar movimiento o accion
 
@@ -127,7 +150,7 @@ void BatallaDigital::ejecutarTurno(){
 
 void BatallaDigital::jugar(){
     
-    while(jugadoresVivos() > 1){
+    while(BatallaDigital::jugadoresVivos() > 1){
         this->ejecutarTurno();
     }
     //mensajeVictoria(this->jugadores->getJugador(0)->getNombre()); (Podria quedar para main)

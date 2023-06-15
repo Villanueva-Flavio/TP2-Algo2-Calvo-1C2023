@@ -17,10 +17,17 @@ class BatallaDigital{
         BatallaDigital(int cantidad);
         ~BatallaDigital();
         void cargarJuego();
+        void ejecutarTurno();
+        void jugar();
         void consultarNombres();
+        // Post: Pide el tipo de mapa que se usara
         void consultarTipoDeMapa(string tipoMapa);
         void consultarColores();
         int jugadoresVivos();
+        void pedirMovimiento();
+
+    private:
+        
 
 };
 #endif
