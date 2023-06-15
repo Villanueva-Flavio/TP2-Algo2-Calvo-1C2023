@@ -3,18 +3,16 @@
 #include <cmath>
 #include "Headers/Tablero.h"
 #include "Headers/Celda.h"
-#include "Headers/Carta.h"
+#include "Headers/carta.h"
 #include "Headers/Renderizador.h"
 #include "Headers/BatallaDigital.h"
+#include "Headers/Enums.h"
 
 using namespace std;
 
 #define CAPA_MAXIMA 5
 
-enum Color {PASTO, TIERRA, ARENA, MINA, FUEGO, AGUA, AIRE, SIN_COLOR};
-enum TipoMapa {M_PLAYA, M_MAR, M_TIERRA, M_DESIERTO, M_RIO, M_LAGO};
-
-typedef map<string, Coordenada> MapaCoordenadas;
+typedef map<string, coordenadas> MapaCoordenadas;
 typedef map<string, TipoMapa> MapaTipos;
 
 MapaCoordenadas getMapaCoordenadas(){
@@ -87,7 +85,7 @@ void BatallaDigital::cargarPlaya(int tipo) {
     }    
 }
 
-bool BatallaDigital::esOrilla(int tipo, Coordenada pos){
+bool BatallaDigital::esOrilla(int tipo, coordenadas pos){
     CoordenadaDouble r;
     double p = (tipo == M_LAGO)? 0.285:0.227;
     double radioAjustado = 1+(p*(pow(this->mapa->getTamanioX()/4, 1/2.5)));
@@ -101,7 +99,7 @@ void BatallaDigital::cargarRioLago(int tipo){
     for(int x = 0; x < mapa->getTamanioX(); x++){
         for(int y = 0; y < mapa->getTamanioY(); y++){
             for(int z = 0; z < mapa->getTamanioZ(); z++){
-                Coordenada pos = {x, y, z};
+                coordenadas pos = {x, y, z};
                 (!esOrilla(tipo, pos))? this->mapa->getTData(x, y, z)->setTipo(CAPA_AGUA) : this->mapa->getTData(x, y, CAPA_MAXIMA-1)->setTipo(CAPA_PASTO);
             }
             mapa->getTData(x, y, 0)->setTipo(CAPA_ARENA);
@@ -137,7 +135,7 @@ void BatallaDigital::cargarCantidadesDeFichasAJugadores(){
     }    
 }
 
-bool BatallaDigital::validarCeldaAInsertarFicha(Coordenada* cordenada, TipoContenido tipoDeFicha) {
+bool BatallaDigital::validarCeldaAInsertarFicha(coordenadas* cordenada, TipoContenido tipoDeFicha) {
     TipoContenido tipo = this->mapa->getTData(cordenada->x,cordenada->y,cordenada->z)->getFicha()->getTipo();
     Capa capa = this->mapa->getTData(cordenada->x,cordenada->y,cordenada->z)->getTipo();
 
@@ -150,7 +148,7 @@ bool BatallaDigital::validarCeldaAInsertarFicha(Coordenada* cordenada, TipoConte
 }
 
 void BatallaDigital::cargarFichaDelTipo(int cantidadDeCarga, TipoContenido tipoDeFicha, int jugadorOwner){
-    Coordenada cordenada;
+    coordenadas cordenada;
     for (int i = 0; i <= cantidadDeCarga; i++){
         do{
             cordenada.x = std::rand()%(this->mapa->getTamanioX()-1);

@@ -3,6 +3,7 @@
 #include "Tablero.h"
 #include "Celda.h"
 #include "Jugador.h"
+#include "Structs/Coordenadas.h"
 
 typedef Tablero<Celda*> Mapa;
 typedef Lista<Jugador*> Jugadores;
@@ -27,10 +28,10 @@ class BatallaDigital{
         void cargarTerrenoPlano(int tipo);
         void cargarPlaya(int tipo);
         void cargarRioLago(int tipo);
-        bool esOrilla(int tipo, Coordenada pos);
+        bool esOrilla(int tipo, coordenadas pos);
         // Cargas de las fichas en el mapa
         void cargarFichas();
         void cargarFichaDelTipo(int cantidadDeCarga, TipoContenido tipoDeFicha, int jugadorOwner);
-        bool validarCeldaAInsertarFicha(Coordenada* cordenada, TipoContenido tipoDeFicha);
+        bool validarCeldaAInsertarFicha(coordenadas* cordenada, TipoContenido tipoDeFicha);
 };
 #endif

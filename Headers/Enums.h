@@ -49,6 +49,24 @@ enum EstadoJuego {
     FINALIZADO
 };
 
+enum Color {
+    PASTO, 
+    TIERRA, 
+    ARENA, 
+    MINA, 
+    FUEGO, 
+    AGUA, 
+    AIRE, 
+    SIN_COLOR
+};
 
+enum TipoMapa {
+    M_PLAYA, 
+    M_MAR, 
+    M_TIERRA, 
+    M_DESIERTO,
+    M_RIO, 
+    M_LAGO
+};
 
 #endif
