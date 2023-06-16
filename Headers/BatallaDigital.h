@@ -35,6 +35,7 @@ class BatallaDigital{
         int jugadoresConFichasVivas();
         bool jugadorConFichasVivas(int jugador);
         void procesarInactivas();
+        void mensajeEmpate();
 
     public:
         //Pre:
