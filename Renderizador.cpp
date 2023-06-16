@@ -16,6 +16,7 @@ const RGBApixel TIERRA_OSCURA = {9, 32, 64, 0};
 const RGBApixel BORDE = {0, 0, 0, 0};
 const RGBApixel MINA = {0, 0, 0, 0};
 const RGBApixel FUEGO = {12, 92, 232, 0};
+const RGBApixel QUIMICO = {32,240,32,0};
 
 typedef std::map<int, RGBApixel> MapaColores;
 
@@ -64,7 +65,7 @@ bool colorEnRango(RGBApixel color){
     return color.Red >= 0 && color.Red <= 255 && color.Green >= 0 && color.Green <= 255 && color.Blue >= 0 && color.Blue <= 255;
 }
 
-bool pixelEnRango(int px, int py, Coordenada imgSize){
+bool pixelEnRango(int px, int py, coordenadas imgSize){
     return px >= 0 && px < imgSize.x && py >= 0 && py < imgSize.y;
 }
 
@@ -96,7 +97,7 @@ int pixelSizeGet(RGBApixel color){
     return resultado;
 }
 
-bool pixelSizeEnRango(Coordenada pixelPos, Coordenada imgSize, int pixelSize){
+bool pixelSizeEnRango(coordenadas pixelPos, coordenadas imgSize, int pixelSize){
     bool resultado = false;
     if(pixelEnRango(pixelPos.x + pixelSize, pixelPos.y + pixelSize, imgSize) && 
         pixelEnRango(pixelPos.x - pixelSize, pixelPos.y - pixelSize, imgSize) && 
@@ -107,7 +108,7 @@ bool pixelSizeEnRango(Coordenada pixelPos, Coordenada imgSize, int pixelSize){
     return resultado;
 }
 
-void pintarEntidad(BMP* image, Coordenada pixelPos, RGBApixel color, Coordenada imgSize){
+void pintarEntidad(BMP* image, coordenadas pixelPos, RGBApixel color, coordenadas imgSize){
     int pixelSize = pixelSizeGet(color);
     for(int i = 0; i < pixelSize; i++){
         for(int j = 0; j < pixelSize; j++){
@@ -121,8 +122,8 @@ void pintarEntidad(BMP* image, Coordenada pixelPos, RGBApixel color, Coordenada 
     }
 }
 
-Coordenada getPixelOffset(int lado, int size){
-    Coordenada pixelOffset;
+coordenadas getPixelOffset(int lado, int size){
+    coordenadas pixelOffset;
     pixelOffset.x = (lado == IZQUIERDA)? size*5 : (lado == DERECHA)? size*43 : size*55;
     pixelOffset.y = (lado == IZQUIERDA)? size*37 : (lado == DERECHA)? size*31 : size*38;
     return pixelOffset;
@@ -133,33 +134,18 @@ RGBApixel getColor(Celda celda, MapaColores colores){
            (celda.getFicha()->getTipo() == SOLDADO)?           colores[celda.getFicha()->getJugadorOwner()] : BLANCO;
 }
 
-void getAux(int lado, Coordenada* aux){
-    aux->x = (lado == ATRAS)? -1: 1;
-    aux->y = (lado == ATRAS)? -1: 1;
-    aux->z = (lado == ATRAS)? -1: 1;
-}
-
-void getPixel(CoordenadaDouble* pixel, Coordenada matrixPos){
-    pixel->x = (double)matrixPos.x; 
-    pixel->y = (double)matrixPos.y; 
-    pixel->z = (double)matrixPos.z;
-}
-
-int matrixPosStarter(int lado, int size){
-    return (lado == IZQUIERDA)? 0 : (lado == DERECHA)? 0 : size-1;
-}
-
-void imprimirBMP(Coordenada imgSize, BMP* image, Mapa* tablero, MapaColores colores){
+void imprimirAngulo(coordenadas imgSize, BMP* image, Mapa* tablero, MapaColores colores){
     RGBApixel color;
-    Coordenada pixelOffset, matrixPos, pixelPos, aux;
+    coordenadas pixelOffset, matrixPos, pixelPos;
     CoordenadaDouble pixel;
     for(int lado = 0; lado < 3; lado ++){
-        getAux(lado, &aux);
-        pixelOffset = getPixelOffset(lado, tablero->getTamanioX());
-        for(matrixPos.x = matrixPosStarter(lado, tablero->getTamanioX()); matrixPos.x < tablero->getTamanioX() && matrixPos.x >= 0; matrixPos.x += aux.x){
-            for(matrixPos.y =  matrixPosStarter(lado, tablero->getTamanioY()); matrixPos.y < tablero->getTamanioY() && matrixPos.y >= 0; matrixPos.y += aux.y){
-                for(matrixPos.z = matrixPosStarter(lado, tablero->getTamanioZ()); matrixPos.z < tablero->getTamanioZ() && matrixPos.z >= 0; matrixPos.z += aux.z){
-                    getPixel(&pixel, matrixPos);
+        pixelOffset = getPixelOffset(lado, tablero->getTamanioX());            
+        for(matrixPos.x = 0; matrixPos.x < tablero->getTamanioX(); matrixPos.x++){
+            for(matrixPos.y = 0; matrixPos.y < tablero->getTamanioY(); matrixPos.y++){
+                for(matrixPos.z = 0; matrixPos.z < tablero->getTamanioZ(); matrixPos.z++){
+                    pixel.x = (double)matrixPos.x; 
+                    pixel.y = (double)matrixPos.y; 
+                    pixel.z = (double)matrixPos.z;
                     aplicarProyeccionIsometrica(&pixel, lado);
                     pixelPos.x = static_cast<int>(pixel.x * 20 + pixelOffset.x); 
                     pixelPos.y = static_cast<int>(pixel.y * 20 + pixelOffset.y);

@@ -70,7 +70,7 @@ void pedirMovimiento(char* movimiento){
 }
 
 void pedirUbicacionMina(coordenadas* ubicacionMina, int size){
-    cout << "\nIngrese las coordenadas x y z para la ubicacion de la mina: ";
+    cout << "\nIngrese las coordenadas x y z: ";
     cin >> ubicacionMina->x >> ubicacionMina->y >> ubicacionMina->z;
 
     while(ubicacionMina->x < 0 || ubicacionMina->x > size || ubicacionMina->y < 0 || ubicacionMina->y > size || ubicacionMina->z < 0 || ubicacionMina->z > size){

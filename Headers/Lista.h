@@ -1,9 +1,9 @@
-#ifndef __LISTA_H__
-#define __LISTA_H__
 #include <iostream>
 #include "Nodo.h"
+#include "Enums.h"
 
-enum Iteracion {SIGUIENTE, FINAL, ANTERIOR};
+#ifndef __LISTA_H__
+#define __LISTA_H__
 
 template <class T> class Lista {
 private:
