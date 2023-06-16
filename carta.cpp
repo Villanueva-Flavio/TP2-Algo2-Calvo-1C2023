@@ -33,7 +33,7 @@ Carta::Carta(TipoCarta carta) {
     }
 } 
 
- void Carta::usarCarta(Tablero<Celda*>* tablero, coordenadas centro){
+ void Carta::usarCarta(Tablero<Celda*>* tablero, Coordenada centro){
 
     this->cartaActiva = false;
 
@@ -70,7 +70,7 @@ bool Carta::getCartaActiva() {
     return this->cartaActiva;
 }
 
-void Carta::inactivarCeldas(Tablero<Celda*>* tablero, coordenadas centro){
+void Carta::inactivarCeldas(Tablero<Celda*>* tablero, Coordenada centro){
 
     int radio = this->radioAccion; 
     string reporte = "";
@@ -79,7 +79,7 @@ void Carta::inactivarCeldas(Tablero<Celda*>* tablero, coordenadas centro){
         for (int m= centro.y - radio; m < centro.y + radio ; m++){
             for (int l = centro.z - radio; l < centro.z + radio ; l++){
                 if(tablero->inRange(n,m,l)){
-                    coordenadas punto = {n,m,l};
+                    Coordenada punto = {n,m,l};
                     int turnosInactiva = this->getTurnosInactiva(centro,punto);
 
                     if(tablero->getTData(n,m,l)->getFicha()->getTipo() == VACIO){
@@ -99,15 +99,15 @@ void Carta::inactivarCeldas(Tablero<Celda*>* tablero, coordenadas centro){
 
     this->imprimirReporte(reporte);
 }
-void Carta::bombardearCeldas(Tablero<Celda*>* tablero, coordenadas centro){
+void Carta::bombardearCeldas(Tablero<Celda*>* tablero, Coordenada centro){
 
     int &radio = this->radioAccion; 
     string reporte = "";
-    coordenadas limiteSuperior = {2*radio,2*radio,2*radio};
-    coordenadas limiteInferior = {centro.x -radio, centro.y - radio, centro.z - radio};
+    Coordenada limiteSuperior = {2*radio,2*radio,2*radio};
+    Coordenada limiteInferior = {centro.x -radio, centro.y - radio, centro.z - radio};
 
     for(int i= 0; i<this->cantidadBombas; i++){
-        coordenadas puntoAlAzar = {rand() % limiteSuperior.x + limiteInferior.x, rand() % limiteSuperior.y + limiteInferior.y, rand() % limiteSuperior.z +limiteInferior.z};
+        Coordenada puntoAlAzar = {rand() % limiteSuperior.x + limiteInferior.x, rand() % limiteSuperior.y + limiteInferior.y, rand() % limiteSuperior.z +limiteInferior.z};
         if(tablero->inRange(puntoAlAzar.x,puntoAlAzar.y,puntoAlAzar.z)){
             cout << "entro"<<endl;
             int owner = tablero->getTData(puntoAlAzar.x,puntoAlAzar.y,puntoAlAzar.z)->getFicha()->getJugadorOwner();
@@ -121,7 +121,7 @@ void Carta::bombardearCeldas(Tablero<Celda*>* tablero, coordenadas centro){
     this->imprimirReporte(reporte);
 }
 
-void Carta::obtenerReporte(Tablero<Celda*>* tablero,  coordenadas centro){
+void Carta::obtenerReporte(Tablero<Celda*>* tablero,  Coordenada centro){
     int &radio = this->radioAccion; 
     string reporte = "";
 
@@ -143,7 +143,7 @@ void Carta::obtenerReporte(Tablero<Celda*>* tablero,  coordenadas centro){
     this->imprimirReporte(reporte);
 }
   
-void Carta::lanzarMisil(Tablero<Celda*>* tablero,  coordenadas centro){
+void Carta::lanzarMisil(Tablero<Celda*>* tablero,  Coordenada centro){
     
     if(tablero->inRange(centro.x,centro.y,centro.z)){
 
@@ -193,11 +193,11 @@ string Carta::getStringTipoFicha(TipoContenido tipo){
     return mapaTiposContenido[tipo];
 }
 
-int Carta::getTurnosInactiva(coordenadas centro, coordenadas punto){
+int Carta::getTurnosInactiva(Coordenada centro, Coordenada punto){
 
     int radio = this->radioAccion;
 
-    coordenadas distancia = {abs(centro.x - punto.x), abs(centro.y - punto.y), abs(centro.z - punto.z)};
+    Coordenada distancia = {abs(centro.x - punto.x), abs(centro.y - punto.y), abs(centro.z - punto.z)};
     
     if (distancia.x == radio || distancia.y == radio || distancia.z == radio) {
         return  1; 
@@ -215,7 +215,7 @@ int Carta::getTurnosInactiva(coordenadas centro, coordenadas punto){
 
 }
 
-void Carta::inactivarCelda(Tablero<Celda*>* tablero, coordenadas punto, int turnosInactiva){
+void Carta::inactivarCelda(Tablero<Celda*>* tablero, Coordenada punto, int turnosInactiva){
     tablero->getTData(punto.x,punto.y,punto.z)->setEstado(false);
     tablero->getTData(punto.x,punto.y,punto.z)->setTurnosInactiva(4);
     tablero->getTData(punto.x,punto.y,punto.z)->getFicha()->setTipo(VACIO);

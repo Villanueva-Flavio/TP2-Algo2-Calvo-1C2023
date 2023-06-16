@@ -13,7 +13,7 @@ class BatallaDigital{
     private:
         Mapa* mapa;
         Jugadores* jugadores;
-        string tipoMapa;
+        std::string tipoMapa;
         int cantidadJugadores;
         int turno;
         std::string tipoMapa;
@@ -28,7 +28,7 @@ class BatallaDigital{
         void aplicarGravedad(Coordenada* coordenada);
         void removerAmbasFichas(Coordenada c1, Coordenada c2);
         void aplicarMovimiento(int jugador, Coordenada* coordenada);
-        void eventoColisionMortal(string evento, Coordenada c1, Coordenada c2);
+        void eventoColisionMortal(std::string evento, Coordenada c1, Coordenada c2);
         void eventoDesplazamiento(Coordenada c1, Coordenada c2);
         void procesarEventos(Coordenada coordenada, int jugador);
         void jugarFicha(int jugador);
