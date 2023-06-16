@@ -19,7 +19,7 @@ class Celda {
         void setEstado(bool estado);
 
         bool getEstado();
-
+        
         Ficha* getFicha();
 
         Ficha getCopiaFicha();

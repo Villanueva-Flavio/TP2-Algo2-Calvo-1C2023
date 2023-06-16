@@ -19,6 +19,16 @@ class BatallaDigital{
         std::string tipoMapa;
         bool omitirTurno;
         void cargarMapaEspecificado(int aux);
+        void mostrarFichasActuales(int jugador);
+        void solicitarFichaAMover(int* indice, int jugador);
+        void moverFicha(int indice, int jugador);
+        void seleccionDeFicha(int jugador);
+        bool sePuedeMover(Coordenada coordenada, int jugador);
+        void seleccionarDireccion(Coordenada* coordenada);
+        void contarEscalado(Coordenada* coordenada);
+        void aplicarGravedad(Coordenada* coordenada);
+        void explotarMina(Coordenada coordenada);
+        
     public:
         //Pre:
         //Post:
@@ -145,7 +155,7 @@ class BatallaDigital{
         //Post: devuelve una alarte por consola al ussuario para que solucione el error
         void errorEnCeldaElegida(std::string resultado);
 
-        //Pre: recibe las celdas en donde se encuentra la fu}icha del jugador y la celda ea d donde deseaba moverse
+        //Pre: recibe las celdas en donde se encuentra la ficha del jugador y la celda ea d donde deseaba moverse
         //Post: elimina la ficha del jugador e inactiva la celda en donde se produjo el encuentro
         void destruirFicha(Ficha* ficha);
 

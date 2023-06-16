@@ -11,6 +11,13 @@ private:
 	Nodo<T>* iterador;
 	int size;
 	int iteracion;
+	void irANodo(int x);	
+	// Recibe el tipo de iteracion
+	// Itera la lista una vez, o hasta el final
+	void iterar(Iteracion iteracion);
+
+	// Reinicia el iterador en la primer posicion
+	void resetIter();
 public: 
 
 	// Constructor de lista vacia.
@@ -24,12 +31,7 @@ public:
 	void assign(T data);
 
 	Nodo<T>* getNodo();
-	// Recibe el tipo de iteracion
-	// Itera la lista una vez, o hasta el final
-	void iterar(Iteracion iteracion);
 
-	// Reinicia el iterador en la primer posicion
-	void resetIter();
 
 	// Obtiene el dato del nodo del iterador
 	T getLData(int x);
@@ -43,7 +45,6 @@ public:
 	// Obtiene el tamaño de la lista
 	int getSize();
 
-	void irANodo(int x);
 };
 #include "../TPPs/Lista.tpp"
 #endif

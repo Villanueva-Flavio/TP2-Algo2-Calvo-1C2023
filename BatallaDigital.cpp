@@ -344,6 +344,146 @@ void BatallaDigital::tomarCartaDeMazo(Jugador* jugador, Coordenada coordenada){
     }
 }
 
+void BatallaDigital::mostrarFichasActuales(int jugador){
+    cout << "Fichas actuales: " << endl;
+    int contador = 0;
+    for(int i = 0; i < this->mapa->getTamanioX(); i++){
+        for(int j = 0; j < this->mapa->getTamanioY(); j++){
+            for(int k = 0; k < this->mapa->getTamanioZ(); k++){
+                if(this->mapa->getTData(i,j,k)->getFicha()->getJugadorOwner() == jugador){
+                    string tipo = (this->esArmamento(this->mapa->getTData(i,j,k)->getFicha()->getTipo())) ? "Armamento" : "Soldado";
+                    cout << contador + 1  << " " << tipo << ". " << this->mapa->getTData(i,j,k)->getFicha()->getTipo() << endl;
+                    contador++;
+                }
+                if(contador == this->jugadores->getLData(jugador)->getArmamentos() + this->jugadores->getLData(jugador)->getSoldados()){
+                    return;
+                }
+            }
+        }
+    }
+}
+
+void BatallaDigital::solicitarFichaAMover(int* indice, int jugador){
+    cout << "Ingrese el numero de la ficha que desea mover: ";
+    cin >> *indice;
+    while(*indice < 1 || *indice > this->jugadores->getLData(jugador)->getArmamentos() + this->jugadores->getLData(jugador)->getSoldados()){
+        cout << endl << "Ingrese un numero valido: ";
+        cin >> *indice;
+    }
+    *indice -= 1;
+}
+
+void BatallaDigital::seleccionarDireccion(Coordenada* coordenada){
+    string direccion;
+    MapaCoordenadas mapaCoordenadas = getMapaCoordenadas();
+    cout << "Ingrese la direccion en la que desea mover la ficha (W - A - S - D | R - F): " << endl;
+    cin >> direccion;
+    while(mapaCoordenadas.find(direccion) == mapaCoordenadas.end()){
+        cout << endl << "Ingrese una direccion valida: ";
+        cin >> direccion;
+    }
+    coordenada->x += mapaCoordenadas[direccion].x;
+    coordenada->y += mapaCoordenadas[direccion].y;
+    coordenada->z += mapaCoordenadas[direccion].z;
+}
+
+bool BatallaDigital::sePuedeMover(Coordenada coordenada, int jugador){
+    TipoContenido tipo = this->mapa->getTData(coordenada.x, coordenada.y, coordenada.z)->getFicha()->getTipo();
+    
+    return(coordenada.x < 0 || 
+            coordenada.x >= this->mapa->getTamanioX() || 
+            coordenada.y < 0 || 
+            coordenada.y >= this->mapa->getTamanioY() || 
+            coordenada.z < 0 || 
+            coordenada.z >= this->mapa->getTamanioZ() ||
+            !this->mapa->getTData(coordenada.x, coordenada.y, coordenada.z)->getEstado() ||
+            this->mapa->getTData(coordenada.x, coordenada.y, coordenada.z)->getFicha()->getJugadorOwner() == jugador)?
+            false : true;
+}
+
+void BatallaDigital::aplicarGravedad(Coordenada* coordenada){
+    while(coordenada->z > 0 && this->mapa->getTData(coordenada->x, coordenada->y, coordenada->z - 1)->getTipo() == AIRE){
+        coordenada->z -= 1;
+    }
+}
+
+void BatallaDigital::contarEscalado(Coordenada* coordenada){
+    int difAltura = 0;
+    TipoContenido tipo = this->mapa->getTData(coordenada->x, coordenada->y, coordenada->z)->getFicha()->getTipo();
+    difAltura = (tipo == PASTO || tipo == TIERRA) ? 1 : 0;
+    coordenada->z += difAltura;
+}
+
+void BatallaDigital::explotarMina(Coordenada coordenada){
+    for(int i = -2; i<=2; i++){
+        for(int j = -2; j <= 2; j++){
+            for(int k = -2; k <= 2; k++){
+                this->destruirFicha(this->mapa->getTData(coordenada.x + i, coordenada.y + j, coordenada.z + k)->getFicha());
+                this->inactivarCelda(this->mapa->getTData(coordenada.x + i, coordenada.y + j, coordenada.z + k));
+            }
+        }
+    }
+}
+
+void BatallaDigital::moverFicha(int indice, int jugador){
+    int contador = 0;
+    for(int i = 0; i < this->mapa->getTamanioX(); i++){
+        for(int j = 0; j < this->mapa->getTamanioY(); j++){
+            for(int k = 0; k < this->mapa->getTamanioZ(); k++){
+                if(this->mapa->getTData(i,j,k)->getFicha()->getJugadorOwner() == jugador){
+                    contador++;
+                }
+                if(contador == indice){
+                    Coordenada coordenada = {i,j,k};
+                    Ficha* ficha = this->mapa->getTData(i,j,k)->getFicha();
+                    this->seleccionarDireccion(&coordenada);
+                    this->contarEscalado(&coordenada);
+                    this->aplicarGravedad(&coordenada);
+                    while(!this->sePuedeMover(coordenada, jugador)){
+                        cout << "No se puede mover a esa posicion, ingrese otra direccion: " << endl;
+                        coordenada = {i,j,k};
+                        this->seleccionarDireccion(&coordenada);
+                        this->contarEscalado(&coordenada);
+                        this->aplicarGravedad(&coordenada);
+                    }
+
+                    if(this->mapa->getTData(coordenada.x, coordenada.y, coordenada.z)->getFicha()->getTipo() == MINA_FICHA){
+                        this->explotarMina(coordenada);
+                    } else if(this->mapa->getTData(coordenada.x, coordenada.y, coordenada.z)->getFicha()->getTipo() == SOLDADO){
+                        this->destruirFicha(this->mapa->getTData(coordenada.x, coordenada.y, coordenada.z)->getFicha());
+                        this->destruirFicha(this->mapa->getTData(i, j, k)->getFicha());
+                    } else {
+                        int ownerAux = this->mapa->getTData(i, j, k)->getFicha()->getJugadorOwner();
+                        TipoContenido tipoAux = this->mapa->getTData(i, j, k)->getFicha()->getTipo();
+                        this->mapa->getTData(i, j, k)->getFicha()->setJugadorOwner(-1);
+                        this->mapa->getTData(i, j, k)->getFicha()->setTipo(VACIO);
+                        this->mapa->getTData(coordenada.x, coordenada.y, coordenada.z)->getFicha()->setJugadorOwner(ownerAux);
+                        this->mapa->getTData(coordenada.x, coordenada.y, coordenada.z)->getFicha()->setTipo(tipoAux);
+                    }
+                    return;                       
+                }
+
+            }
+        }
+    }
+}
+
+void BatallaDigital::seleccionDeFicha(int jugador){
+    int indice = 0;
+    this->mostrarFichasActuales(jugador);
+    this->solicitarFichaAMover(&indice, jugador);
+    this->moverFicha(indice, jugador);
+}
+
+/* 
+    Mostrar que fichas tiene
+    elegir ficha
+    validar movimiento (ya estan hechas)
+*/
+
+/* quitar 1 turno inactivo */
+/* limpiar header/structs de otros archivos */
+
 void BatallaDigital::cambiarTurno(){
     string estadoPartida= "activa";
     int i= 0;
@@ -353,10 +493,12 @@ void BatallaDigital::cambiarTurno(){
             Jugador* jugadorActual = this->jugadores->getLData(i);
             Coordenada coordendaMina=this->obtenerCoordenadaCelda();
             string respuesta = "";
+            /* aplicar aca mover fichas */
             while(!mensajeValido(respuesta)){
                 cout<<"Desea tomar una carta del mazo? Y/N: "<<endl;
                 cin>>respuesta;
             }  
+
             if(respuesta == "Y"){
                 tomarCartaDeMazo(jugadorActual, coordendaMina);
             }
