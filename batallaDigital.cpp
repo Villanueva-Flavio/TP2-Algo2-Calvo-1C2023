@@ -91,22 +91,38 @@ void BatallaDigital::cargarJuego(){
 
 void BatallaDigital::ejecutarTurno(){
     for(int i = 0; i < this->cantidadJugadores; i++){
-        
-        //Si jugador no tiene fichas -> no juega
-        //Si jugador tiene turno omitido -> no juega
-        
-        //Print Mapa_Jugador_X.bmp
-
-        //Pedir Ficha a mover - Mostrar ficha
-        //Pedir movimiento o accion
-        //Ejecutar movimiento o accion
-
-        //Soltar mina
-        //Comprobar si explota
-
-        //Robar Carta    
+        /* Cambio Turno {
+            if ! Omitir turno 
+                seleccionar ficha
+                mover ficha
+                ejecutar cambio
+                mostrar foto nueva
+                soltar mina
+                if(barco)
+                    soltar mina
+                robar carta
+            !omitirTurno
+            turno ++
+} */
 
     }
+
+    /* 
+
+reordenar map movimientos para yenny
+reordenar map colores (flavio hace bitmap)
+
+mensaje victoria
+
+arreglar cantidad generada de fichas
+
+hacer que el jugador solo vea sus fichas
+
+movimiento vertical R-F
+
+Carta lista
+
+upper cargar mapas */
 }
 
 void BatallaDigital::jugar(){
