@@ -505,9 +505,6 @@ void BatallaDigital::jugarFicha(int jugador){
     this->moverFicha(indice, jugador);
 }
 
-/* quitar 1 turno inactivo */
-/* limpiar header/structs de otros archivos */
-
 bool BatallaDigital::jugadorConFichasVivas(int jugador){
     return this->jugadores->getLData(jugador)->getArmamentos() + this->jugadores->getLData(jugador)->getSoldados() > 0;
 }
@@ -520,6 +517,18 @@ int BatallaDigital::jugadoresConFichasVivas(){
         }
     }
     return contador;
+}
+
+void BatallaDigital::procesarInactivas(){
+    for(int i = 0; i < this->mapa->getTamanioX(); i++){
+        for(int j = 0; j < this->mapa->getTamanioY(); j++){
+            for(int k = 0; k < this->mapa->getTamanioZ(); k++){
+                if(this->mapa->getTData(i, j, k)->getTurnosInactiva() > 0){
+                    this->mapa->getTData(i, j, k)->setTurnosInactiva(this->mapa->getTData(i, j, k)->getTurnosInactiva() - 1);
+                }
+            }
+        }
+    }
 }
 
 void BatallaDigital::cambiarTurno(){
@@ -546,6 +555,9 @@ void BatallaDigital::cambiarTurno(){
         jugador++;
         if(this->jugadoresConFichasVivas() == 1){
             estadoPartida = "finalizada";
+        }
+        if(jugador == this->jugadores->getSize()){
+            this->procesarInactivas();
         }
     }  
 }
