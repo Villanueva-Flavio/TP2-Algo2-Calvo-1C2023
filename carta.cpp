@@ -18,21 +18,6 @@ Carta::Carta(TipoCarta carta) {
     this->carta = carta;
 }
 
- void Carta::usarCarta(bool &atributoJugador){
-    
-    this->cartaActiva = false;
-
-    switch(this->carta){
-        case OMITIR_TURNO:
-            //se pasa por parametros jugador continuo
-            this->activarAtributosJugador(atributoJugador);
-            break;
-        case ESCUDO:
-            this->activarAtributosJugador(atributoJugador);
-            break;
-    }
-} 
-
  void Carta::usarCarta(Tablero<Celda*>* tablero, coordenadas centro){
 
     this->cartaActiva = false;
@@ -155,18 +140,12 @@ void Carta::lanzarMisil(Tablero<Celda*>* tablero,  coordenadas centro){
     }
     
 }
-
-void Carta::activarAtributosJugador(bool &atributoJugador){
-    if(!atributoJugador){
-        atributoJugador = true;
-    }
-} 
+ 
 
 void Carta::imprimirReporte(string reporte){
 
     string txtName = "cartaReporte.txt";
     ofstream file;
-
     file.open(txtName.c_str(), fstream::out);
     if(reporte!= ""){
         for(int i=0; i < reporte.size() ; i++){
@@ -182,10 +161,7 @@ void Carta::imprimirReporte(string reporte){
     }else{
         file << "No hubieron fichas afectadas por el ataque :("; 
     }
-    
-
     file.close();
-
 }
 
 string Carta::getStringTipoFicha(TipoContenido tipo){

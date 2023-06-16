@@ -80,3 +80,11 @@ Carta* Jugador::seleccionarCarta(int indiceCarta){
     //Falta validacion
     return this->cartas->getLData(indiceCarta);
 }
+
+int Jugador::getCantidadDeCartas(){
+    int cantidadDeCartas= 0;
+    for(int i = 0; i < this->cartas->getSize(); i++){
+        cantidadDeCartas++;
+    }
+    return cantidadDeCartas;
+}

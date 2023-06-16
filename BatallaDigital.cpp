@@ -316,18 +316,18 @@ Carta*  BatallaDigital::generarCarta(){
 }
 
 void BatallaDigital::ejecutarCartaElegida(Carta* carta, Jugador* jugador,coordenadas coordenada){
-    
+    coordenadas coordenadaMisil;
     switch(carta->getTipoCarta()){
         case OMITIR_TURNO:
             this->omitirTurno = true;
-            break;
+        break;
         case ESCUDO:
             jugador->activarEscudo();
-            break;
+        break;
         case BARCO:
-            coordenadas coordenadaBomba = obtenerCoordenadaCelda();
-            carta->usarCarta(this->mapa, coordenadaBomba);
-            break;
+            coordenadaMisil = obtenerCoordenadaCelda();
+            carta->usarCarta(this->mapa, coordenadaMisil);
+        break;
         default:
             carta->usarCarta(this->mapa, coordenada);
     }
@@ -360,6 +360,21 @@ bool BatallaDigital::mensajeValido(std::string mensaje){
     return valido;
 }
 
+int BatallaDigital::obtenerIndiceDeCarta(Jugador* jugador){
+    int i = 0;
+    int indiceDeCarta;
+    while(i !=-1){
+        cout<<"Ingrese el indice de la carta que quiere usar: "<<endl;
+        cin >> indiceDeCarta;
+        if(indiceDeCarta > 0 && indiceDeCarta < jugador->getCantidadDeCartas() ){
+            i= -1;
+        }else{
+             cout<<"Ingrese un indice valido"<<endl;
+        }
+    }
+    return indiceDeCarta;
+}
+
 void BatallaDigital::tomarCartaDeMazo(Jugador* jugador, coordenadas coordenada){
     Carta*  carta = generarCarta();
     jugador->agregarCarta(carta);
@@ -374,17 +389,12 @@ void BatallaDigital::tomarCartaDeMazo(Jugador* jugador, coordenadas coordenada){
 
     if(respuesta == "Y"){
         jugador->imprimirCartas();
-        int indiceDeCarta;
-        //Agregar validacion
-        cout<<"Ingrese el indice de la carta que quiere usar: "<<endl;
-        cin >> indiceDeCarta;
+        int indiceDeCarta = this->obtenerIndiceDeCarta(jugador); 
         insertarMina(coordenada);
         this->ejecutarCartaElegida(jugador->seleccionarCarta(indiceDeCarta),jugador,coordenada);
     }else {
         insertarMina(coordenada);
     }
-    
-
  }
 
 void BatallaDigital::cambiarTurno(){
@@ -408,11 +418,9 @@ void BatallaDigital::cambiarTurno(){
                 tomarCartaDeMazo(jugadorActual, coordendaMina);
             }
 
-
         }else{
             this->omitirTurno= false;
         }
-        
         i++;
     }  
 }

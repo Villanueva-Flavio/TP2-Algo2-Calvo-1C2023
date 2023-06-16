@@ -117,6 +117,10 @@ class BatallaDigital{
         //Post:se genera una carta al azar y le da la opcion al usuario de usarla o no
         bool mensajeValido(std::string mensaje);
 
+        //Pre:se tiene que validar que el indice sea valido
+        //Post: devuelve el indice de la carta solictado por el usuario
+        int obtenerIndiceDeCarta(Jugador* jugador);
+
         //------------ Interacciones entre fichas -------------------
 
         //Pre:recibe la celda dell jugador actual y la celda a la que desea trasladarse
