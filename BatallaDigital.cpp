@@ -326,13 +326,14 @@ void BatallaDigital::tomarCartaDeMazo(Jugador* jugador, Coordenada coordenada){
     jugador->agregarCarta(carta);
     cout<<"Acaba de selecionar una carta del tipo: " << carta->getStringTipoCarta()<<endl;
     string respuesta = "";
-    
     while(!mensajeValido(respuesta)){
         cout<<"¿Desea usar alguna Carta? Y/N: "<<endl;
         cin>>respuesta;
     }  
 
-    if(respuesta == "Y"){
+    if(respuesta != "Y"){
+        insertarMina(coordenada);
+    }else {
         jugador->imprimirCartas();
         int indiceDeCarta;
         //Agregar validacion
@@ -340,8 +341,6 @@ void BatallaDigital::tomarCartaDeMazo(Jugador* jugador, Coordenada coordenada){
         cin >> indiceDeCarta;
         insertarMina(coordenada);
         this->ejecutarCartaElegida(jugador->seleccionarCarta(indiceDeCarta),jugador,coordenada);
-    }else {
-        insertarMina(coordenada);
     }
 }
 
