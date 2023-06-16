@@ -1,12 +1,16 @@
 #include <map>
 #include <string>
 #include <cmath>
+#include <cstdlib>
+#include <time.h>
+
 #include "Headers/Tablero.h"
 #include "Headers/Celda.h"
 #include "Headers/carta.h"
 #include "Headers/Renderizador.h"
 #include "Headers/BatallaDigital.h"
 #include "Headers/Enums.h"
+
 
 using namespace std;
 
@@ -42,6 +46,7 @@ MapaTipos getMapaTipos(){
 BatallaDigital::BatallaDigital(int cantidad){
     this->mapa = new Mapa(cantidad*4, cantidad*4, cantidad*4);
     this->jugadores = new Jugadores();
+    this->omitirTurno=false;
     for(int i = 0; i < cantidad; i++){
         Jugador* jugador = new Jugador();
         this->jugadores->add(jugador);
@@ -177,4 +182,187 @@ void BatallaDigital::cargarJuego() {
     this->cargarMapas();
     this->cargarCantidadesDeFichasAJugadores();
     this->cargarFichas();
+}
+
+// ---------------- Interacciones entre fichas ------------------
+
+string BatallaDigital::validarContenidoFicha(Celda* celdaJugador, Celda* celdaElegida){
+    // soldadoJugadorContrario - armamentoJugadorContrario - inactiva- vacia - fichaJugador - destruir
+    string resultado= "inactiva"; 
+
+    if(celdaElegida->getEstado()!=false){
+
+        TipoContenido fichaDeJugador = celdaJugador->getFicha()->getTipo();
+
+        if(esArmamento(fichaDeJugador)){
+            resultado = validacionArmamento(celdaJugador,celdaElegida);
+        }else {
+            resultado = validacionSoldado(celdaJugador,celdaElegida);
+        }
+
+    }
+
+    return resultado;
+}
+
+string BatallaDigital::validacionArmamento(Celda* celdaJugador, Celda* celdaElegida){
+    string resultado = "vacia";
+    TipoContenido tipoCeldaElegida = celdaElegida->getFicha()->getTipo();
+    if(tipoCeldaElegida == SOLDADO || esArmamento(tipoCeldaElegida)){
+        resultado=  esFichaDelJugadorActual(celdaJugador,celdaElegida) ? "fichaJugador" : "armamentoJugadorContrario";;
+    }else if(tipoCeldaElegida == MINA_FICHA){
+        resultado= "destruir";
+    }
+
+    return resultado;
+}
+
+string BatallaDigital::validacionSoldado(Celda* celdaJugador, Celda* celdaElegida){
+    string resultado= "vacia"; 
+    TipoContenido tipoCeldaElegida = celdaElegida->getFicha()->getTipo();
+    if(esArmamento(tipoCeldaElegida)){
+        resultado= esFichaDelJugadorActual(celdaJugador,celdaElegida) ? "fichaJugador" : "destruir";
+    }else if (tipoCeldaElegida == SOLDADO){
+        resultado= esFichaDelJugadorActual(celdaJugador,celdaElegida) ?  "fichaJugador" : "soldadoJugadorContrario";
+    }else if (tipoCeldaElegida == MINA_FICHA){
+        resultado= "destruir";
+    }
+
+    return resultado;
+}
+
+bool BatallaDigital::esArmamento(TipoContenido contenidoFicha){
+    bool resultado= false;
+    if(contenidoFicha !=  CARTA && contenidoFicha != VACIO && contenidoFicha !=  SOLDADO && contenidoFicha !=  MINA_FICHA){
+        resultado = true;
+    }
+    return resultado;
+}
+
+bool BatallaDigital::esFichaDelJugadorActual(Celda* celdaJugador, Celda* celdaElegida){
+    bool resultado = false;
+
+    if(celdaJugador->getFicha()->getJugadorOwner() == celdaElegida->getFicha()->getJugadorOwner() ){
+        resultado = true;
+    }
+    return resultado;
+}
+
+void BatallaDigital::errorEnCeldaElegida(string resultado){
+    cout << "La celda seleccionada se encuentra ocupada por otra de sus fichas elija otra celda"<< endl;
+}
+
+void BatallaDigital::destruirFicha(Ficha* ficha){
+    ficha->setTipo(VACIO);
+    ficha->setJugadorOwner(-1);
+    ficha->setNumFicha(-1);
+
+}
+
+void BatallaDigital::inactivarCelda(Celda* celda){
+    celda->setEstado(false);
+}
+
+//------------------- ---------------------- 
+
+coordenadas BatallaDigital::obtenerCoordenadaCelda(){
+    int x,y,z;
+    cout<<"Ingrese la coordenada X de la celda: "<<endl;
+    cin>>x;
+    cout<<"Ingrese la coordenada Y de la celda: "<<endl;
+    cin>>y;
+    cout<<"Ingrese la coordenada Z de la celda: "<<endl;
+    cin>>z;
+
+    coordenadas coordenada = {x,y,z};
+
+    return coordenada;
+}
+
+mapaIndiceDeCartas BatallaDigital::getMapaIndiceDeCartas(){
+    mapaIndiceDeCartas mapa;
+    mapa[AVION_RADAR]=AVION_RADAR;
+    mapa[BARCO_MISIL]=BARCO_MISIL;
+    mapa[ATAQUE_QUIMICO]=ATAQUE_QUIMICO;
+    mapa[BOMBARDEO]=BOMBARDEO;
+    mapa[OMITIR_TURNO]=OMITIR_TURNO;
+    mapa[ESCUDO]=ESCUDO;
+    return mapa;
+}
+
+Carta*  BatallaDigital::generarCarta(){
+    srand(time(NULL));
+    int indiceDeCarta = rand() % 5;
+    mapaIndiceDeCartas mapaIndiceCartas = this->getMapaIndiceDeCartas();
+    Carta* cartaGenerada= new Carta(mapaIndiceCartas[indiceDeCarta]);
+    return cartaGenerada;
+}
+
+void BatallaDigital::ejecutarCartaElegida(Carta* carta, Jugador* jugador,coordenadas coordenada){
+    
+    switch(carta->getTipoCarta()){
+        case OMITIR_TURNO:
+            this->omitirTurno = true;
+            break;
+        case ESCUDO:
+            jugador->activarEscudo();
+            break;
+        default:
+            carta->usarCarta(this->mapa, coordenada);
+    }
+}
+
+void BatallaDigital::insertarMina(coordenadas coordenada){
+    Celda* celdaSelecionada = this->mapa->getTData(coordenada.x,coordenada.y,coordenada.z);
+    if(celdaSelecionada->getEstado()){
+        if(celdaSelecionada->getFicha()->getJugadorOwner() != -1 || celdaSelecionada->getFicha()->getTipo() == MINA_FICHA){
+            //Missing informar al usuario
+            destruirFicha(celdaSelecionada->getFicha());
+            inactivarCelda(celdaSelecionada);
+        }else{
+            celdaSelecionada->getFicha()->setTipo(MINA_FICHA);
+        }
+    }
+}
+
+void BatallaDigital::cambiarTurno(){
+    int i= 0;
+    while(i <this->jugadores->getSize()){
+
+        if(this->omitirTurno){
+            Jugador* jugadorActual = this->jugadores->getLData(i);
+            coordenadas coordendaMina=this->obtenerCoordenadaCelda();
+            Carta*  carta = generarCarta();
+
+            jugadorActual->agregarCarta(carta);
+            
+            //Agregar validacion
+            string respuesta = "";
+            cout<<"¿Desea usar alguna Carta? Y/N: "<<endl;
+            cin>>respuesta;
+            
+            if(respuesta == "Y"){
+                jugadorActual->imprimirCartas();
+                int indiceDeCarta;
+                //Agregar validacion
+                cout<<"Ingrese el indice de la carta que quiere usar: "<<endl;
+                cin >> indiceDeCarta;
+
+                insertarMina(coordendaMina);
+                this->ejecutarCartaElegida(jugadorActual->seleccionarCarta(indiceDeCarta),jugadorActual,coordendaMina);
+            }else{
+                insertarMina(coordendaMina);
+            }
+
+            //mostrar las fichas disponibles
+            cout<<"¿Desea mover alguna Ficha? Y/N: "<<endl;
+            cin>>respuesta;
+
+
+        }else{
+            this->omitirTurno= false;
+        }
+        
+        i++;
+    }  
 }

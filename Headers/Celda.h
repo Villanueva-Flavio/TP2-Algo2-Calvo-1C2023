@@ -7,6 +7,7 @@ class Celda {
         Capa tipo;
         bool estado;
         Ficha ficha;
+        int turnosInactiva;
 
     public:
         Celda();
@@ -22,5 +23,9 @@ class Celda {
         Ficha* getFicha();
 
         Ficha getCopiaFicha();
+
+        void setTurnosInactiva(int turnosInactiva);
+
+        int getTurnosInactiva();
 };
 #endif

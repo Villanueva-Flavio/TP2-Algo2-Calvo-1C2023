@@ -61,6 +61,11 @@ TipoCarta Carta::getTipoCarta() {
     return this->carta;
 }
 
+string Carta::getStringTipoCarta(){
+    mapaStringTipoDeCarta mapa = getMapaStringTipoDeCartas();
+    return mapa[this->carta];
+}
+
 bool Carta::getCartaActiva() {
     return this->cartaActiva;
 }
@@ -237,5 +242,16 @@ mapaTiposContenido Carta::getMapaTiposContenido(){
     mapa[AVION]="avion";
     mapa[MINA_FICHA]="mina";
     mapa[VACIO]="vacio";
+    return mapa;
+}
+
+mapaStringTipoDeCarta Carta::getMapaStringTipoDeCartas(){
+    mapaStringTipoDeCarta mapa;
+    mapa[AVION_RADAR]="Avion Radar";
+    mapa[BARCO_MISIL]="Barco";
+    mapa[ATAQUE_QUIMICO]="Ataque Quimico";
+    mapa[BOMBARDEO]="Bombardeo";
+    mapa[OMITIR_TURNO]="Omitir Turno";
+    mapa[ESCUDO]="Escudo";
     return mapa;
 }

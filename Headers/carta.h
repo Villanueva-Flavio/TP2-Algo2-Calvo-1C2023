@@ -9,6 +9,7 @@
 #define __CARTA_H__
 
 typedef  std::map<int, TipoCarta> mapaTiposDeCartas;
+typedef  std::map<int, std::string> mapaStringTipoDeCarta;
 typedef  std::map<int, std::string> mapaTiposContenido;
 
 class Carta{
@@ -34,6 +35,9 @@ class Carta{
 
         //Post:Permite saber cual es el tipo de carta
         TipoCarta getTipoCarta();
+
+        //Post:devuelve un strung del tipo de carta
+        std::string getStringTipoCarta();
 
         //Post:Permite saber si la carta esta activa
         bool getCartaActiva();
@@ -81,6 +85,9 @@ class Carta{
 
         //Post: devuleve un map de los tipos de contenido de las fichas
         mapaTiposContenido getMapaTiposContenido();
+
+        //Post: devuleve un map de los tipos de contenido de las fichas
+        mapaStringTipoDeCarta getMapaStringTipoDeCartas();
         
 };
 
