@@ -17,7 +17,6 @@ using namespace std;
 #define CAPA_MAXIMA 5
 
 typedef map<string, Coordenada> MapaCoordenadas;
-typedef map<string, TipoMapa> MapaTipos;
 
 MapaCoordenadas getMapaCoordenadas(){
     MapaCoordenadas mapa;
@@ -29,17 +28,6 @@ MapaCoordenadas getMapaCoordenadas(){
     mapa["A"] = {-1,0,0};
     mapa["S"] = {0,0,-1};
     mapa["D"] = {1,0,0};
-    return mapa;
-};
-
-MapaTipos getMapaTipos(){
-    MapaTipos mapa;
-    mapa["playa"] = M_PLAYA;
-    mapa["mar"] = M_MAR;
-    mapa["tierra"] = M_TIERRA;
-    mapa["desierto"] = M_DESIERTO;
-    mapa["rio"] = M_RIO;
-    mapa["lago"] = M_LAGO;
     return mapa;
 };
 
@@ -80,10 +68,11 @@ std::string BatallaDigital::consultarTipoDeMapa(){
     cout << "|  Desierto   -   Rio   -   Lago     |\n";
     cout << "+------------------------------------+\n";
     cout << "(Escriba su respuesta): ";
+    cin >> this->tipoMapa;
     return this->tipoMapa;
 }
 
-void BatallaDigital::cargarTerrenoPlano(int tipo) {
+void BatallaDigital::cargarTerrenoPlano(string tipo) {
     for(int i = 0; i < this->mapa->getTamanioX(); i ++){
         for(int j = 0; i < this->mapa->getTamanioY(); j ++){
             for(int k = 0; i < this->mapa->getTamanioZ(); k ++){
@@ -93,7 +82,7 @@ void BatallaDigital::cargarTerrenoPlano(int tipo) {
     }    
 }
 
-void BatallaDigital::cargarPlaya(int tipo) {
+void BatallaDigital::cargarPlaya(string tipo) {
     for(int i = 0; i < this->mapa->getTamanioX(); i ++){
         for(int j = 0; i < this->mapa->getTamanioY(); j ++){
             for(int k = 0; i < this->mapa->getTamanioZ(); k ++){
@@ -103,17 +92,17 @@ void BatallaDigital::cargarPlaya(int tipo) {
     }    
 }
 
-bool BatallaDigital::esOrilla(int tipo, Coordenada pos){
+bool BatallaDigital::esOrilla(string tipo, Coordenada pos){
     CoordenadaDouble r;
-    double p = (tipo == M_LAGO)? 0.285:0.227;
+    double p = (tipo == "Lago")? 0.285:0.227;
     double radioAjustado = 1+(p*(pow(this->mapa->getTamanioX()/4, 1/2.5)));
-    r.x = (tipo == M_LAGO)? pow(pos.x - mapa->getTamanioX()/2, 2) : 0;
+    r.x = (tipo == "Lago")? pow(pos.x - mapa->getTamanioX()/2, 2) : 0;
     r.y = pow(pos.y - mapa->getTamanioY()/2, 2);
     r.z = pow(pos.y - mapa->getTamanioZ()/2, 2);
     return ((double)(r.x + r.y + r.z) <= pow(this->mapa->getTamanioX(), radioAjustado));
 }
 
-void BatallaDigital::cargarRioLago(int tipo){
+void BatallaDigital::cargarRioLago(string tipo){
     for(int x = 0; x < mapa->getTamanioX(); x++){
         for(int y = 0; y < mapa->getTamanioY(); y++){
             for(int z = 0; z < mapa->getTamanioZ(); z++){
@@ -125,27 +114,23 @@ void BatallaDigital::cargarRioLago(int tipo){
     }
 }
 
-void BatallaDigital::cargarMapaEspecificado(int aux){
-    if (aux == M_TIERRA || aux == M_DESIERTO || aux == M_MAR) {
-        this->cargarTerrenoPlano(aux);
-    } else if (aux == M_PLAYA) {
+void BatallaDigital::cargarMapaEspecificado(string aux){
+    if(aux == "Playa"){
         this->cargarPlaya(aux);
-    } else if (aux == M_RIO || aux == M_LAGO) {
+    }else if(aux == "Mar" || aux == "Tierra" || aux == "Desierto"){
+        this->cargarTerrenoPlano(aux);
+    }else if(aux == "Rio" || aux == "Lago"){
         this->cargarRioLago(aux);
     }
 }
 
 void BatallaDigital::cargarMapas() {
-    string tipo = this->consultarTipoDeMapa();
-    MapaTipos mapa = getMapaTipos();
-    TipoMapa aux;
-
-    while (mapa.count(tipo) == 0) {
+    string mapa = this->consultarTipoDeMapa();
+    while (mapa != "Playa" && mapa != "Mar" && mapa != "Tierra" && mapa != "Desierto" && mapa != "Rio" && mapa != "Lago") {
         cout << "Tipo inválido, reingrese el tipo.\n";
-        tipo = this->consultarTipoDeMapa();
+        mapa = this->consultarTipoDeMapa();
     }
-    aux = mapa[tipo];
-    this->cargarMapaEspecificado(aux);
+    this->cargarMapaEspecificado(mapa);
 }
 
 void BatallaDigital::cargarCantidadesDeFichasAJugadores(){
@@ -154,12 +139,12 @@ void BatallaDigital::cargarCantidadesDeFichasAJugadores(){
     }    
 }
 
-bool BatallaDigital::validarCeldaAInsertarFicha(Coordenada* cordenada, TipoContenido tipoDeFicha) {
-    TipoContenido tipo = this->mapa->getTData(cordenada->x,cordenada->y,cordenada->z)->getFicha()->getTipo();
-    Capa capa = this->mapa->getTData(cordenada->x,cordenada->y,cordenada->z)->getTipo();
+bool BatallaDigital::validarCeldaAInsertarFicha(Coordenada cordenada, TipoContenido tipoDeFicha) {
+    TipoContenido tipo = this->mapa->getTData(cordenada.x,cordenada.y,cordenada.z)->getFicha()->getTipo();
+    Capa capa = this->mapa->getTData(cordenada.x,cordenada.y,cordenada.z)->getTipo();
 
     return (tipo == VACIO 
-    && ((tipoDeFicha == BARCO && this->mapa->getTData(cordenada->x,cordenada->y,CAPA_MAXIMA-1)->getTipo() == CAPA_AGUA) 
+    && ((tipoDeFicha == BARCO && this->mapa->getTData(cordenada.x,cordenada.y,CAPA_MAXIMA-1)->getTipo() == CAPA_AGUA) 
         || (tipoDeFicha == SUBMARINO && capa == CAPA_AGUA) 
         || (tipoDeFicha == AVION && capa == CAPA_AIRE)  
         || (tipoDeFicha == SOLDADO && capa == CAPA_AIRE))
@@ -170,26 +155,30 @@ void BatallaDigital::cargarFichaDelTipo(int cantidadDeCarga, TipoContenido tipoD
     Coordenada cordenada;
     for (int i = 0; i <= cantidadDeCarga; i++){
         do{
-            cordenada.x = std::rand()%(this->mapa->getTamanioX()-1);
-            cordenada.y = std::rand()%(this->mapa->getTamanioY()-1);
-            cordenada.z = (tipoDeFicha == SOLDADO || tipoDeFicha == TANQUE || tipoDeFicha == BARCO) ? CAPA_MAXIMA : std::rand()%(this->mapa->getTamanioZ()-1);
-        } while (validarCeldaAInsertarFicha(&cordenada,tipoDeFicha));
+            cordenada.x = rand()% this->mapa->getTamanioX();
+            cordenada.y = rand()% this->mapa->getTamanioY();
+            cordenada.z = (tipoDeFicha == SOLDADO || tipoDeFicha == TANQUE || tipoDeFicha == BARCO) ? CAPA_MAXIMA : rand()% this->mapa->getTamanioZ();
+        } while (validarCeldaAInsertarFicha(cordenada,tipoDeFicha));
+        this->mapa->getTData(cordenada.x,cordenada.y,cordenada.z)->getFicha()->setJugadorOwner(jugadorOwner);
+        this->mapa->getTData(cordenada.x,cordenada.y,cordenada.z)->getFicha()->setTipo(tipoDeFicha);
     }
 }
 
 void BatallaDigital::cargarFichas(){
     for (int i = 0; i < jugadores->getSize(); i++){
         if (this->tipoMapa != "mar"){
-            this->cargarFichaDelTipo(jugadores->getLData(i)->getSoldados(),SOLDADO,i+1);
-            this->cargarFichaDelTipo(jugadores->getLData(i)->getArmamentos(),TANQUE,i+1);
+            this->cargarFichaDelTipo(jugadores->getLData(i)->getSoldados(),SOLDADO,i);
+            this->cargarFichaDelTipo(jugadores->getLData(i)->getArmamentos(),TANQUE,i);
         }
-        if (this->tipoMapa != "tierra" && this->tipoMapa != "desierto"){
-            this->cargarFichaDelTipo(jugadores->getLData(i)->getArmamentos(),SUBMARINO,i+1);
-            this->cargarFichaDelTipo(jugadores->getLData(i)->getArmamentos(),BARCO,i+1);
 
+        if (this->tipoMapa != "tierra" && this->tipoMapa != "desierto"){
+            this->cargarFichaDelTipo(jugadores->getLData(i)->getArmamentos(),SUBMARINO,i);
+            this->cargarFichaDelTipo(jugadores->getLData(i)->getArmamentos(),BARCO,i);
         }
-        this->cargarFichaDelTipo(jugadores->getLData(i)->getArmamentos() + 1,AVION,i+1);
+
+        this->cargarFichaDelTipo(jugadores->getLData(i)->getArmamentos() + 1,AVION,i);
     }
+    
 }
 
 void BatallaDigital::cargarJuego() {
@@ -275,26 +264,25 @@ mapaIndiceDeCartas BatallaDigital::getMapaIndiceDeCartas(){
 }
 
 Carta* BatallaDigital::generarCarta(){
-    srand(time(NULL));
     int indiceDeCarta = rand() % 5;
     mapaIndiceDeCartas mapaIndiceCartas = this->getMapaIndiceDeCartas();
     Carta* cartaGenerada= new Carta(mapaIndiceCartas[indiceDeCarta]);
     return cartaGenerada;
 }
 
-void BatallaDigital::ejecutarCartaElegida(Carta* carta, Jugador* jugador,coordenadas coordenada){
-    coordenadas coordenadaMisil;
+void BatallaDigital::ejecutarCartaElegida(Carta* carta, Jugador* jugador,Coordenada coordenada){
+    Coordenada coordenadaMisil;
     switch(carta->getTipoCarta()){
         case OMITIR_TURNO:
             this->omitirTurno = true;
-        break;
+            break;
         case ESCUDO:
             jugador->activarEscudo();
         break;
         case BARCO:
             coordenadaMisil = obtenerCoordenadaCelda();
             carta->usarCarta(this->mapa, coordenadaMisil);
-        break;
+            break;
         default:
             carta->usarCarta(this->mapa, coordenada);
     }
@@ -336,7 +324,7 @@ int BatallaDigital::obtenerIndiceDeCarta(Jugador* jugador){
     return indiceDeCarta;
 }
 
-void BatallaDigital::tomarCartaDeMazo(Jugador* jugador, coordenadas coordenada){
+void BatallaDigital::tomarCartaDeMazo(Jugador* jugador, Coordenada coordenada){
     Carta*  carta = generarCarta();
     jugador->agregarCarta(carta);
     cout<<"Acaba de selecionar una carta del tipo: " << carta->getStringTipoCarta()<<endl;
@@ -357,6 +345,7 @@ void BatallaDigital::tomarCartaDeMazo(Jugador* jugador, coordenadas coordenada){
 }
 
 void BatallaDigital::mostrarFichasActuales(int jugador){
+    system("clear");
     cout << "Fichas actuales: " << endl;
     int contador = 0;
     for(int i = 0; i < this->mapa->getTamanioX(); i++){
@@ -364,15 +353,17 @@ void BatallaDigital::mostrarFichasActuales(int jugador){
             for(int k = 0; k < this->mapa->getTamanioZ(); k++){
                 if(this->mapa->getTData(i,j,k)->getFicha()->getJugadorOwner() == jugador){
                     string tipo = (this->esArmamento(this->mapa->getTData(i,j,k)->getFicha()->getTipo())) ? "Armamento" : "Soldado";
-                    cout << contador + 1  << " " << tipo << ". " << this->mapa->getTData(i,j,k)->getFicha()->getTipo() << endl;
+                    cout << contador + 1  << " " << tipo << ". En (" << i << ", " << j << ", " << k << ")" << endl;
                     contador++;
                 }
+
                 if(contador == this->jugadores->getLData(jugador)->getArmamentos() + this->jugadores->getLData(jugador)->getSoldados()){
                     return;
                 }
             }
         }
     }
+    cout << endl << endl;
 }
 
 void BatallaDigital::solicitarFichaAMover(int* indice, int jugador){
@@ -414,15 +405,15 @@ bool BatallaDigital::sePuedeMover(Coordenada coordenada, int jugador){
 }
 
 void BatallaDigital::aplicarGravedad(Coordenada* coordenada){
-    while(coordenada->z > 0 && this->mapa->getTData(coordenada->x, coordenada->y, coordenada->z - 1)->getTipo() == AIRE){
+    while(coordenada->z > 0 && this->mapa->getTData(coordenada->x, coordenada->y, coordenada->z - 1)->getTipo() == CAPA_AIRE){
         coordenada->z -= 1;
     }
 }
 
 void BatallaDigital::contarEscalado(Coordenada* coordenada){
     int difAltura = 0;
-    TipoContenido tipo = this->mapa->getTData(coordenada->x, coordenada->y, coordenada->z)->getFicha()->getTipo();
-    difAltura = (tipo == PASTO || tipo == TIERRA) ? 1 : 0;
+    Capa capa = this->mapa->getTData(coordenada->x, coordenada->y, coordenada->z)->getTipo();
+    difAltura = (capa == CAPA_PASTO || CAPA_AGUA == CAPA_TIERRA) ? 1 : 0;
     coordenada->z += difAltura;
 }
 
@@ -480,9 +471,9 @@ void BatallaDigital::procesarEventos(Coordenada coordenada, int jugador){
     Ficha* fichaSrc = this->mapa->getTData(aux.x,aux.y,aux.z)->getFicha();
     Ficha* fichaDest = this->mapa->getTData(coordenada.x, coordenada.y, coordenada.z)->getFicha();
     string evento = this->validarContenidoFicha(this->mapa->getTData(aux.x, aux.y, aux.z), this->mapa->getTData(coordenada.x, coordenada.y, coordenada.z));
-    if(evento == "soldadoJugadorContrario" || evento == "armamentoJugadorContrario" || "destuir"){
+    if(evento == "soldadoJugadorContrario" || evento == "armamentoJugadorContrario" || evento == "destruir"){
         this->eventoColisionMortal(evento, aux, coordenada);
-    } else if(evento == "inaciva"){
+    } else if(evento == "inactiva"){
         cout << "No se puede mover a esa posicion, la ficha quedara esperando en el mismo lugar" << endl;
     } else if(evento == "fichaJugador"){
         cout << "Dos soldados propios casi se matan, al finalizar el conflicto, las fichas se quedaron en el mismo lugar" << endl;
@@ -547,7 +538,7 @@ void BatallaDigital::mensajeEmpate(){
     cout << "Empate!" << endl;
 }
 
-void BatallaDigital::cambiarTurno(){
+void BatallaDigital::jugar(){
     string respuesta = "";
     int jugador = 0;
     while(this->jugadoresConFichasVivas() > 1){

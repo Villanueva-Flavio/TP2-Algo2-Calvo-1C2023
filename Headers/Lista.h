@@ -11,6 +11,9 @@ private:
 	Nodo<T>* iterador;
 	int size;
 	int iteracion;
+	
+public: 
+
 	void irANodo(int x);	
 	// Recibe el tipo de iteracion
 	// Itera la lista una vez, o hasta el final
@@ -18,7 +21,6 @@ private:
 
 	// Reinicia el iterador en la primer posicion
 	void resetIter();
-public: 
 
 	// Constructor de lista vacia.
 	Lista();

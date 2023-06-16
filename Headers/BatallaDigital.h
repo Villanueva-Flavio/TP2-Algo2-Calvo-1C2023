@@ -4,6 +4,7 @@
 #include "Celda.h"
 #include "Jugador.h"
 #include "Structs/Coordenadas.h"
+#include "./Enums.h"
 
 typedef Tablero<Celda*> Mapa;
 typedef Lista<Jugador*> Jugadores;
@@ -16,9 +17,8 @@ class BatallaDigital{
         std::string tipoMapa;
         int cantidadJugadores;
         int turno;
-        std::string tipoMapa;
         bool omitirTurno;
-        void cargarMapaEspecificado(int aux);
+        void cargarMapaEspecificado(std::string aux);
         void mostrarFichasActuales(int jugador);
         void solicitarFichaAMover(int* indice, int jugador);
         void moverFicha(int indice, int jugador);
@@ -52,7 +52,12 @@ class BatallaDigital{
 
         //Pre:
         //Post:
-        void cargarJuego();       
+        void cargarJuego();      
+
+        //Pre:  
+        //Post: controla los turnos de cada uno de loos jugadores y salta a alguno en caso de que su turno se tenga que omitir
+        void jugar();
+
     private:
         //Pre:
         //Post:
@@ -70,19 +75,19 @@ class BatallaDigital{
 
         //Pre:
         //Post:
-        void cargarTerrenoPlano(int tipo);
+        void cargarTerrenoPlano(std::string tipo);
 
         //Pre:
         //Post:
-        void cargarPlaya(int tipo);
+        void cargarPlaya(std::string tipo);
 
         //Pre:
         //Post:
-        void cargarRioLago(int tipo);
+        void cargarRioLago(std::string tipo);
 
         //Pre:
         //Post:
-        bool esOrilla(int tipo, Coordenada pos);
+        bool esOrilla(std::string tipo, Coordenada pos);
 
         // ----------Cargas de las fichas en el mapa------
 
@@ -96,13 +101,10 @@ class BatallaDigital{
 
         //Pre:
         //Post:
-        bool validarCeldaAInsertarFicha(Coordenada* cordenada, TipoContenido tipoDeFicha);
+        bool validarCeldaAInsertarFicha(Coordenada cordenada, TipoContenido tipoDeFicha);
 
         // ----------Cambio de turno ------
 
-        //Pre:  
-        //Post: controla los turnos de cada uno de loos jugadores y salta a alguno en caso de que su turno se tenga que omitir
-        void cambiarTurno();
 
         //Pre: las Coordenada ingresadas deben estar en rango
         //Post: almacena la coordenada de la celda a la que se quiere mover el usuario
@@ -119,7 +121,7 @@ class BatallaDigital{
         //Pre: recibe un puntero a una carta
         //Post: dependiendo del tipo de carta ejecuta la accion correspondiente
         void ejecutarCartaElegida(Carta* carta, Jugador* jugador, Coordenada coordenada);
-
+        
         //Pre:recibe la coordenada de una celda
         //Post: valida el contenido de la celda seleccionada e inserta la mina si la casilla se encuentra vacia
         //en caso contrario deja vacia la ficha e inactiva la celda

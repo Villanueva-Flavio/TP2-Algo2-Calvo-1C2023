@@ -43,5 +43,6 @@ int main(){
     solicitarJugadores(&cantJugadores);
     BatallaDigital* Juego = new BatallaDigital(cantJugadores);
     Juego->cargarJuego();
+    Juego->jugar();
     return 0;
 }

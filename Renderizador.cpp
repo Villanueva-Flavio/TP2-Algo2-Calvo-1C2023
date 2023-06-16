@@ -5,7 +5,8 @@
 #include "./Headers/Renderizador.h"
 #include "./Headers/Structs/Coordenadas.h"
 #include "./Headers/Structs/CoordenadaDouble.h"
-#include "./Headers/Enumns.h"
+#include "./Headers/Enums.h"
+#include "./EasyBMP/EasyBMP.h"
 
 const RGBApixel BLANCO = {255, 255, 255, 0};
 const RGBApixel ARENA = {0, 215, 215, 0};
