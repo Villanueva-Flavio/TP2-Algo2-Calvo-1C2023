@@ -282,12 +282,13 @@ void BatallaDigital::inactivarCelda(Celda* celda){
 //------------------- ---------------------- 
 
 coordenadas BatallaDigital::obtenerCoordenadaCelda(){
+    cout<<"Elija las coordenadas de la bomba"<<endl;
     int x,y,z;
-    cout<<"Ingrese la coordenada X de la celda: "<<endl;
+    cout<<"Ingrese la coordenada X: "<<endl;
     cin>>x;
-    cout<<"Ingrese la coordenada Y de la celda: "<<endl;
+    cout<<"Ingrese la coordenada Y: "<<endl;
     cin>>y;
-    cout<<"Ingrese la coordenada Z de la celda: "<<endl;
+    cout<<"Ingrese la coordenada Z: "<<endl;
     cin>>z;
 
     coordenadas coordenada = {x,y,z};
@@ -323,6 +324,10 @@ void BatallaDigital::ejecutarCartaElegida(Carta* carta, Jugador* jugador,coorden
         case ESCUDO:
             jugador->activarEscudo();
             break;
+        case BARCO:
+            coordenadas coordenadaBomba = obtenerCoordenadaCelda();
+            carta->usarCarta(this->mapa, coordenadaBomba);
+            break;
         default:
             carta->usarCarta(this->mapa, coordenada);
     }
@@ -341,38 +346,67 @@ void BatallaDigital::insertarMina(coordenadas coordenada){
     }
 }
 
-void BatallaDigital::cambiarTurno(){
-    int i= 0;
-    while(i <this->jugadores->getSize()){
+void BatallaDigital::mantenerIndiceEnRango(int &indice){
+    if(indice == this->jugadores->getSize()){
+        indice= 0;
+    }
+}
 
-        if(this->omitirTurno){
+bool BatallaDigital::mensajeValido(std::string mensaje){
+    bool valido= false;
+    if(mensaje =="Y" || mensaje == "N"){
+        valido = true;
+    }
+    return valido;
+}
+
+void BatallaDigital::tomarCartaDeMazo(Jugador* jugador, coordenadas coordenada){
+    Carta*  carta = generarCarta();
+    jugador->agregarCarta(carta);
+    cout<<"Acaba de selecionar una carta del tipo: " << carta->getStringTipoCarta()<<endl;
+    string respuesta = "";
+    
+    while(!mensajeValido(respuesta)){
+        
+        cout<<"¿Desea usar alguna Carta? Y/N: "<<endl;
+        cin>>respuesta;
+    }  
+
+    if(respuesta == "Y"){
+        jugador->imprimirCartas();
+        int indiceDeCarta;
+        //Agregar validacion
+        cout<<"Ingrese el indice de la carta que quiere usar: "<<endl;
+        cin >> indiceDeCarta;
+        insertarMina(coordenada);
+        this->ejecutarCartaElegida(jugador->seleccionarCarta(indiceDeCarta),jugador,coordenada);
+    }else {
+        insertarMina(coordenada);
+    }
+    
+
+ }
+
+void BatallaDigital::cambiarTurno(){
+    string estadoPartida= "activa";
+    int i= 0;
+    while(estadoPartida == "activa"){ // agregar condicion de fin de partida para parar buclue infinito
+        
+        mantenerIndiceEnRango(i);
+
+        if(!this->omitirTurno){
             Jugador* jugadorActual = this->jugadores->getLData(i);
             coordenadas coordendaMina=this->obtenerCoordenadaCelda();
-            Carta*  carta = generarCarta();
-
-            jugadorActual->agregarCarta(carta);
+             string respuesta = "";
             
-            //Agregar validacion
-            string respuesta = "";
-            cout<<"¿Desea usar alguna Carta? Y/N: "<<endl;
-            cin>>respuesta;
-            
+            while(!mensajeValido(respuesta)){
+                cout<<"Desea tomar una carta del mazo? Y/N: "<<endl;
+                cin>>respuesta;
+            }  
+           
             if(respuesta == "Y"){
-                jugadorActual->imprimirCartas();
-                int indiceDeCarta;
-                //Agregar validacion
-                cout<<"Ingrese el indice de la carta que quiere usar: "<<endl;
-                cin >> indiceDeCarta;
-
-                insertarMina(coordendaMina);
-                this->ejecutarCartaElegida(jugadorActual->seleccionarCarta(indiceDeCarta),jugadorActual,coordendaMina);
-            }else{
-                insertarMina(coordendaMina);
+                tomarCartaDeMazo(jugadorActual, coordendaMina);
             }
-
-            //mostrar las fichas disponibles
-            cout<<"¿Desea mover alguna Ficha? Y/N: "<<endl;
-            cin>>respuesta;
 
 
         }else{

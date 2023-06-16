@@ -105,6 +105,18 @@ class BatallaDigital{
         //en caso contrario deja vacia la ficha e inactiva la celda
         void insertarMina(coordenadas coordenada);
 
+        //Pre:recibe el indice de iteracion que recorrer una lista
+        //Post: reinicia el recorrido de la lista cuando se llega al limite de elementos
+        void mantenerIndiceEnRango(int &indice);
+
+        //Pre:recibe el jugador de turno y la coordenada que selecciono el usuario
+        //Post:se genera una carta al azar y le da la opcion al usuario de usarla o no
+        void tomarCartaDeMazo(Jugador* jugador, coordenadas coordenada);
+
+        //Pre:recibe el jugador de turno y la coordenada que selecciono el usuario
+        //Post:se genera una carta al azar y le da la opcion al usuario de usarla o no
+        bool mensajeValido(std::string mensaje);
+
         //------------ Interacciones entre fichas -------------------
 
         //Pre:recibe la celda dell jugador actual y la celda a la que desea trasladarse
