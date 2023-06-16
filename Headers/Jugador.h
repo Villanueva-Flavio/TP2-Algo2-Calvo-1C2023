@@ -2,6 +2,7 @@
 #define __JUGADOR_H__
 
 #include <string>
+#include "carta.h"
 #include "../EasyBMP/EasyBMP_DataStructures.h"
 
 typedef Lista<Carta*> Cartas;
@@ -56,6 +57,10 @@ class Jugador{
         //Pre:se tiene que recibir un indice valido
         //Post: devuelve un puntero a la carta correspondiente al indice ingresado
         Carta* seleccionarCarta(int carta);
+
+        //Pre:no tiene
+        //Post: devuelve la cantidad de cartas que tiene el jugador
+        int getCantidadDeCartas();
 
 };
 

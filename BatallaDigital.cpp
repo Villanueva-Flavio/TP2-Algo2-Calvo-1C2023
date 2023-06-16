@@ -282,19 +282,19 @@ Carta* BatallaDigital::generarCarta(){
     return cartaGenerada;
 }
 
-void BatallaDigital::ejecutarCartaElegida(Carta* carta, Jugador* jugador,Coordenada coordenada){
-    
+void BatallaDigital::ejecutarCartaElegida(Carta* carta, Jugador* jugador,coordenadas coordenada){
+    coordenadas coordenadaMisil;
     switch(carta->getTipoCarta()){
         case OMITIR_TURNO:
             this->omitirTurno = true;
-            break;
+        break;
         case ESCUDO:
             jugador->activarEscudo();
-            break;
+        break;
         case BARCO:
-            Coordenada coordenadaBomba = obtenerCoordenadaCelda();
-            carta->usarCarta(this->mapa, coordenadaBomba);
-            break;
+            coordenadaMisil = obtenerCoordenadaCelda();
+            carta->usarCarta(this->mapa, coordenadaMisil);
+        break;
         default:
             carta->usarCarta(this->mapa, coordenada);
     }
@@ -321,7 +321,22 @@ bool BatallaDigital::mensajeValido(std::string mensaje){
     return (mensaje == "Y" || mensaje == "N");
 }
 
-void BatallaDigital::tomarCartaDeMazo(Jugador* jugador, Coordenada coordenada){
+int BatallaDigital::obtenerIndiceDeCarta(Jugador* jugador){
+    int i = 0;
+    int indiceDeCarta;
+    while(i !=-1){
+        cout<<"Ingrese el indice de la carta que quiere usar: "<<endl;
+        cin >> indiceDeCarta;
+        if(indiceDeCarta > 0 && indiceDeCarta < jugador->getCantidadDeCartas() ){
+            i= -1;
+        }else{
+             cout<<"Ingrese un indice valido"<<endl;
+        }
+    }
+    return indiceDeCarta;
+}
+
+void BatallaDigital::tomarCartaDeMazo(Jugador* jugador, coordenadas coordenada){
     Carta*  carta = generarCarta();
     jugador->agregarCarta(carta);
     cout<<"Acaba de selecionar una carta del tipo: " << carta->getStringTipoCarta()<<endl;
@@ -335,10 +350,7 @@ void BatallaDigital::tomarCartaDeMazo(Jugador* jugador, Coordenada coordenada){
         insertarMina(coordenada);
     }else {
         jugador->imprimirCartas();
-        int indiceDeCarta;
-        //Agregar validacion
-        cout<<"Ingrese el indice de la carta que quiere usar: "<<endl;
-        cin >> indiceDeCarta;
+        int indiceDeCarta = this->obtenerIndiceDeCarta(jugador); 
         insertarMina(coordenada);
         this->ejecutarCartaElegida(jugador->seleccionarCarta(indiceDeCarta),jugador,coordenada);
     }

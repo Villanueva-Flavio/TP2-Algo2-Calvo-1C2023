@@ -25,10 +25,6 @@ class Carta{
         //Post: construye una instancia de la clase carta
         Carta(TipoCarta carta);
 
-        //Pre: recibe como parametro un atributo booleado
-        //Post:Dependiendo del tipo de carta desencadenara la accion de inactivar a un jugador o el de proteger todas sus fichas
-        void usarCarta(bool &atributoJugador);
-
         //Pre: recibe como parametro el tablero y el centro de accion
         //Post:Dependiendo del tipo de carta desencadenara la accion de bombardear la zona, enviar un reporte al jugador o lanzar un ataque quimico
         void usarCarta(Tablero<Celda*>* tablero, Coordenada centro);
@@ -58,10 +54,6 @@ class Carta{
         //Pre:la carta debe ser del tipo barco_misil, se recibe una tablero y las Coordenada de la celda que se quiere inactivar
         //Post:inactiva la celda especificada en la coordenada enviada 
         void lanzarMisil(Tablero<Celda*>* tablero, Coordenada centro);
-
-        //Pre: la carta debe ser del tipo omision y debe recibir una referencia del estado del siguiente jugador que se encuentre activo 
-        //Post: lo inactiva por una ronda
-        void activarAtributosJugador(bool &atributoJugador);
 
         //Pre:recibe un reporte
         //Post:devuelve un resumen de la jugada descriubiendo las Coordenada, el jugador y el contenido en caso de haber una ficha, en caso
