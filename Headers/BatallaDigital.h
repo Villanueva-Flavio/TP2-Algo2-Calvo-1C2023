@@ -22,13 +22,16 @@ class BatallaDigital{
         void mostrarFichasActuales(int jugador);
         void solicitarFichaAMover(int* indice, int jugador);
         void moverFicha(int indice, int jugador);
-        void seleccionDeFicha(int jugador);
         bool sePuedeMover(Coordenada coordenada, int jugador);
         void seleccionarDireccion(Coordenada* coordenada);
         void contarEscalado(Coordenada* coordenada);
         void aplicarGravedad(Coordenada* coordenada);
-        void explotarMina(Coordenada coordenada);
-        
+        void removerAmbasFichas(Coordenada c1, Coordenada c2);
+        void aplicarMovimiento(int jugador, Coordenada* coordenada);
+        void eventoColisionMortal(string evento, Coordenada c1, Coordenada c2);
+        void eventoDesplazamiento(Coordenada c1, Coordenada c2);
+        void procesarEventos(Coordenada coordenada, int jugador);
+        void jugarFicha(int jugador);
     public:
         //Pre:
         //Post:
@@ -131,7 +134,7 @@ class BatallaDigital{
 
         //------------ Interacciones entre fichas -------------------
 
-        //Pre:recibe la celda dell jugador actual y la celda a la que desea trasladarse
+        //Pre:recibe la celda del jugador actual y la celda a la que desea trasladarse
         //Post: Devuelve un string que inidicara el evento que se debe desencadenar dependiendo del tipo de ficha 
         std::string validarContenidoFicha(Celda* celdaJugador, Celda* celdaElegida);
 
