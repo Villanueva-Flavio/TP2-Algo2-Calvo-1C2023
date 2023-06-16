@@ -18,6 +18,7 @@ class BatallaDigital{
         int turno;
         std::string tipoMapa;
         bool omitirTurno;
+        void cargarMapaEspecificado(int aux);
     public:
         //Pre:
         //Post:
@@ -63,7 +64,7 @@ class BatallaDigital{
 
         //Pre:
         //Post:
-        bool esOrilla(int tipo, coordenadas pos);
+        bool esOrilla(int tipo, Coordenada pos);
 
         // ----------Cargas de las fichas en el mapa------
 
@@ -77,7 +78,7 @@ class BatallaDigital{
 
         //Pre:
         //Post:
-        bool validarCeldaAInsertarFicha(coordenadas* cordenada, TipoContenido tipoDeFicha);
+        bool validarCeldaAInsertarFicha(Coordenada* cordenada, TipoContenido tipoDeFicha);
 
         // ----------Cambio de turno ------
 
@@ -85,9 +86,9 @@ class BatallaDigital{
         //Post: controla los turnos de cada uno de loos jugadores y salta a alguno en caso de que su turno se tenga que omitir
         void cambiarTurno();
 
-        //Pre: las coordenadas ingresadas deben estar en rango
+        //Pre: las Coordenada ingresadas deben estar en rango
         //Post: almacena la coordenada de la celda a la que se quiere mover el usuario
-        coordenadas obtenerCoordenadaCelda();
+        Coordenada obtenerCoordenadaCelda();
         
         //Pre: no tiene
         //Post: devuelve de forma aleatoria un tipo de Carta
@@ -99,12 +100,12 @@ class BatallaDigital{
 
         //Pre: recibe un puntero a una carta
         //Post: dependiendo del tipo de carta ejecuta la accion correspondiente
-        void ejecutarCartaElegida(Carta* carta, Jugador* jugador, coordenadas coordenada);
+        void ejecutarCartaElegida(Carta* carta, Jugador* jugador, Coordenada coordenada);
 
         //Pre:recibe la coordenada de una celda
         //Post: valida el contenido de la celda seleccionada e inserta la mina si la casilla se encuentra vacia
         //en caso contrario deja vacia la ficha e inactiva la celda
-        void insertarMina(coordenadas coordenada);
+        void insertarMina(Coordenada coordenada);
 
         //Pre:recibe el indice de iteracion que recorrer una lista
         //Post: reinicia el recorrido de la lista cuando se llega al limite de elementos
@@ -112,7 +113,7 @@ class BatallaDigital{
 
         //Pre:recibe el jugador de turno y la coordenada que selecciono el usuario
         //Post:se genera una carta al azar y le da la opcion al usuario de usarla o no
-        void tomarCartaDeMazo(Jugador* jugador, coordenadas coordenada);
+        void tomarCartaDeMazo(Jugador* jugador, Coordenada coordenada);
 
         //Pre:recibe el jugador de turno y la coordenada que selecciono el usuario
         //Post:se genera una carta al azar y le da la opcion al usuario de usarla o no
