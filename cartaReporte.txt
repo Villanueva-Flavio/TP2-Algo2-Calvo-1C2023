@@ -1,4 +1,0 @@
-Posicion: (14,15,2) - Contenido: vacio - Jugador: -1
-Posicion: (14,16,0) - Contenido: vacio - Jugador: -1
-Posicion: (17,11,2) - Contenido: vacio - Jugador: -1
-Posicion: (14,13,0) - Contenido: vacio - Jugador: -1
