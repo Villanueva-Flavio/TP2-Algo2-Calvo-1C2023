@@ -61,12 +61,28 @@ BatallaDigital::~BatallaDigital(){
 }
 
 void BatallaDigital::consultarNombres(){
-// Gero
+    for (int i = 0; i < this->cantidadJugadores; i++) {
+        bool nombreValido = false;
+        while (!nombreValido) {
+            string nombre;
+            cout << "\nIngrese el nombre del jugador " << i + 1 << ": ";
+            cin >> nombre;
+            this->jugadores->getLData(i)->setNombre(nombre);
+
+            if (this->jugadores->getLData(i)->getNombre() != "") {
+                nombreValido = true;
+            }
+        }
+    }
 }
 
-// Retorna el tipo de mapa ingresado por el usuario (implementación requerida)
 std::string BatallaDigital::consultarTipoDeMapa(){
-// Gero
+    cout << "\nSeleccione un tipo de mapa:\n";
+    cout << "+------------------------------------+\n";
+    cout << "|    Playa    -   Mar   -   Tierra   |\n";
+    cout << "|  Desierto   -   Rio   -   Lago     |\n";
+    cout << "+------------------------------------+\n";
+    cout << "(Escriba su respuesta): ";
     return this->tipoMapa;
 }
 
@@ -114,13 +130,13 @@ void BatallaDigital::cargarRioLago(int tipo){
 
 // Carga el mapa elegido por el jugador
 void BatallaDigital::cargarMapas() {
-    // string tipo = this->consultarTipoDeMapa();
     string tipo = ""; 
+    tipo = this->consultarTipoDeMapa();
     MapaTipos mapita = getMapaTipos();
     int enumeradorcito = 0;
     while (mapita.count(tipo) == 0) {
         cout << "Tipo inválido, reingrese el tipo.\n";
-        // tipo = this->consultarTipoDeMapa();
+        tipo = this->consultarTipoDeMapa();
         tipo = "lago";
     }
     enumeradorcito = mapita[tipo];

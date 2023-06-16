@@ -19,13 +19,20 @@ struct Niveles{int suelo,mar;};
 } */
 
 void solicitarJugadores(int* cantJugadores){
-    cout << "\n--------------------Batalla Digital--------------------\n\n";
+    cout << "+-----------------------------------+\n";
+    cout << "|          Batalla Digital          |\n";
+    cout << "+-----------------------------------+\n";
+    cout << "|                                   |\n";
+    cout << "|        Presione una tecla         |\n";
+    cout << "|          para comenzar...         |\n";
+    cout << "|                                   |\n";
+    cout << "+-----------------------------------+\n";
     cin.get();
 
     cout << "Ingrese la cantidad de jugadores: ";
     cin >> *cantJugadores;
     while(*cantJugadores < 2 || *cantJugadores > 10){
-        cout << "La cantidad de jugadores debe ser entre 2 y 10. Ingrese nuevamente: ";
+        cout << "La cantidad de jugadores debe estar entre 2 y 10. Ingrese nuevamente: ";
         cin >> *cantJugadores;
     }
 }
