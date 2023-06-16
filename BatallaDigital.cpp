@@ -508,17 +508,29 @@ void BatallaDigital::jugarFicha(int jugador){
 /* quitar 1 turno inactivo */
 /* limpiar header/structs de otros archivos */
 
+bool BatallaDigital::jugadorConFichasVivas(int jugador){
+    return this->jugadores->getLData(jugador)->getArmamentos() + this->jugadores->getLData(jugador)->getSoldados() > 0;
+}
 
+int BatallaDigital::jugadoresConFichasVivas(){
+    int contador = 0;
+    for(int i = 0; i < this->jugadores->getSize(); i++){
+        if(jugadorConFichasVivas(i)){
+            contador++;
+        }
+    }
+    return contador;
+}
 
 void BatallaDigital::cambiarTurno(){
     string estadoPartida= "activa";
     string respuesta = "";
     int jugador = 0;
-    while(estadoPartida == "activa"){ // agregar condicion de fin de partida para parar buclue infinito
+    while(estadoPartida == "activa"){
         mantenerIndiceEnRango(jugador);
         if(this->omitirTurno){
             this->omitirTurno = false;
-        } else {
+        } else if(this->jugadorConFichasVivas(jugador)){
             this->jugarFicha(jugador);
             Jugador* jugadorActual = this->jugadores->getLData(jugador);
             Coordenada coordendaMina=this->obtenerCoordenadaCelda();
@@ -532,5 +544,8 @@ void BatallaDigital::cambiarTurno(){
             }
         }
         jugador++;
+        if(this->jugadoresConFichasVivas() == 1){
+            estadoPartida = "finalizada";
+        }
     }  
 }

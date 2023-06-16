@@ -32,6 +32,9 @@ class BatallaDigital{
         void eventoDesplazamiento(Coordenada c1, Coordenada c2);
         void procesarEventos(Coordenada coordenada, int jugador);
         void jugarFicha(int jugador);
+        int jugadoresConFichasVivas();
+        bool jugadorConFichasVivas(int jugador);
+        
     public:
         //Pre:
         //Post:
