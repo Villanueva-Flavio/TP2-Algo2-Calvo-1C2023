@@ -532,30 +532,21 @@ void BatallaDigital::procesarInactivas(){
 }
 
 void BatallaDigital::cambiarTurno(){
-    string estadoPartida= "activa";
     string respuesta = "";
     int jugador = 0;
-    while(estadoPartida == "activa"){
+    while(this->jugadoresConFichasVivas() > 1){
         mantenerIndiceEnRango(jugador);
         if(this->omitirTurno){
             this->omitirTurno = false;
         } else if(this->jugadorConFichasVivas(jugador)){
             this->jugarFicha(jugador);
-            Jugador* jugadorActual = this->jugadores->getLData(jugador);
-            Coordenada coordendaMina=this->obtenerCoordenadaCelda();
-            respuesta = "";
-            while(!mensajeValido(respuesta)){
-                cout<<"Desea tomar una carta del mazo? Y/N: "<<endl;
-                cin>>respuesta;
-            }  
-            if(respuesta == "Y"){
-                tomarCartaDeMazo(jugadorActual, coordendaMina);
-            }
+            do{
+                cout << "Desea tomar una carta del mazo? Y/N: " << endl;
+                cin >> respuesta;
+            }while(!mensajeValido(respuesta)); 
+            if(respuesta == "Y"){tomarCartaDeMazo(this->jugadores->getLData(jugador), this->obtenerCoordenadaCelda());}
         }
         jugador++;
-        if(this->jugadoresConFichasVivas() == 1){
-            estadoPartida = "finalizada";
-        }
         if(jugador == this->jugadores->getSize()){
             this->procesarInactivas();
         }
