@@ -67,6 +67,7 @@ std::string BatallaDigital::consultarTipoDeMapa(){
     cout << "|    Playa    -   Mar   -   Tierra   |\n";
     cout << "|  Desierto   -   Rio   -   Lago     |\n";
     cout << "+------------------------------------+\n";
+    cout << "Version Beta: Sin Rio y Lago" << endl;
     cout << "(Escriba su respuesta): ";
     cin >> this->tipoMapa;
     return this->tipoMapa;
@@ -92,7 +93,7 @@ void BatallaDigital::cargarPlaya(string tipo) {
     }    
 }
 
-bool BatallaDigital::esOrilla(string tipo, Coordenada pos){
+/* bool BatallaDigital::esOrilla(string tipo, Coordenada pos){
     CoordenadaDouble r;
     double p = (tipo == "Lago")? 0.285:0.227;
     double radioAjustado = 1+(p*(pow(this->mapa->getTamanioX()/4, 1/2.5)));
@@ -107,14 +108,15 @@ void BatallaDigital::cargarRioLago(string tipo){
         for(int y = 0; y < mapa->getTamanioY(); y++){
             for(int z = 0; z < mapa->getTamanioZ(); z++){
                 Coordenada pos = {x, y, z};
-                (!esOrilla(tipo, pos))? 
-                    this->mapa->getTData(x, y, z)->setTipo(CAPA_AGUA) : 
+                (z >= 5)? this->mapa->getTData(x, y, z)->setTipo(CAPA_AIRE) : this->mapa->getTData(x, y, z)->setTipo(CAPA_AGUA);
+                if(esOrilla(tipo, pos)){
                     this->mapa->getTData(x, y, CAPA_MAXIMA-1)->setTipo(CAPA_PASTO);
+                }
             }
             mapa->getTData(x, y, 0)->setTipo(CAPA_ARENA);
         }
     }
-}
+} */
 
 void BatallaDigital::cargarMapaEspecificado(string aux){
     if(aux == "Playa"){
@@ -122,7 +124,8 @@ void BatallaDigital::cargarMapaEspecificado(string aux){
     }else if(aux == "Mar" || aux == "Tierra" || aux == "Desierto"){
         this->cargarTerrenoPlano(aux);
     }else if(aux == "Rio" || aux == "Lago"){
-        this->cargarRioLago(aux);
+        /* this->cargarRioLago(aux); */
+        // A IMPLEMENTAR
     }
 }
 
