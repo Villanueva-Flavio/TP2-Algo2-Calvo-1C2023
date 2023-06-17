@@ -24,7 +24,7 @@ Carta::Carta(TipoCarta carta) {
 
     switch(this->carta){
         case AVION_RADAR:
-            this->radioAccion = 8;
+            this->radioAccion = 4;
             this->obtenerReporte(tablero,centro);
             break;
         case ATAQUE_QUIMICO:
