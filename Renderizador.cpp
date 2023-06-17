@@ -3,6 +3,7 @@
 #include <iostream>
 #include "./Headers/Tablero.h"
 #include "./Headers/Renderizador.h"
+#include "./Headers/Enums.h"
 
 const RGBApixel BLANCO = {255, 255, 255, 0};
 const RGBApixel ARENA = {0, 215, 215, 0};
@@ -14,10 +15,11 @@ const RGBApixel PASTO_OSCURO = {50, 70, 35, 0};
 const RGBApixel TIERRA = {14, 48, 94, 0};
 const RGBApixel TIERRA_OSCURA = {9, 32, 64, 0};
 const RGBApixel BORDE = {0, 0, 0, 0};
-const RGBApixel MINA = {0, 0, 0, 0};
+const RGBApixel MINA = {50, 50, 50, 0};
 const RGBApixel FUEGO = {12, 92, 232, 0};
+const RGBApixel JUGADOR = {0, 0, 0, 0};
 
-typedef std::map<int, RGBApixel> MapaColores;
+typedef std::map<Capa, RGBApixel> MapaColores;
 
 MapaColores getMap(){
     MapaColores mapa;
@@ -28,6 +30,8 @@ MapaColores getMap(){
     mapa[CAPA_BORDE] = BORDE;
     mapa[CAPA_MINA] = MINA;
     mapa[CAPA_FUEGO] = FUEGO;
+    mapa[FICHA_JUGADOR] = JUGADOR;
+    mapa[FICHA_MINA] = MINA;
     return mapa;
 }
 
@@ -77,16 +81,6 @@ bool colorDisponible(RGBApixel color, MapaColores mapa){
     return true;
 }
 
-void setPlayerColor(RGBApixel* color, int jugador, MapaColores& mapa){
-    std::cout << "Ingrese el color del jugador en formato R G B (0 a 255): " << std::endl;
-    std::cin >> color->Red >> color->Green >> color->Blue;
-    while(!colorEnRango(*color) || !colorDisponible(*color, mapa)){
-        std::cout << (colorEnRango(*color)? "Color no disponible" : "Color fuera de rango") << std::endl;
-        std::cout << "Ingrese el color del jugador R G B (0 a 255): " << std::endl;
-        std::cin >> color->Red >> color->Green >> color->Blue;
-    }
-    mapa[static_cast<Capa>(jugador)] = *color;
-}
 
 int pixelSizeGet(RGBApixel color){
     int resultado = (coloresSonIguales(color, AGUA))? 2:8;
@@ -128,9 +122,12 @@ Coordenada getPixelOffset(int lado, int size){
     return pixelOffset;
 }
 
-RGBApixel getColor(Celda celda, MapaColores colores){
-    return (colores.find(celda.getTipo()) != colores.end())?   colores[celda.getTipo()] : 
-           (celda.getFicha()->getTipo() == SOLDADO)?           colores[celda.getFicha()->getJugadorOwner()] : BLANCO;
+RGBApixel getColor(Celda celda, MapaColores colores, bool esFicha){
+    RGBApixel colorAux = (esFicha)? JUGADOR : BLANCO;
+    if(coloresSonIguales(colorAux, BLANCO)){
+        colorAux = (colores.find(celda.getTipo()) != colores.end())? colores[celda.getTipo()] : colorAux;
+    }
+    return colorAux;
 }
 
 void getAux(int lado, Coordenada* aux){
@@ -149,10 +146,11 @@ int matrixPosStarter(int lado, int size){
     return (lado == IZQUIERDA)? 0 : (lado == DERECHA)? 0 : size-1;
 }
 
-void imprimirBMP(Coordenada imgSize, BMP* image, Mapa* tablero, MapaColores colores){
+void imprimirBMP(Coordenada imgSize, BMP* image, Mapa* tablero, MapaColores colores, int jugador){
     RGBApixel color;
     Coordenada pixelOffset, matrixPos, pixelPos, aux;
     CoordenadaDouble pixel;
+    bool esFicha = false;
     for(int lado = 0; lado < 3; lado ++){
         getAux(lado, &aux);
         pixelOffset = getPixelOffset(lado, tablero->getTamanioX());
@@ -163,7 +161,8 @@ void imprimirBMP(Coordenada imgSize, BMP* image, Mapa* tablero, MapaColores colo
                     aplicarProyeccionIsometrica(&pixel, lado);
                     pixelPos.x = static_cast<int>(pixel.x * 20 + pixelOffset.x); 
                     pixelPos.y = static_cast<int>(pixel.y * 20 + pixelOffset.y);
-                    color = getColor(*tablero->getTData(matrixPos.x, matrixPos.y, matrixPos.z), colores);
+                    esFicha = (tablero->getTData(matrixPos.x, matrixPos.y, matrixPos.z)->getFicha()->getJugadorOwner() == jugador && tablero->getTData(matrixPos.x, matrixPos.y, matrixPos.z)->getFicha()->getTipo() != MINA_FICHA);
+                    color = getColor(*tablero->getTData(matrixPos.x, matrixPos.y, matrixPos.z), colores, esFicha);
                     pintarEntidad(image, pixelPos, color, imgSize);
                 }
             }

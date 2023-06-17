@@ -32,7 +32,9 @@ enum Capa {
     CAPA_BORDE, 
     CAPA_MINA, 
     CAPA_FUEGO, 
-    CAPA_AIRE
+    CAPA_AIRE,
+    FICHA_JUGADOR,
+    FICHA_MINA
 };
 
 //lista
