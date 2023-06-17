@@ -283,8 +283,13 @@ void BatallaDigital::ejecutarCartaElegida(Carta* carta, Jugador* jugador,Coorden
             jugador->activarEscudo();
         break;
         case BARCO:
-            coordenadaMisil = obtenerCoordenadaCelda();
-            carta->usarCarta(this->mapa, coordenadaMisil);
+            do{ 
+                coordenadaMisil = this-> obtenerCoordenadaCelda();
+            }while(!coordenadaEnRango(coordenadaMisil)); 
+            
+            if(coordenadaEnRango(coordenadaMisil)){
+                carta->usarCarta(this->mapa, coordenadaMisil);
+            }
             break;
         default:
             carta->usarCarta(this->mapa, coordenada);
@@ -305,7 +310,7 @@ void BatallaDigital::insertarMina(Coordenada coordenada){
 }
 
 void BatallaDigital::mantenerIndiceEnRango(int &indice){
-    indice = (indice == this->jugadores->getSize()) ? 0 : indice;
+    indice = (indice < this->jugadores->getSize()) ? 0 : indice;
 }
 
 bool BatallaDigital::mensajeValido(std::string mensaje){
@@ -318,13 +323,13 @@ int BatallaDigital::obtenerIndiceDeCarta(Jugador* jugador){
     while(i !=-1){
         cout<<"Ingrese el indice de la carta que quiere usar: "<<endl;
         cin >> indiceDeCarta;
-        if(indiceDeCarta > 0 && indiceDeCarta < jugador->getCantidadDeCartas() ){
+        if( (indiceDeCarta -1 >= 0) && (indiceDeCarta -1  < jugador->getCantidadDeCartas()) ){
             i= -1;
         }else{
-             cout<<"Ingrese un indice valido"<<endl;
+            cout<<"Ingrese un indice valido"<<endl;
         }
     }
-    return indiceDeCarta;
+    return indiceDeCarta-1;
 }
 
 void BatallaDigital::tomarCartaDeMazo(Jugador* jugador, Coordenada coordenada){
@@ -338,10 +343,11 @@ void BatallaDigital::tomarCartaDeMazo(Jugador* jugador, Coordenada coordenada){
     }  
 
     if(respuesta != "Y"){
+        cout<<"Mina insertada"<<endl;
         insertarMina(coordenada);
     }else {
         jugador->imprimirCartas();
-        int indiceDeCarta = this->obtenerIndiceDeCarta(jugador); 
+        int indiceDeCarta = this->obtenerIndiceDeCarta(jugador);
         insertarMina(coordenada);
         this->ejecutarCartaElegida(jugador->seleccionarCarta(indiceDeCarta),jugador,coordenada);
     }
@@ -552,23 +558,38 @@ void BatallaDigital::sacarFoto(int jugador){
     delete image;
 }
 
+bool BatallaDigital::coordenadaEnRango(Coordenada coordenada){
+    return (coordenada.x >= 0 && coordenada.x < this->mapa->getTamanioX() && coordenada.y >= 0 && coordenada.y < this->mapa->getTamanioY() && coordenada.z >= 0 && coordenada.z < this->mapa->getTamanioZ());
+}
+
 void BatallaDigital::jugar(){
     string respuesta = "";
     int jugador = 0;
     while(this->jugadoresConFichasVivas() > 1){
-        this->sacarFoto(jugador);
+        system("clear");
+        cout << "Turno Jugador " << jugador +1 << endl;
+        this->sacarFoto();
         mantenerIndiceEnRango(jugador);
         if(this->omitirTurno){ 
             this->omitirTurno = false;
         } else if(this->jugadorConFichasVivas(jugador)){
-            this->jugarFicha(jugador);
+            
+            Coordenada coordenada;
+            
+            do{ 
+                coordenada = this-> obtenerCoordenadaCelda();
+            }while(!coordenadaEnRango(coordenada)); 
+
             do{
-                cout << "Desea tomar una carta del mazo? Y/N: " << endl;
+                cout << "Desea elegir una carta del mazo? Y/N: " << endl;
                 cin >> respuesta;
             }while(!mensajeValido(respuesta)); 
+
             if(respuesta == "Y"){ 
-                tomarCartaDeMazo(this->jugadores->getLData(jugador), this->obtenerCoordenadaCelda()); 
+                tomarCartaDeMazo(this->jugadores->getLData(jugador), coordenada); 
             }
+
+            this->jugarFicha(jugador);
         }
         jugador++;
         if(jugador == this->jugadores->getSize()){

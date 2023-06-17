@@ -190,6 +190,8 @@ class BatallaDigital{
         //Post: devuelve el indice de la carta solictado por el usuario
         int obtenerIndiceDeCarta(Jugador* jugador);
 
+        bool coordenadaEnRango(Coordenada coordenada);
+
         //------------ Interacciones entre fichas -------------------
 
         //Pre:recibe la celda del jugador actual y la celda a la que desea trasladarse
