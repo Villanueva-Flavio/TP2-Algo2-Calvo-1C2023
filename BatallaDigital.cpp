@@ -6,7 +6,7 @@
 
 #include "Headers/Tablero.h"
 #include "Headers/Celda.h"
-#include "Headers/carta.h"
+#include "Headers/Carta.h"
 #include "Headers/Renderizador.h"
 #include "Headers/BatallaDigital.h"
 #include "Headers/Enums.h"
@@ -568,7 +568,7 @@ void BatallaDigital::jugar(){
     while(this->jugadoresConFichasVivas() > 1){
         system("clear");
         cout << "Turno Jugador " << jugador +1 << endl;
-        this->sacarFoto();
+        this->sacarFoto(jugador);
         mantenerIndiceEnRango(jugador);
         if(this->omitirTurno){ 
             this->omitirTurno = false;

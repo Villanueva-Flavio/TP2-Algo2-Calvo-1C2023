@@ -2,7 +2,7 @@
 #include <string>
 
 #include "./Headers/Jugador.h"
-#include "./Headers/carta.h"
+#include "./Headers/Carta.h"
 #include "./Headers/Enums.h"
 
 using namespace std;
