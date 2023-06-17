@@ -18,7 +18,7 @@ Carta::Carta(TipoCarta carta) {
     this->carta = carta;
 }
 
- void Carta::usarCarta(Tablero<Celda*>* tablero, coordenadas centro){
+ void Carta::usarCarta(Tablero<Celda*>* tablero, Coordenada centro){
 
     this->cartaActiva = false;
 
