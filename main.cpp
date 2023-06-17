@@ -8,15 +8,6 @@
 #include "./Headers/BatallaDigital.h"
 
 using namespace std;
-struct Niveles{int suelo,mar;};
-
-/* void procesarCambiosMapa(Tablero<Celda*>* tablero, int size) {
-    Coordenada imgSize = {size*100, size*70};
-    BMP imagen;
-    imagen.SetSize(imgSize.x,imgSize.y);
-    imprimirBMP(imgSize,&imagen,tablero, getMap());
-    imagen.WriteToFile("Partida.bmp");
-} */
 
 void solicitarJugadores(int* cantJugadores){
     cout << "+-----------------------------------+\n";

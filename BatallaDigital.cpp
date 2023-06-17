@@ -195,9 +195,7 @@ void BatallaDigital::cargarJuego() {
 // ---------------- Interacciones entre fichas ------------------
 
 string BatallaDigital::validarContenidoFicha(Celda* celdaJugador, Celda* celdaElegida){
-    // soldadoJugadorContrario - armamentoJugadorContrario - inactiva- vacia - fichaJugador - destruir
     string resultado= "inactiva"; 
-
     if(celdaElegida->getEstado()!=false){
         TipoContenido fichaDeJugador = celdaJugador->getFicha()->getTipo();
         resultado = (esArmamento(fichaDeJugador))? validacionArmamento(celdaJugador,celdaElegida) : validacionSoldado(celdaJugador,celdaElegida);
@@ -543,13 +541,13 @@ void BatallaDigital::mensajeEmpate(){
     cout << "Empate!" << endl;
 }
 
-void BatallaDigital::sacarFoto(){
+void BatallaDigital::sacarFoto(int jugador){
     Coordenada imgSize;
     imgSize.x = this->mapa->getTamanioX() * 100;
     imgSize.y = this->mapa->getTamanioY() * 70;
     BMP *image = new BMP();
     image->SetSize(imgSize.x, imgSize.y);
-    imprimirBMP(imgSize, image, this->mapa, getMap());
+    imprimirBMP(imgSize, image, this->mapa, getMap(), jugador);
     image->WriteToFile("Partida.bmp");
     delete image;
 }
@@ -558,7 +556,7 @@ void BatallaDigital::jugar(){
     string respuesta = "";
     int jugador = 0;
     while(this->jugadoresConFichasVivas() > 1){
-        this->sacarFoto();
+        this->sacarFoto(jugador);
         mantenerIndiceEnRango(jugador);
         if(this->omitirTurno){ 
             this->omitirTurno = false;

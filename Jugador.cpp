@@ -12,7 +12,6 @@ Jugador::Jugador() {
     this->soldados = 0;
     this->armamentos = 0;
     this->escudoActivo = false;
-    this->color = {0,0,0,0};
     this->cartas = new Cartas();
 }
 
@@ -55,15 +54,6 @@ void Jugador::desactivarEscudo(){
 
 void Jugador::activarEscudo(){
    this->escudoActivo = true;
-}
-
-
-void Jugador::setColor(RGBApixel rgb){
-    this->color = rgb;
-}
-
-RGBApixel Jugador::getColor(){
-    return this->color;
 }
 
 void Jugador::agregarCarta(Carta* carta){

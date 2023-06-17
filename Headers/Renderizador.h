@@ -11,7 +11,7 @@
 #define DERECHA 1
 #define ATRAS 2
 
-typedef std::map<int, RGBApixel> MapaColores;
+typedef std::map<Capa, RGBApixel> MapaColores;
 typedef Tablero<Celda*> Mapa;
 
 MapaColores getMap();
@@ -42,6 +42,6 @@ Coordenada getPixelOffset(int lado, int size);
 
 RGBApixel getColor(Celda celda, MapaColores colores);
 
-void imprimirBMP(Coordenada imgSize, BMP* image, Mapa* tablero, MapaColores colores);
+void imprimirBMP(Coordenada imgSize, BMP* image, Mapa* tablero, MapaColores colores, int jugador);
 
 #endif

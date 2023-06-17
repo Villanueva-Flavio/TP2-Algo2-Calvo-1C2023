@@ -18,91 +18,136 @@ class BatallaDigital{
         int cantidadJugadores;
         int turno;
         bool omitirTurno;
+        
+
+        //PRE: recibe un string con el nombre del archivo
+        //POST: carga el mapa en el tablero
         void cargarMapaEspecificado(std::string aux);
+
+        //PRE: recibe un int con el indice dle jugador
+        //POST: Muetsra por pantalla las fichas que tiene el jugador
         void mostrarFichasActuales(int jugador);
+
+        //PRE: recibe un int puntero del indice de ficha y con el indice del jugador
+        //POST: solicita al usuario que ingrese el indice de la ficha que desea mover
         void solicitarFichaAMover(int* indice, int jugador);
+
+        //PRE: recibe un int del indice de ficha y con el indice del jugador
+        //POST: solicita al usuario que ingrese el indice de la ficha que desea mover
         void moverFicha(int indice, int jugador);
+
+        //PRE: Recibe una Coordenada y el indice de jugador
+        //POST: Devuelve true si la coordenada es valida para mover la ficha
         bool sePuedeMover(Coordenada coordenada, int jugador);
+
+        //PRE: Recibe una Coordenada puntero
+        //POST: Le pide al usuario que ingrese una direccion, y aplica el cambio de coordenada
         void seleccionarDireccion(Coordenada* coordenada);
+
+        //PRE: recibe un puntero a una coordenada
+        //POST: Aplica escalar un punto si se choca con terreno en subida
         void contarEscalado(Coordenada* coordenada);
+
+        //PRE: Recibe un puntero a una coordenada
+        //POST: Aplica gravedad si se choca con terreno en bajada
         void aplicarGravedad(Coordenada* coordenada);
+
+        //PRE: Recibe 2 coordenadas
+        //POST: remueve las fichas de las coordenadas recibidas
         void removerAmbasFichas(Coordenada c1, Coordenada c2);
+
+        //PRE: Recibe el indice de jugador y un puntero a coordenada
+        //Post: Gestiona el movimiento de la ficha
         void aplicarMovimiento(int jugador, Coordenada* coordenada);
+
+        //PRE: Recibe un string de evento y 2 coordenadas (Fuente y destino)
+        //POST: Gestiona el evento de colision entre fichas (En la que al menos una muere)
         void eventoColisionMortal(std::string evento, Coordenada c1, Coordenada c2);
+
+        //PRE: Recibe 2 coordenadas (Fuente y Destino)
+        //POST: Gestiona el cambio de posicion de la ficha a la siguiente coordenada
         void eventoDesplazamiento(Coordenada c1, Coordenada c2);
+
+        //PRE: Recibe una coordenada y el indice de jugador
+        //POST: Gestiona el evento correspondiente al movimiento de la ficha
         void procesarEventos(Coordenada coordenada, int jugador);
+
+        //PRE: Recibe un int del indice de jugador
+        //POST: Gestiona la interaccion del jugador en seleccionar la ficha y moverla
         void jugarFicha(int jugador);
+
+        //POST: Devuelve la cantidad de jugadores que poseen fichas vivas
         int jugadoresConFichasVivas();
+
+        //PRE: Recibe un int del indice de jugador
+        //POST: Devuelve true si el jugador tiene fichas vivas
         bool jugadorConFichasVivas(int jugador);
+
+        //POST: Reduce 1 turno restante de inactiva a las celdas inactivas existentes
         void procesarInactivas();
+
+        //POST: Emite un mensaje de Empate a la consola
         void mensajeEmpate();
-        void sacarFoto();
+
+        //PRE: Recibe un int del indice de jugador
+        //POST: Saca una foto del mapa en 3 angulos distintos, con las fichas del jugador seleccionado
+        void sacarFoto(int jugador);
 
 
     public:
-        //Pre:
-        //Post:
         BatallaDigital(int cantidad);
         
-        //Pre:
-        //Post:
         ~BatallaDigital();
 
-        //Pre:
-        //Post:
+        //Post: Consulta a todos los jugadores los nombres de usuario
         void consultarNombres();
 
-        //Pre:
-        //Post:
+        //Post: Gestiona la carga del mapa y sus respectivas fichas
         void cargarJuego();      
 
-        //Pre:  
         //Post: controla los turnos de cada uno de loos jugadores y salta a alguno en caso de que su turno se tenga que omitir
         void jugar();
 
     private:
-        //Pre:
-        //Post:
+
+        //Post: Devuelve el tipo de mapa en string
         std::string consultarTipoDeMapa();
 
-        //Pre:
-        //Post:
+        //Post: Consulta el tipo de mapa y lo carga
         void cargarMapas();
 
-        //Pre:
-        //Post:
+        //Post: Carga la cantidad de fichas a cada jugador
         void cargarCantidadesDeFichasAJugadores();
         
         //----------------- Cargas del mapa--------------
 
-        //Pre:
-        //Post:
+        //Pre: Recibe un string
+        //Post: Carga el mapa especificado
         void cargarTerrenoPlano(std::string tipo);
 
-        //Pre:
-        //Post:
+        //Pre: Recibe un string
+        //Post: Carga el mapa especificado
         void cargarPlaya(std::string tipo);
 
-        //Pre:
-        //Post:
+        //Pre: Recibe un string
+        //Post: Carga el mapa especificado
         void cargarRioLago(std::string tipo);
 
-        //Pre:
-        //Post:
+        //Pre: Recibe un string y una Coordenada
+        //Post: Devuelve True si es parte de la orilla de un lago o rio
         bool esOrilla(std::string tipo, Coordenada pos);
 
         // ----------Cargas de las fichas en el mapa------
 
-        //Pre:
-        //Post:
+        //Post: Carga las fichas de los jugadores
         void cargarFichas();
 
-        //Pre:
-        //Post:
+        //Pre: Recibe un int con la cantidad de carga, un TipoContenido y un int con el indice del jugador
+        //Post: Carga la ficha en el mapa
         void cargarFichaDelTipo(int cantidadDeCarga, TipoContenido tipoDeFicha, int jugadorOwner);
 
-        //Pre:
-        //Post:
+        //Pre: Recibe una Coordenada y el Tipo de ficha
+        //Post: Devuelve true si la celda esta vacia y se puede insertar la ficha
         bool validarCeldaAInsertarFicha(Coordenada cordenada, TipoContenido tipoDeFicha);
 
         // ----------Cambio de turno ------
