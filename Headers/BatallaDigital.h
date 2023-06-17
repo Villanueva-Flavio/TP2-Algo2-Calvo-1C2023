@@ -36,6 +36,8 @@ class BatallaDigital{
         bool jugadorConFichasVivas(int jugador);
         void procesarInactivas();
         void mensajeEmpate();
+        void sacarFoto();
+
 
     public:
         //Pre:
