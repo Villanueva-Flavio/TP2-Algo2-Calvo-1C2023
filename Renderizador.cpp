@@ -3,10 +3,6 @@
 #include <iostream>
 #include "./Headers/Tablero.h"
 #include "./Headers/Renderizador.h"
-#include "./Headers/Structs/Coordenadas.h"
-#include "./Headers/Structs/CoordenadaDouble.h"
-#include "./Headers/Enums.h"
-#include "./EasyBMP/EasyBMP.h"
 
 const RGBApixel BLANCO = {255, 255, 255, 0};
 const RGBApixel ARENA = {0, 215, 215, 0};
@@ -20,7 +16,6 @@ const RGBApixel TIERRA_OSCURA = {9, 32, 64, 0};
 const RGBApixel BORDE = {0, 0, 0, 0};
 const RGBApixel MINA = {0, 0, 0, 0};
 const RGBApixel FUEGO = {12, 92, 232, 0};
-const RGBApixel QUIMICO = {32,240,32,0};
 
 typedef std::map<int, RGBApixel> MapaColores;
 
@@ -117,10 +112,10 @@ void pintarEntidad(BMP* image, Coordenada pixelPos, RGBApixel color, Coordenada 
     for(int i = 0; i < pixelSize; i++){
         for(int j = 0; j < pixelSize; j++){
             if(pixelSizeEnRango(pixelPos, imgSize, pixelSize) && !coloresSonIguales(color, BLANCO)){
-                image->SetPixel(pixelPos.x + i, pixelPos.y + j, color);
-                image->SetPixel(pixelPos.x - i, pixelPos.y + j, color);
-                image->SetPixel(pixelPos.x + i, pixelPos.y - j, color);
-                image->SetPixel(pixelPos.x - i, pixelPos.y - j, color);
+                    image->SetPixel(pixelPos.x + i, pixelPos.y + j, color);
+                    image->SetPixel(pixelPos.x - i, pixelPos.y + j, color);
+                    image->SetPixel(pixelPos.x + i, pixelPos.y - j, color);
+                    image->SetPixel(pixelPos.x - i, pixelPos.y - j, color);
             }
         }
     }
@@ -138,18 +133,33 @@ RGBApixel getColor(Celda celda, MapaColores colores){
            (celda.getFicha()->getTipo() == SOLDADO)?           colores[celda.getFicha()->getJugadorOwner()] : BLANCO;
 }
 
+void getAux(int lado, Coordenada* aux){
+    aux->x = (lado == ATRAS)? -1: 1;
+    aux->y = (lado == ATRAS)? -1: 1;
+    aux->z = (lado == ATRAS)? -1: 1;
+}
+
+void getPixel(CoordenadaDouble* pixel, Coordenada matrixPos){
+    pixel->x = (double)matrixPos.x; 
+    pixel->y = (double)matrixPos.y; 
+    pixel->z = (double)matrixPos.z;
+}
+
+int matrixPosStarter(int lado, int size){
+    return (lado == IZQUIERDA)? 0 : (lado == DERECHA)? 0 : size-1;
+}
+
 void imprimirBMP(Coordenada imgSize, BMP* image, Mapa* tablero, MapaColores colores){
     RGBApixel color;
-    Coordenada pixelOffset, matrixPos, pixelPos;
+    Coordenada pixelOffset, matrixPos, pixelPos, aux;
     CoordenadaDouble pixel;
     for(int lado = 0; lado < 3; lado ++){
-        pixelOffset = getPixelOffset(lado, tablero->getTamanioX());            
-        for(matrixPos.x = 0; matrixPos.x < tablero->getTamanioX(); matrixPos.x++){
-            for(matrixPos.y = 0; matrixPos.y < tablero->getTamanioY(); matrixPos.y++){
-                for(matrixPos.z = 0; matrixPos.z < tablero->getTamanioZ(); matrixPos.z++){
-                    pixel.x = (double)matrixPos.x; 
-                    pixel.y = (double)matrixPos.y; 
-                    pixel.z = (double)matrixPos.z;
+        getAux(lado, &aux);
+        pixelOffset = getPixelOffset(lado, tablero->getTamanioX());
+        for(matrixPos.x = matrixPosStarter(lado, tablero->getTamanioX()); matrixPos.x < tablero->getTamanioX() && matrixPos.x >= 0; matrixPos.x += aux.x){
+            for(matrixPos.y =  matrixPosStarter(lado, tablero->getTamanioY()); matrixPos.y < tablero->getTamanioY() && matrixPos.y >= 0; matrixPos.y += aux.y){
+                for(matrixPos.z = matrixPosStarter(lado, tablero->getTamanioZ()); matrixPos.z < tablero->getTamanioZ() && matrixPos.z >= 0; matrixPos.z += aux.z){
+                    getPixel(&pixel, matrixPos);
                     aplicarProyeccionIsometrica(&pixel, lado);
                     pixelPos.x = static_cast<int>(pixel.x * 20 + pixelOffset.x); 
                     pixelPos.y = static_cast<int>(pixel.y * 20 + pixelOffset.y);

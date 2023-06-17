@@ -107,7 +107,9 @@ void BatallaDigital::cargarRioLago(string tipo){
         for(int y = 0; y < mapa->getTamanioY(); y++){
             for(int z = 0; z < mapa->getTamanioZ(); z++){
                 Coordenada pos = {x, y, z};
-                (!esOrilla(tipo, pos))? this->mapa->getTData(x, y, z)->setTipo(CAPA_AGUA) : this->mapa->getTData(x, y, CAPA_MAXIMA-1)->setTipo(CAPA_PASTO);
+                (!esOrilla(tipo, pos))? 
+                    this->mapa->getTData(x, y, z)->setTipo(CAPA_AGUA) : 
+                    this->mapa->getTData(x, y, CAPA_MAXIMA-1)->setTipo(CAPA_PASTO);
             }
             mapa->getTData(x, y, 0)->setTipo(CAPA_ARENA);
         }
