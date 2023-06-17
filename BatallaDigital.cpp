@@ -74,9 +74,9 @@ std::string BatallaDigital::consultarTipoDeMapa(){
 
 void BatallaDigital::cargarTerrenoPlano(string tipo) {
     for(int i = 0; i < this->mapa->getTamanioX(); i ++){
-        for(int j = 0; i < this->mapa->getTamanioY(); j ++){
-            for(int k = 0; i < this->mapa->getTamanioZ(); k ++){
-                this->mapa->getTData(i, j, k)->setTipo((k>5)? CAPA_AIRE : (i<k+4)? CAPA_ARENA : CAPA_AGUA);
+        for(int j = 0; j < this->mapa->getTamanioY(); j ++){
+            for(int k = 0; k < this->mapa->getTamanioZ(); k ++){
+                this->mapa->getTData(i, j, k)->setTipo((k>5)? CAPA_AIRE : (tipo == "Mar")? CAPA_AGUA : (tipo == "Desierto")? CAPA_ARENA : CAPA_TIERRA);
             }    
         }    
     }    
@@ -84,9 +84,9 @@ void BatallaDigital::cargarTerrenoPlano(string tipo) {
 
 void BatallaDigital::cargarPlaya(string tipo) {
     for(int i = 0; i < this->mapa->getTamanioX(); i ++){
-        for(int j = 0; i < this->mapa->getTamanioY(); j ++){
-            for(int k = 0; i < this->mapa->getTamanioZ(); k ++){
-                this->mapa->getTData(i, j, k)->setTipo((k>5)? CAPA_AIRE : (i<k+4)? CAPA_ARENA : CAPA_AGUA);
+        for(int j = 0; j < this->mapa->getTamanioY(); j ++){
+            for(int k = 0; k < this->mapa->getTamanioZ(); k ++){
+                this->mapa->getTData(i, j, k)->setTipo((k>5)? CAPA_AIRE : (k<i)? CAPA_ARENA : CAPA_AGUA);
             }    
         }    
     }    
@@ -538,10 +538,22 @@ void BatallaDigital::mensajeEmpate(){
     cout << "Empate!" << endl;
 }
 
+void BatallaDigital::sacarFoto(){
+    Coordenada imgSize;
+    imgSize.x = this->mapa->getTamanioX() * 100;
+    imgSize.y = this->mapa->getTamanioY() * 70;
+    BMP *image = new BMP();
+    image->SetSize(imgSize.x, imgSize.y);
+    imprimirBMP(imgSize, image, this->mapa, getMap());
+    image->WriteToFile("Partida.bmp");
+    delete image;
+}
+
 void BatallaDigital::jugar(){
     string respuesta = "";
     int jugador = 0;
     while(this->jugadoresConFichasVivas() > 1){
+        this->sacarFoto();
         mantenerIndiceEnRango(jugador);
         if(this->omitirTurno){ 
             this->omitirTurno = false;

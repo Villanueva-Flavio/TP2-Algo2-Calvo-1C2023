@@ -138,7 +138,7 @@ RGBApixel getColor(Celda celda, MapaColores colores){
            (celda.getFicha()->getTipo() == SOLDADO)?           colores[celda.getFicha()->getJugadorOwner()] : BLANCO;
 }
 
-void imprimirAngulo(Coordenada imgSize, BMP* image, Mapa* tablero, MapaColores colores){
+void imprimirBMP(Coordenada imgSize, BMP* image, Mapa* tablero, MapaColores colores){
     RGBApixel color;
     Coordenada pixelOffset, matrixPos, pixelPos;
     CoordenadaDouble pixel;
