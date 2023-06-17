@@ -1,0 +1,1 @@
+Posicion: (0,1,0) - Contenido: vacio - Jugador: -1
