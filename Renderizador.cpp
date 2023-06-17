@@ -3,6 +3,10 @@
 #include <iostream>
 #include "./Headers/Tablero.h"
 #include "./Headers/Renderizador.h"
+#include "./Headers/Structs/Coordenadas.h"
+#include "./Headers/Structs/CoordenadaDouble.h"
+#include "./Headers/Enums.h"
+#include "./EasyBMP/EasyBMP.h"
 
 const RGBApixel BLANCO = {255, 255, 255, 0};
 const RGBApixel ARENA = {0, 215, 215, 0};
@@ -65,7 +69,7 @@ bool colorEnRango(RGBApixel color){
     return color.Red >= 0 && color.Red <= 255 && color.Green >= 0 && color.Green <= 255 && color.Blue >= 0 && color.Blue <= 255;
 }
 
-bool pixelEnRango(int px, int py, coordenadas imgSize){
+bool pixelEnRango(int px, int py, Coordenada imgSize){
     return px >= 0 && px < imgSize.x && py >= 0 && py < imgSize.y;
 }
 
@@ -97,7 +101,7 @@ int pixelSizeGet(RGBApixel color){
     return resultado;
 }
 
-bool pixelSizeEnRango(coordenadas pixelPos, coordenadas imgSize, int pixelSize){
+bool pixelSizeEnRango(Coordenada pixelPos, Coordenada imgSize, int pixelSize){
     bool resultado = false;
     if(pixelEnRango(pixelPos.x + pixelSize, pixelPos.y + pixelSize, imgSize) && 
         pixelEnRango(pixelPos.x - pixelSize, pixelPos.y - pixelSize, imgSize) && 
@@ -108,22 +112,22 @@ bool pixelSizeEnRango(coordenadas pixelPos, coordenadas imgSize, int pixelSize){
     return resultado;
 }
 
-void pintarEntidad(BMP* image, coordenadas pixelPos, RGBApixel color, coordenadas imgSize){
+void pintarEntidad(BMP* image, Coordenada pixelPos, RGBApixel color, Coordenada imgSize){
     int pixelSize = pixelSizeGet(color);
     for(int i = 0; i < pixelSize; i++){
         for(int j = 0; j < pixelSize; j++){
             if(pixelSizeEnRango(pixelPos, imgSize, pixelSize) && !coloresSonIguales(color, BLANCO)){
-                    image->SetPixel(pixelPos.x + i, pixelPos.y + j, color);
-                    image->SetPixel(pixelPos.x - i, pixelPos.y + j, color);
-                    image->SetPixel(pixelPos.x + i, pixelPos.y - j, color);
-                    image->SetPixel(pixelPos.x - i, pixelPos.y - j, color);
+                image->SetPixel(pixelPos.x + i, pixelPos.y + j, color);
+                image->SetPixel(pixelPos.x - i, pixelPos.y + j, color);
+                image->SetPixel(pixelPos.x + i, pixelPos.y - j, color);
+                image->SetPixel(pixelPos.x - i, pixelPos.y - j, color);
             }
         }
     }
 }
 
-coordenadas getPixelOffset(int lado, int size){
-    coordenadas pixelOffset;
+Coordenada getPixelOffset(int lado, int size){
+    Coordenada pixelOffset;
     pixelOffset.x = (lado == IZQUIERDA)? size*5 : (lado == DERECHA)? size*43 : size*55;
     pixelOffset.y = (lado == IZQUIERDA)? size*37 : (lado == DERECHA)? size*31 : size*38;
     return pixelOffset;
@@ -134,9 +138,9 @@ RGBApixel getColor(Celda celda, MapaColores colores){
            (celda.getFicha()->getTipo() == SOLDADO)?           colores[celda.getFicha()->getJugadorOwner()] : BLANCO;
 }
 
-void imprimirAngulo(coordenadas imgSize, BMP* image, Mapa* tablero, MapaColores colores){
+void imprimirAngulo(Coordenada imgSize, BMP* image, Mapa* tablero, MapaColores colores){
     RGBApixel color;
-    coordenadas pixelOffset, matrixPos, pixelPos;
+    Coordenada pixelOffset, matrixPos, pixelPos;
     CoordenadaDouble pixel;
     for(int lado = 0; lado < 3; lado ++){
         pixelOffset = getPixelOffset(lado, tablero->getTamanioX());            

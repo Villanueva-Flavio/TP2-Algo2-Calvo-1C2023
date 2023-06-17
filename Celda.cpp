@@ -28,3 +28,11 @@ Ficha* Celda::getFicha() {
 Ficha Celda::getCopiaFicha() {
     return this->ficha;
 }
+
+void Celda::setTurnosInactiva(int turnosInactiva){
+    this->turnosInactiva = turnosInactiva;
+}
+
+int Celda::getTurnosInactiva(){
+    return this->turnosInactiva;
+}

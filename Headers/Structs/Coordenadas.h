@@ -1,7 +1,7 @@
 #ifndef __COORDENADAS_H__
 #define __COORDENADAS_H__
 
-struct coordenadas{
+struct Coordenada{
     int x,y,z;
 };
 

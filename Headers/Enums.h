@@ -49,7 +49,7 @@ enum EstadoJuego {
     FINALIZADO
 };
 
-enum Color {
+/* enum Color {
     PASTO, 
     TIERRA, 
     ARENA, 
@@ -58,7 +58,7 @@ enum Color {
     AGUA, 
     AIRE, 
     SIN_COLOR
-};
+}; */
 
 enum TipoMapa {
     M_PLAYA, 
