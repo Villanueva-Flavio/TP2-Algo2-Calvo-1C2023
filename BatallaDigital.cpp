@@ -67,6 +67,7 @@ std::string BatallaDigital::consultarTipoDeMapa(){
     cout << "|    Playa    -   Mar   -   Tierra   |\n";
     cout << "|  Desierto   -   Rio   -   Lago     |\n";
     cout << "+------------------------------------+\n";
+    cout << "Version Beta: Sin Rio y Lago" << endl;
     cout << "(Escriba su respuesta): ";
     cin >> this->tipoMapa;
     return this->tipoMapa;
@@ -74,9 +75,9 @@ std::string BatallaDigital::consultarTipoDeMapa(){
 
 void BatallaDigital::cargarTerrenoPlano(string tipo) {
     for(int i = 0; i < this->mapa->getTamanioX(); i ++){
-        for(int j = 0; i < this->mapa->getTamanioY(); j ++){
-            for(int k = 0; i < this->mapa->getTamanioZ(); k ++){
-                this->mapa->getTData(i, j, k)->setTipo((k>5)? CAPA_AIRE : (i<k+4)? CAPA_ARENA : CAPA_AGUA);
+        for(int j = 0; j < this->mapa->getTamanioY(); j ++){
+            for(int k = 0; k < this->mapa->getTamanioZ(); k ++){
+                this->mapa->getTData(i, j, k)->setTipo((k>5)? CAPA_AIRE : (tipo == "Mar")? CAPA_AGUA : (tipo == "Desierto")? CAPA_ARENA : CAPA_TIERRA);
             }    
         }    
     }    
@@ -84,15 +85,15 @@ void BatallaDigital::cargarTerrenoPlano(string tipo) {
 
 void BatallaDigital::cargarPlaya(string tipo) {
     for(int i = 0; i < this->mapa->getTamanioX(); i ++){
-        for(int j = 0; i < this->mapa->getTamanioY(); j ++){
-            for(int k = 0; i < this->mapa->getTamanioZ(); k ++){
-                this->mapa->getTData(i, j, k)->setTipo((k>5)? CAPA_AIRE : (i<k+4)? CAPA_ARENA : CAPA_AGUA);
+        for(int j = 0; j < this->mapa->getTamanioY(); j ++){
+            for(int k = 0; k < this->mapa->getTamanioZ(); k ++){
+                this->mapa->getTData(i, j, k)->setTipo((k>5)? CAPA_AIRE : (k<i)? CAPA_ARENA : CAPA_AGUA);
             }    
         }    
     }    
 }
 
-bool BatallaDigital::esOrilla(string tipo, Coordenada pos){
+/* bool BatallaDigital::esOrilla(string tipo, Coordenada pos){
     CoordenadaDouble r;
     double p = (tipo == "Lago")? 0.285:0.227;
     double radioAjustado = 1+(p*(pow(this->mapa->getTamanioX()/4, 1/2.5)));
@@ -107,12 +108,15 @@ void BatallaDigital::cargarRioLago(string tipo){
         for(int y = 0; y < mapa->getTamanioY(); y++){
             for(int z = 0; z < mapa->getTamanioZ(); z++){
                 Coordenada pos = {x, y, z};
-                (!esOrilla(tipo, pos))? this->mapa->getTData(x, y, z)->setTipo(CAPA_AGUA) : this->mapa->getTData(x, y, CAPA_MAXIMA-1)->setTipo(CAPA_PASTO);
+                (z >= 5)? this->mapa->getTData(x, y, z)->setTipo(CAPA_AIRE) : this->mapa->getTData(x, y, z)->setTipo(CAPA_AGUA);
+                if(esOrilla(tipo, pos)){
+                    this->mapa->getTData(x, y, CAPA_MAXIMA-1)->setTipo(CAPA_PASTO);
+                }
             }
             mapa->getTData(x, y, 0)->setTipo(CAPA_ARENA);
         }
     }
-}
+} */
 
 void BatallaDigital::cargarMapaEspecificado(string aux){
     if(aux == "Playa"){
@@ -120,7 +124,8 @@ void BatallaDigital::cargarMapaEspecificado(string aux){
     }else if(aux == "Mar" || aux == "Tierra" || aux == "Desierto"){
         this->cargarTerrenoPlano(aux);
     }else if(aux == "Rio" || aux == "Lago"){
-        this->cargarRioLago(aux);
+        /* this->cargarRioLago(aux); */
+        // A IMPLEMENTAR
     }
 }
 
@@ -538,10 +543,22 @@ void BatallaDigital::mensajeEmpate(){
     cout << "Empate!" << endl;
 }
 
+void BatallaDigital::sacarFoto(){
+    Coordenada imgSize;
+    imgSize.x = this->mapa->getTamanioX() * 100;
+    imgSize.y = this->mapa->getTamanioY() * 70;
+    BMP *image = new BMP();
+    image->SetSize(imgSize.x, imgSize.y);
+    imprimirBMP(imgSize, image, this->mapa, getMap());
+    image->WriteToFile("Partida.bmp");
+    delete image;
+}
+
 void BatallaDigital::jugar(){
     string respuesta = "";
     int jugador = 0;
     while(this->jugadoresConFichasVivas() > 1){
+        this->sacarFoto();
         mantenerIndiceEnRango(jugador);
         if(this->omitirTurno){ 
             this->omitirTurno = false;
