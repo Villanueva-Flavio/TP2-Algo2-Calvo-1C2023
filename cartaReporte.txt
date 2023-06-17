@@ -1,0 +1,4 @@
+Posicion: (2,4,6) - Contenido: vacio - Jugador: -1
+Posicion: (1,5,3) - Contenido: vacio - Jugador: -1
+Posicion: (4,2,5) - Contenido: vacio - Jugador: -1
+Posicion: (2,2,4) - Contenido: vacio - Jugador: -1

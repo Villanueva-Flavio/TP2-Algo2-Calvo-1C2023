@@ -568,7 +568,7 @@ void BatallaDigital::jugar(){
     while(this->jugadoresConFichasVivas() > 1){
         system("clear");
         cout << "Turno Jugador " << jugador +1 << endl;
-        this->sacarFoto();
+        this->sacarFoto(jugador);
         mantenerIndiceEnRango(jugador);
         if(this->omitirTurno){ 
             this->omitirTurno = false;
