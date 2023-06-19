@@ -249,8 +249,10 @@ void BatallaDigital::inactivarCelda(Celda* celda){
 
 Coordenada BatallaDigital::obtenerCoordenadaCelda(){
     Coordenada aux;
-    cout << "Ingrese coordenada en formato 'x y z': ";
-    cin >> aux.x >> aux.y >> aux.z;
+    do{ 
+        cout << "Ingrese coordenada en formato 'x y z': ";
+        cin >> aux.x >> aux.y >> aux.z;
+    }while(!coordenadaEnRango(aux)); 
 
     return aux;
 }
@@ -283,13 +285,9 @@ void BatallaDigital::ejecutarCartaElegida(Carta* carta, Jugador* jugador,Coorden
             jugador->activarEscudo();
         break;
         case BARCO:
-            do{ 
-                coordenadaMisil = this-> obtenerCoordenadaCelda();
-            }while(!coordenadaEnRango(coordenadaMisil)); 
-            
-            if(coordenadaEnRango(coordenadaMisil)){
-                carta->usarCarta(this->mapa, coordenadaMisil);
-            }
+            cout << "Ingrese la posicion del misil"<<endl;
+            coordenadaMisil = this-> obtenerCoordenadaCelda();
+            carta->usarCarta(this->mapa, coordenadaMisil);
             break;
         default:
             carta->usarCarta(this->mapa, coordenada);
@@ -388,18 +386,28 @@ void BatallaDigital::solicitarFichaAMover(int* indice, int jugador){
     *indice -= 1;
 }
 
+void BatallaDigital::procesarDireccion(Coordenada* coordenada){
+    if (!this->coordenadaEnRango(*coordenada)){
+        cout << "La direccion a la que desea moverse esta fuera de rango" << endl;
+        seleccionarDireccion(coordenada);
+    }
+}
+
 void BatallaDigital::seleccionarDireccion(Coordenada* coordenada){
     string direccion;
     MapaCoordenadas mapaCoordenadas = getMapaCoordenadas();
     cout << "Ingrese la direccion en la que desea mover la ficha (W - A - S - D | R - F): " << endl;
     cin >> direccion;
     while(mapaCoordenadas.find(direccion) == mapaCoordenadas.end()){
-        cout << endl << "Ingrese una direccion valida: ";
+        cout << "Ingrese una direccion valida: " << endl ;
         cin >> direccion;
     }
     coordenada->x += mapaCoordenadas[direccion].x;
     coordenada->y += mapaCoordenadas[direccion].y;
     coordenada->z += mapaCoordenadas[direccion].z;
+
+    procesarDireccion(coordenada);
+    
 }
 
 bool BatallaDigital::sePuedeMover(Coordenada coordenada, int jugador){
@@ -589,11 +597,8 @@ void BatallaDigital::jugar(){
             this->omitirTurno = false;
         } else if(this->jugadorConFichasVivas(indiceDeJugador)){
             
-            Coordenada coordenada;
-            do{ 
-                cout << "Elija la posicion para la mina " << endl;
-                coordenada = this-> obtenerCoordenadaCelda();
-            }while(!coordenadaEnRango(coordenada)); 
+            cout << "Elija la posicion para la mina " << endl;
+            Coordenada coordenada = this-> obtenerCoordenadaCelda();
 
             this->tomarCartaDeMazo(this->jugadores->getLData(indiceDeJugador), coordenada); 
             this->insertarMina(coordenada);
