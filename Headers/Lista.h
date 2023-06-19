@@ -14,6 +14,10 @@ private:
 	
 public: 
 
+	Lista();
+
+	~Lista();
+
 	// PRE: Recibe un entero positivo
 	// POST: Itera el cursor de la lista hasta el entero recibido
 	void irANodo(int x);	
@@ -24,10 +28,6 @@ public:
 
 	// POST: Reinicia el iterador en la primer posicion
 	void resetIter();
-
-	Lista();
-
-	~Lista();
 
 	// PRE: Recibe un dato generico
 	// POST: Y lo asigna al nodo del iterador

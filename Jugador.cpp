@@ -15,6 +15,14 @@ Jugador::Jugador() {
     this->cartas = new Cartas();
 }
 
+Jugador:: ~Jugador(){
+    this->cartas->resetIter();
+    for(int i = 0; i < this->cartas->getSize(); i++){
+        delete this->cartas->getLData(i);
+    }
+    delete this->cartas;
+}
+
 string Jugador::getNombre() {
     return this->nombre;
 }
@@ -67,8 +75,11 @@ void Jugador::imprimirCartas(){
 }
 
 Carta* Jugador::seleccionarCarta(int indiceCarta){
-    //Falta validacion
     return this->cartas->getLData(indiceCarta);
+}
+
+void Jugador::removerCarta(int indiceCarta){
+    delete this->cartas->getLData(indiceCarta);
 }
 
 int Jugador::getCantidadDeCartas(){

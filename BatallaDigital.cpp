@@ -310,7 +310,9 @@ void BatallaDigital::insertarMina(Coordenada coordenada){
 }
 
 void BatallaDigital::mantenerIndiceEnRango(int &indice){
-    indice = (indice < this->jugadores->getSize()) ? 0 : indice;
+    if(! (indice < this->jugadores->getSize())){
+        indice = 0;
+    }
 }
 
 bool BatallaDigital::mensajeValido(std::string mensaje){
@@ -350,6 +352,7 @@ void BatallaDigital::tomarCartaDeMazo(Jugador* jugador, Coordenada coordenada){
         int indiceDeCarta = this->obtenerIndiceDeCarta(jugador);
         insertarMina(coordenada);
         this->ejecutarCartaElegida(jugador->seleccionarCarta(indiceDeCarta),jugador,coordenada);
+        jugador->removerCarta(indiceDeCarta);
     }
 }
 
@@ -564,12 +567,13 @@ bool BatallaDigital::coordenadaEnRango(Coordenada coordenada){
 
 void BatallaDigital::jugar(){
     string respuesta = "";
+    string respuestaFicha = "";
     int jugador = 0;
     while(this->jugadoresConFichasVivas() > 1){
         system("clear");
-        cout << "Turno Jugador " << jugador +1 << endl;
-        this->sacarFoto(jugador);
         mantenerIndiceEnRango(jugador);
+        this->sacarFoto(jugador);
+        cout << "Turno Jugador " << jugador +1 << endl;
         if(this->omitirTurno){ 
             this->omitirTurno = false;
         } else if(this->jugadorConFichasVivas(jugador)){
@@ -589,7 +593,15 @@ void BatallaDigital::jugar(){
                 tomarCartaDeMazo(this->jugadores->getLData(jugador), coordenada); 
             }
 
-            this->jugarFicha(jugador);
+            do{
+                cout << "Desea mover una ficha? Y/N: " << endl;
+                cin >> respuestaFicha;
+            }while(!mensajeValido(respuestaFicha)); 
+
+            if(respuestaFicha == "Y"){
+                this->jugarFicha(jugador);
+            }
+            
         }
         jugador++;
         if(jugador == this->jugadores->getSize()){
