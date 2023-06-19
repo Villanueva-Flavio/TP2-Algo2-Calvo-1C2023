@@ -190,7 +190,13 @@ class BatallaDigital{
         //Post: devuelve el indice de la carta solictado por el usuario
         int obtenerIndiceDeCarta(Jugador* jugador);
 
+        //Pre:se tiene que validar que el indice sea valido
+        //Post: devuelve el indice de la carta solictado por el usuario
         bool coordenadaEnRango(Coordenada coordenada);
+
+        //Pre:se tiene que validar que el indice sea valido
+        //Post: devuelve el indice de la carta solictado por el usuario
+        void moverFicha(int indiceDeJugador);
 
         //------------ Interacciones entre fichas -------------------
 

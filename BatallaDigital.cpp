@@ -300,11 +300,13 @@ void BatallaDigital::insertarMina(Coordenada coordenada){
     Celda* celdaSelecionada = this->mapa->getTData(coordenada.x,coordenada.y,coordenada.z);
     if(celdaSelecionada->getEstado()){
         if(celdaSelecionada->getFicha()->getJugadorOwner() != -1 || celdaSelecionada->getFicha()->getTipo() == MINA_FICHA){
-            //Missing informar al usuario
-            destruirFicha(celdaSelecionada->getFicha());
-            inactivarCelda(celdaSelecionada);
+            cout<<"Haz destruido una Ficha" << endl;
+            this->destruirFicha(celdaSelecionada->getFicha());
+            this->inactivarCelda(celdaSelecionada);
+            
         }else{
             celdaSelecionada->getFicha()->setTipo(MINA_FICHA);
+            cout<<"Mina insertada"<<endl;
         }
     }
 }
@@ -335,24 +337,22 @@ int BatallaDigital::obtenerIndiceDeCarta(Jugador* jugador){
 }
 
 void BatallaDigital::tomarCartaDeMazo(Jugador* jugador, Coordenada coordenada){
-    Carta*  carta = generarCarta();
+    Carta*  carta = this->generarCarta();
     jugador->agregarCarta(carta);
     cout<<"Acaba de selecionar una carta del tipo: " << carta->getStringTipoCarta()<<endl;
     string respuesta = "";
+    
     while(!mensajeValido(respuesta)){
         cout<<"¿Desea usar alguna Carta? Y/N: "<<endl;
         cin>>respuesta;
     }  
 
-    if(respuesta != "Y"){
-        cout<<"Mina insertada"<<endl;
-        insertarMina(coordenada);
-    }else {
+    if(respuesta == "Y"){
         jugador->imprimirCartas();
         int indiceDeCarta = this->obtenerIndiceDeCarta(jugador);
-        insertarMina(coordenada);
         this->ejecutarCartaElegida(jugador->seleccionarCarta(indiceDeCarta),jugador,coordenada);
         jugador->removerCarta(indiceDeCarta);
+        cout<<"Carta ejecutada correctamente"<<endl;
     }
 }
 
@@ -565,46 +565,45 @@ bool BatallaDigital::coordenadaEnRango(Coordenada coordenada){
     return (coordenada.x >= 0 && coordenada.x < this->mapa->getTamanioX() && coordenada.y >= 0 && coordenada.y < this->mapa->getTamanioY() && coordenada.z >= 0 && coordenada.z < this->mapa->getTamanioZ());
 }
 
-void BatallaDigital::jugar(){
+void BatallaDigital::moverFicha(int indiceDeJugador){
     string respuesta = "";
-    string respuestaFicha = "";
-    int jugador = 0;
+    do{
+        cout << "Desea mover una ficha? Y/N: " << endl;
+        cin >> respuesta;
+    }while(!mensajeValido(respuesta)); 
+
+    if(respuesta== "Y"){
+        this->jugarFicha(indiceDeJugador);
+    }
+}
+
+void BatallaDigital::jugar(){
+    int indiceDeJugador = 0;
     while(this->jugadoresConFichasVivas() > 1){
         system("clear");
-        mantenerIndiceEnRango(jugador);
-        this->sacarFoto(jugador);
-        cout << "Turno Jugador " << jugador +1 << endl;
+        this->mantenerIndiceEnRango(indiceDeJugador);
+        this->sacarFoto(indiceDeJugador);
+        cout << "Turno Jugador " << indiceDeJugador +1 << endl;
+        
         if(this->omitirTurno){ 
             this->omitirTurno = false;
-        } else if(this->jugadorConFichasVivas(jugador)){
+        } else if(this->jugadorConFichasVivas(indiceDeJugador)){
             
             Coordenada coordenada;
-            
             do{ 
+                cout << "Elija la posicion para la mina " << endl;
                 coordenada = this-> obtenerCoordenadaCelda();
             }while(!coordenadaEnRango(coordenada)); 
 
-            do{
-                cout << "Desea elegir una carta del mazo? Y/N: " << endl;
-                cin >> respuesta;
-            }while(!mensajeValido(respuesta)); 
-
-            if(respuesta == "Y"){ 
-                tomarCartaDeMazo(this->jugadores->getLData(jugador), coordenada); 
-            }
-
-            do{
-                cout << "Desea mover una ficha? Y/N: " << endl;
-                cin >> respuestaFicha;
-            }while(!mensajeValido(respuestaFicha)); 
-
-            if(respuestaFicha == "Y"){
-                this->jugarFicha(jugador);
-            }
+            this->tomarCartaDeMazo(this->jugadores->getLData(indiceDeJugador), coordenada); 
+            this->insertarMina(coordenada);
+            this->moverFicha(indiceDeJugador);
             
         }
-        jugador++;
-        if(jugador == this->jugadores->getSize()){
+        
+        indiceDeJugador++;
+        
+        if(indiceDeJugador == this->jugadores->getSize()){
             this->procesarInactivas();
         }
     }
