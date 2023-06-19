@@ -1,4 +1,4 @@
-#include "./Headers/carta.h"
+#include "./Headers/Carta.h"
 #include "./Headers/Tablero.h"
 #include "./Headers/Celda.h"
 
