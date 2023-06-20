@@ -1,0 +1,9 @@
+Posicion: (0,2,5) - Contenido: soldado - Jugador: 1
+Posicion: (0,3,5) - Contenido: soldado - Jugador: 0
+Posicion: (1,0,5) - Contenido: tanque - Jugador: 1
+Posicion: (1,2,2) - Contenido: mina - Jugador: -1
+Posicion: (1,2,4) - Contenido: mina - Jugador: -1
+Posicion: (2,3,5) - Contenido: soldado - Jugador: 0
+Posicion: (2,4,5) - Contenido: soldado - Jugador: 1
+Posicion: (3,1,2) - Contenido: submarino - Jugador: 0
+Posicion: (3,2,2) - Contenido: avion - Jugador: 1

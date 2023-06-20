@@ -44,6 +44,10 @@ class BatallaDigital{
         //POST: Le pide al usuario que ingrese una direccion, y aplica el cambio de coordenada
         void seleccionarDireccion(Coordenada* coordenada);
 
+        //PRE: Recibe una Coordenada puntero y la direccion a la que se quiere mover el usuario
+        //POST: valida si la coordenada ingresada este dentro del rango permitido, de lo contrario solicita de vuelta una direccion
+        void procesarDireccion(Coordenada* coordenada);
+
         //PRE: recibe un puntero a una coordenada
         //POST: Aplica escalar un punto si se choca con terreno en subida
         void contarEscalado(Coordenada* coordenada);
@@ -189,6 +193,14 @@ class BatallaDigital{
         //Pre:se tiene que validar que el indice sea valido
         //Post: devuelve el indice de la carta solictado por el usuario
         int obtenerIndiceDeCarta(Jugador* jugador);
+
+        //Pre:se tiene que validar que el indice sea valido
+        //Post: devuelve el indice de la carta solictado por el usuario
+        bool coordenadaEnRango(Coordenada coordenada);
+
+        //Pre:se tiene que validar que el indice sea valido
+        //Post: devuelve el indice de la carta solictado por el usuario
+        void moverFicha(int indiceDeJugador);
 
         //------------ Interacciones entre fichas -------------------
 

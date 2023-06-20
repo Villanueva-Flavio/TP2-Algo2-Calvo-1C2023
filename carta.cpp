@@ -1,4 +1,4 @@
-#include "./Headers/carta.h"
+#include "./Headers/Carta.h"
 #include "./Headers/Tablero.h"
 #include "./Headers/Celda.h"
 
@@ -24,7 +24,7 @@ Carta::Carta(TipoCarta carta) {
 
     switch(this->carta){
         case AVION_RADAR:
-            this->radioAccion = 8;
+            this->radioAccion = 4;
             this->obtenerReporte(tablero,centro);
             break;
         case ATAQUE_QUIMICO:

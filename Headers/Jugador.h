@@ -2,7 +2,7 @@
 #define __JUGADOR_H__
 
 #include <string>
-#include "carta.h"
+#include "Carta.h"
 #include "../EasyBMP/EasyBMP_DataStructures.h"
 
 typedef Lista<Carta*> Cartas;
@@ -16,8 +16,13 @@ class Jugador{
         bool escudoActivo; 
         Cartas* cartas;
     public:
-            
+        //PRE: no tiene
+        //POST: crea una isntancia de jugador
         Jugador();
+
+        //PRE: no tiene
+        //POST: destruye la instancia jugador y libera la memoria dinamica usada
+        ~Jugador();
 
         //POST: Devuelve el nombre del jugador
         std::string getNombre();
@@ -63,7 +68,11 @@ class Jugador{
 
         //Pre:se tiene que recibir un indice valido
         //Post: devuelve un puntero a la carta correspondiente al indice ingresado
-        Carta* seleccionarCarta(int carta);
+        Carta* seleccionarCarta(int indiceCarta);
+
+        //Pre:se tiene que recibir el indice de la carta que se desea remover
+        //Post: remueve la carta del mazo del indice indicado
+        void removerCarta(int indiceCarta);
 
         //Post: devuelve la cantidad de cartas que tiene el jugador
         int getCantidadDeCartas();
