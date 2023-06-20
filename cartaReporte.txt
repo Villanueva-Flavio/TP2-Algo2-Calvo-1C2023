@@ -1,7 +1,0 @@
-Posicion: (1,0,6) - Contenido: submarino - Jugador: 2
-Posicion: (1,7,5) - Contenido: barco - Jugador: 3
-Posicion: (2,4,5) - Contenido: soldado - Jugador: 2
-Posicion: (2,5,5) - Contenido: soldado - Jugador: 1
-Posicion: (4,0,4) - Contenido: avion - Jugador: 2
-Posicion: (4,2,5) - Contenido: soldado - Jugador: 1
-Posicion: (4,5,5) - Contenido: soldado - Jugador: 0
