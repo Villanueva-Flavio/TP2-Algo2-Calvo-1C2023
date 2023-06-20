@@ -7,6 +7,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <cmath>
+#include <sstream>
 
 
 using namespace std;
@@ -74,7 +75,9 @@ void Carta::inactivarCeldas(Tablero<Celda*>* tablero, Coordenada centro){
                     }else{
                         int owner = tablero->getTData(n,m,l)->getFicha()->getJugadorOwner();
                         string contenido = this->getStringTipoFicha(tablero->getTData(n,m,l)->getFicha()->getTipo());
-                        reporte = reporte + "Posicion: (" + to_string(n) + ","+ to_string(m) + ","+ to_string(l) + ") - Contenido: " + contenido + " - Jugador: " + to_string(owner) + "/";
+                        stringstream ss;
+                        ss << "Posicion: (" << n << "," << m << "," << l << ") - Contenido: " << contenido << " - Jugador: " << owner << "/";
+                        reporte += ss.str();
                         this->inactivarCelda(tablero,punto,turnosInactiva);
                     }
                 }
@@ -97,8 +100,9 @@ void Carta::bombardearCeldas(Tablero<Celda*>* tablero, Coordenada centro){
             cout << "entro"<<endl;
             int owner = tablero->getTData(puntoAlAzar.x,puntoAlAzar.y,puntoAlAzar.z)->getFicha()->getJugadorOwner();
             string contenido = this->getStringTipoFicha(tablero->getTData(puntoAlAzar.x,puntoAlAzar.y,puntoAlAzar.z)->getFicha()->getTipo());
-            reporte = reporte + "Posicion: (" + to_string(puntoAlAzar.x) + ","+ to_string(puntoAlAzar.y) + ","+ to_string(puntoAlAzar.z) + ") - Contenido: " + contenido + " - Jugador: " + to_string(owner) + "/";
-            
+            stringstream ss;
+            ss << "Posicion: (" << puntoAlAzar.x << "," << puntoAlAzar.y << "," << puntoAlAzar.z << ") - Contenido: " << contenido << " - Jugador: " << owner << "/";
+            reporte += ss.str();
             this->inactivarCelda(tablero,puntoAlAzar,4);
         }
     }
@@ -118,7 +122,9 @@ void Carta::obtenerReporte(Tablero<Celda*>* tablero,  Coordenada centro){
                     if(tablero->getTData(n,m,l)->getFicha()->getTipo() != VACIO){
                         int owner = tablero->getTData(n,m,l)->getFicha()->getJugadorOwner();
                         string contenido = this->getStringTipoFicha(tablero->getTData(n,m,l)->getFicha()->getTipo());
-                        reporte = reporte + "Posicion: (" + to_string(n) + ","+ to_string(m) + ","+ to_string(l) + ") - Contenido: " + contenido + " - Jugador: " + to_string(owner) + "/";
+                        stringstream ss;
+                        ss << "Posicion: (" << n << "," << m << "," << l << ") - Contenido: " << contenido << " - Jugador: " << owner << "/";
+                        reporte += ss.str();
                     }
                 }
         
@@ -134,7 +140,9 @@ void Carta::lanzarMisil(Tablero<Celda*>* tablero,  Coordenada centro){
 
         int owner = tablero->getTData(centro.x,centro.y,centro.z)->getFicha()->getJugadorOwner();
         string contenido = this->getStringTipoFicha(tablero->getTData(centro.x,centro.y,centro.z)->getFicha()->getTipo());
-        string reporte = "Posicion: (" + to_string(centro.x) + ","+ to_string(centro.y) + ","+ to_string(centro.z) + ") - Contenido: " + contenido + " - Jugador: " + to_string(owner) + "/"; 
+        stringstream ss4;
+        ss4 << "Posicion: (" << centro.x << "," << centro.y << "," << centro.z << ") - Contenido: " << contenido << " - Jugador: " << owner << "/";
+        string reporte = ss4.str();
         this->inactivarCelda(tablero,centro,4);
         this->imprimirReporte(reporte);
     }
