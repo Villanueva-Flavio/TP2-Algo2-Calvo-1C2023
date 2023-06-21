@@ -101,11 +101,127 @@ class BatallaDigital{
         BatallaDigital(int cantidad);
         
         ~BatallaDigital();
-        void cargarJuego();
-        void consultarNombres();
-        void consultarTipoDeMapa(string tipoMapa);
-        void consultarColores();
-        int jugadoresVivos();
+
+        //Post: Gestiona la carga del mapa y sus respectivas fichas
+        void cargarJuego();      
+
+        //Post: controla los turnos de cada uno de loos jugadores y salta a alguno en caso de que su turno se tenga que omitir
+        void jugar();
+
+    private:
+
+        //Post: Devuelve el tipo de mapa en string
+        std::string consultarTipoDeMapa();
+
+        //Post: Consulta el tipo de mapa y lo carga
+        void cargarMapas();
+
+        //Post: Carga la cantidad de fichas a cada jugador
+        void cargarCantidadesDeFichasAJugadores();
+        
+        //----------------- Cargas del mapa--------------
+
+        //Pre: 'tipo' debe contener un valor valido
+        //Post: Carga el mapa especificado
+        void cargarTerrenoPlano(std::string tipo);
+
+        //Post: Carga el mapa especificado
+        void cargarPlaya(std::string tipo);
+
+        //Post: Carga el mapa especificado
+        void cargarRioLago(std::string tipo);
+
+        //Pre: 'tipo' y 'pos' deben contener valores validos
+        //Post: Devuelve True si es parte de la orilla de un lago o rio
+        bool esOrilla(std::string tipo, Coordenada pos);
+
+        // ----------Cargas de las fichas en el mapa------
+
+        //Post: Carga las fichas de los jugadores
+        void cargarFichas();
+
+        //Pre: 'cantidadDeCarga', 'tipoDeFicha' y 'jugadorOwner' deben contener valores validos
+        //Post: Carga la ficha en el mapa
+        void cargarFichaDelTipo(int cantidadDeCarga, TipoContenido tipoDeFicha, int jugadorOwner);
+
+        //Pre: 'coordenada' debe contener un valor valido y 'tipoDeFicha' debe estar inicializado
+        //Post: Devuelve true si la celda esta vacia y se puede insertar la ficha
+        bool validarCeldaAInsertarFicha(Coordenada cordenada, TipoContenido tipoDeFicha);
+
+        // ----------Cambio de turno ------
+
+        //Post: almacena la coordenada de la celda a la que se quiere mover el usuario
+        Coordenada obtenerCoordenadaCelda();
+        
+        //Post: devuelve de forma aleatoria un tipo de Carta
+        Carta* generarCarta();
+
+        //Post: devuelve un mapa con los tipos de cartas existentes
+        mapaIndiceDeCartas getMapaIndiceDeCartas();
+
+        //Pre: 'carta', 'jugador' y 'coordenada' deben contener un valor valido
+        //Post: dependiendo del tipo de carta ejecuta la accion correspondiente
+        void ejecutarCartaElegida(Carta* carta, Jugador* jugador, Coordenada coordenada);
+        
+        //Pre: 'coordenada' debe contener un valor valido
+        //Post: valida el contenido de la celda seleccionada e inserta la mina si la casilla se encuentra vacia
+        //en caso contrario deja vacia la ficha e inactiva la celda
+        void insertarMina(Coordenada coordenada);
+
+        //Post: reinicia el recorrido de la lista cuando se llega al limite de elementos
+        void mantenerIndiceEnRango(int &indice);
+
+        //Pre: 'jugador' y 'coordenada' deben contener un valor valido
+        //Post:se genera una carta al azar y le da la opcion al usuario de usarla o no
+        void tomarCartaDeMazo(Jugador* jugador, Coordenada coordenada);
+
+        //Pre: 'mensaje' debe estar inicializado
+        //Post: se genera una carta al azar y le da la opcion al usuario de usarla o no
+        bool mensajeValido(std::string mensaje);
+
+        //Pre: 'jugador' debe contener un valor valido
+        //Post: devuelve el indice de la carta solictado por el usuario
+        int obtenerIndiceDeCarta(Jugador* jugador);
+
+        //Pre: 'coordenada' debe contener un valor valido
+        //Post: devuelve el indice de la carta solictado por el usuario
+        bool coordenadaEnRango(Coordenada coordenada);
+
+        //Pre: 'indiceDeJugador' debe contener un valor valido
+        //Post: devuelve el indice de la carta solictado por el usuario
+        void moverFicha(int indiceDeJugador);
+
+        //------------ Interacciones entre fichas -------------------
+
+        //Pre: 'celdaJugador' y 'celdaElegida' deben contener un valor valido
+        //Post: Devuelve un string que inidicara el evento que se debe desencadenar dependiendo del tipo de ficha 
+        std::string validarContenidoFicha(Celda* celdaJugador, Celda* celdaElegida);
+
+        //Pre: 'celdaJugador' y 'celdaElegida' deben contener un valor valido
+        //Post: Devuelve un string que inidicara el evento que se debe desencadenar dependiendo del tipo de ficha 
+        std::string validacionArmamento(Celda* celdaJugador, Celda* celdaElegida);
+
+        //Pre: 'celdaJugador' y 'celdaElegida' deben contener un valor valido
+        //Post: Devuelve un string que inidicara el evento que se debe desencadenar dependiendo del tipo de ficha 
+        std::string validacionSoldado(Celda* celdaJugador, Celda* celdaElegida);
+
+        //Pre: 'contenidoFicha' debe contener un valor valido
+        //Post:devuelve true si la ficha es armamento y false de caso contrario 
+        bool esArmamento(TipoContenido contenidoFicha);
+
+        //Pre: 'celdaJugador' y 'celdaElegida' deben contener un valor valido
+        //Post: evalua si las fichas contenidas pertenecen al mismo jugador, devuelve true en caso de que lo sean, y false en caso contrario
+        bool esFichaDelJugadorActual(Celda* celdaJugador, Celda* celdaElegida);
+
+        //Pre: 'resultado' debe contener un valor valido
+        //Post: devuelve una alarte por consola al ussuario para que solucione el error
+        void errorEnCeldaElegida(std::string resultado);
+
+        //Post: elimina la ficha del jugador e inactiva la celda en donde se produjo el encuentro
+        void destruirFicha(Ficha* ficha);
+
+        //Post: inactiva la celda pasada por una cantidad definida de partidas
+        void inactivarCelda(Celda* celda);
 
 };
 #endif

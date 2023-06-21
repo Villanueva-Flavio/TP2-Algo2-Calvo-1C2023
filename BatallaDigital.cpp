@@ -380,23 +380,6 @@ void BatallaDigital::solicitarFichaAMover(int* indice, int jugador){
     *indice -= 1;
 }
 
-void BatallaDigital::pedirMovimiento(){
-    bool movimientoValido = false;
-    string movimiento = "";
-    MapaCoordenadas mapa = getMapaCoordenadas();
-
-    cout << "\nIngrese un movimiento (w-a-s-d): ";
-    cin >> movimiento;
-
-    this->mapa->getTData();
-
-    while((mapa.find(movimiento) == mapa.end())){
-        cout << "No se ingrese un movimiento valido.\nIngrese un movimiento (w-a-s-d): ";
-        cin >> movimiento;
-    }
-    Coordenada coordenada = mapa[movimiento];
-}
-
 void BatallaDigital::procesarDireccion(Coordenada* coordenada){
     if (!this->coordenadaEnRango(*coordenada)){
         cout << "La direccion a la que desea moverse esta fuera de rango" << endl;
