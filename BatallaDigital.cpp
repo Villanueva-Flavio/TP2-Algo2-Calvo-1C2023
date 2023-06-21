@@ -55,19 +55,6 @@ BatallaDigital::~BatallaDigital(){
     delete this->jugadores;
 }
 
-void BatallaDigital::consultarNombres(){
-    bool nombreValido = false;
-    string nombre;
-    for (int i = 0; i < this->cantidadJugadores; i++) {
-        while (!nombreValido) {
-            cout << "\nIngrese el nombre del jugador " << i + 1 << ": ";
-            cin >> nombre;
-            this->jugadores->getLData(i)->setNombre(nombre);
-            nombreValido = (this->jugadores->getLData(i)->getNombre() != "");
-        }
-    }
-}
-
 std::string BatallaDigital::consultarTipoDeMapa(){
     cout << "\nSeleccione un tipo de mapa:\n";
     cout << "+------------------------------------+\n";
@@ -524,7 +511,7 @@ void BatallaDigital::moverFicha(int indice, int jugador){
                     coordenada.x = i;
                     coordenada.y = j;
                     coordenada.z = k;
-                    i, j, k = this->mapa->getTamanioX();
+                    i = j = k = this->mapa->getTamanioX();
                 }
             }
         }
@@ -611,8 +598,8 @@ void BatallaDigital::jugar(){
             cout << "Elija la posicion para la mina " << endl;
             Coordenada coordenada = this-> obtenerCoordenadaCelda();
 
-            this->tomarCartaDeMazo(this->jugadores->getLData(indiceDeJugador), coordenada); 
             this->insertarMina(coordenada);
+            this->tomarCartaDeMazo(this->jugadores->getLData(indiceDeJugador), coordenada); 
             this->moverFicha(indiceDeJugador);
             
         }
