@@ -20,16 +20,23 @@ typedef map<string, Coordenada> MapaCoordenadas;
 
 MapaCoordenadas getMapaCoordenadas(){
     MapaCoordenadas mapa;
-    mapa["w"] = {0,0,1};
-    mapa["a"] = {-1,0,0};
-    mapa["s"] = {0,0,-1};
-    mapa["d"] = {1,0,0};
-    mapa["W"] = {0,0,1};
-    mapa["A"] = {-1,0,0};
-    mapa["S"] = {0,0,-1};
-    mapa["D"] = {1,0,0};
+    
+    Coordenada coordW = {0, 0, 1};
+    Coordenada coordA = {-1, 0, 0};
+    Coordenada coordS = {0, 0, -1};
+    Coordenada coordD = {1, 0, 0};
+    
+    mapa["w"] = coordW;
+    mapa["a"] = coordA;
+    mapa["s"] = coordS;
+    mapa["d"] = coordD;
+    mapa["W"] = coordW;
+    mapa["A"] = coordA;
+    mapa["S"] = coordS;
+    mapa["D"] = coordD;
+    
     return mapa;
-};
+}
 
 BatallaDigital::BatallaDigital(int cantidad){
     this->mapa = new Mapa(cantidad*4, cantidad*4, cantidad*4);
@@ -46,19 +53,6 @@ BatallaDigital::BatallaDigital(int cantidad){
 BatallaDigital::~BatallaDigital(){
     delete this->mapa;
     delete this->jugadores;
-}
-
-void BatallaDigital::consultarNombres(){
-    bool nombreValido = false;
-    string nombre;
-    for (int i = 0; i < this->cantidadJugadores; i++) {
-        while (!nombreValido) {
-            cout << "\nIngrese el nombre del jugador " << i + 1 << ": ";
-            cin >> nombre;
-            this->jugadores->getLData(i)->setNombre(nombre);
-            nombreValido = (this->jugadores->getLData(i)->getNombre() != "");
-        }
-    }
 }
 
 std::string BatallaDigital::consultarTipoDeMapa(){
@@ -460,7 +454,9 @@ void BatallaDigital::aplicarMovimiento(int jugador, Coordenada* coordenada){
     this->aplicarGravedad(coordenada);
     while(!this->sePuedeMover(*coordenada, jugador)){
         cout << "No se puede mover a esa posicion, ingrese otra direccion: " << endl;
-        *coordenada = {i,j,k};
+        coordenada->x = i;
+        coordenada->y = j;
+        coordenada->z = k;
         this->seleccionarDireccion(coordenada);
         this->contarEscalado(coordenada);
         this->aplicarGravedad(coordenada);
@@ -512,8 +508,10 @@ void BatallaDigital::moverFicha(int indice, int jugador){
                     contador++;
                 }
                 if(contador == indice){
-                    coordenada = {i,j,k};
-                    i, j, k = this->mapa->getTamanioX();
+                    coordenada.x = i;
+                    coordenada.y = j;
+                    coordenada.z = k;
+                    i = j = k = this->mapa->getTamanioX();
                 }
             }
         }
@@ -600,8 +598,8 @@ void BatallaDigital::jugar(){
             cout << "Elija la posicion para la mina " << endl;
             Coordenada coordenada = this-> obtenerCoordenadaCelda();
 
-            this->tomarCartaDeMazo(this->jugadores->getLData(indiceDeJugador), coordenada); 
             this->insertarMina(coordenada);
+            this->tomarCartaDeMazo(this->jugadores->getLData(indiceDeJugador), coordenada); 
             this->moverFicha(indiceDeJugador);
             
         }
