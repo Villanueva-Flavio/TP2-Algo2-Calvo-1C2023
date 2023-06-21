@@ -64,6 +64,10 @@ std::string BatallaDigital::consultarTipoDeMapa(){
     cout << "Version Beta: Sin Rio y Lago" << endl;
     cout << "(Escriba su respuesta): ";
     cin >> this->tipoMapa;
+    while(this->tipoMapa != "Playa" && this->tipoMapa != "Mar" && this->tipoMapa != "Tierra" && this->tipoMapa != "Desierto" && this->tipoMapa != "Rio" && this->tipoMapa != "Lago"){
+        cout << "Respuesta invalida. Ingrese nuevamente: ";
+        cin >> this->tipoMapa;
+    }
     return this->tipoMapa;
 }
 

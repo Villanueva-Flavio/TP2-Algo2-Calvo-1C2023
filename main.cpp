@@ -17,7 +17,7 @@ void solicitarJugadores(int* cantJugadores){
     cout << "|        Presione una tecla         |\n";
     cout << "|          para comenzar...         |\n";
     cout << "|                                   |\n";
-    cout << "+-----------------------------------+\n";
+    cout << "+-----------------------------------+\n\n";
     cin.get();
 
     cout << "Ingrese la cantidad de jugadores: ";
