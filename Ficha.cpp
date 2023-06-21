@@ -4,6 +4,7 @@
 Ficha::Ficha() {
     this->tipo = VACIO;
     this->jugadorOwner = -1;
+    this->enumerador = -1;
 }
 
 // Devuelve ID del jugador al que le pertenece la ficha

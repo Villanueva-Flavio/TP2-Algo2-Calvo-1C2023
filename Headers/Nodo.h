@@ -9,25 +9,27 @@ private:
 
 public:
 
-    // Constructor de nodo:
-    // Crea el nodo con el dato del parametro
+    // PRE: Recibe un dato generico
+    // POST: Construye un nodo con el dato recibido
     Nodo(T data);
     
-    // Devuelve el dato guardado en el nodo
+    // PRE: Devuelve el dato guardado en el nodo
     T getNData();
     
-    // Cambia el dato guardado en el nodo por el del parametro
+    // PRE: Recibe un dato generico
+    // POST: Setea el dato del nodo
     void setNData(T data);
     
-    // Devuelve el nodo siguiente
+    // POST: Devuelve el nodo siguiente
     Nodo<T>* next();
 
-    // Devuelve el nodo anterior
+    // POST: Devuelve el nodo anterior
     Nodo<T>* prev();
 
-    // Linkea el nodo siguiente al puntero
+    // POST: Linkea el nodo siguiente al puntero
     void setSig(Nodo<T>* sig);
 
+    // POST: Linkea el nodo anterior al puntero
     void setAnt(Nodo<T>* ant);
 };
 #include "../TPPs/Nodo.tpp"

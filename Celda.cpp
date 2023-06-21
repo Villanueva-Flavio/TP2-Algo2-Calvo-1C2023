@@ -4,7 +4,6 @@ Celda::Celda() {
     this->tipo = CAPA_AIRE;
     this->estado = true;
     this->ficha = Ficha();
-    this->mina = Mina();
 }
 
 bool Celda::getEstado() {
@@ -30,9 +29,10 @@ Ficha Celda::getCopiaFicha() {
     return this->ficha;
 }
 
-Mina* Celda::getMina() {
-    return &this->mina;
+void Celda::setTurnosInactiva(int turnosInactiva){
+    this->turnosInactiva = turnosInactiva;
 }
-Mina Celda::getCopiaMina() {
-    return this->mina;
+
+int Celda::getTurnosInactiva(){
+    return this->turnosInactiva;
 }
