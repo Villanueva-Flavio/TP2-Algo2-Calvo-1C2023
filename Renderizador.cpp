@@ -127,7 +127,7 @@ RGBApixel getColor(Celda celda, MapaColores colores, bool esFicha){
     if(coloresSonIguales(colorAux, BLANCO)){
         colorAux = (colores.find(celda.getTipo()) != colores.end())? colores[celda.getTipo()] : colorAux;
     }
-    return colorAux;
+    return (celda.getEstado() == false)? FUEGO : colorAux;
 }
 
 void getAux(int lado, Coordenada* aux){
