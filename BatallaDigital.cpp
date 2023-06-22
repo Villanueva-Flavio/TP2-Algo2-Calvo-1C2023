@@ -1,3 +1,9 @@
+#ifdef __unix__
+        #define CLEAR "clear"
+#elif defined(_WIN32) || defined(WIN32)
+        #define CLEAR "cls"
+#endif
+
 #include <map>
 #include <string>
 #include <cmath>
@@ -353,7 +359,7 @@ void BatallaDigital::tomarCartaDeMazo(Jugador* jugador, Coordenada coordenada){
 }
 
 void BatallaDigital::mostrarFichasActuales(int jugador){
-    system("clear");
+    system(CLEAR);
     cout << "Fichas actuales: " << endl;
     int contador = 0;
     for(int i = 0; i < this->mapa->getTamanioX(); i++){
@@ -590,7 +596,7 @@ void BatallaDigital::moverFicha(int indiceDeJugador){
 void BatallaDigital::jugar(){
     int indiceDeJugador = 0;
     while(this->jugadoresConFichasVivas() > 1){
-        system("clear");
+        system(CLEAR);
         this->mantenerIndiceEnRango(indiceDeJugador);
         this->sacarFoto(indiceDeJugador);
         cout << "Turno Jugador " << indiceDeJugador +1 << endl;
