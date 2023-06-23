@@ -1,9 +1,9 @@
 #ifndef __BATALLA_DIGITAL_H__
 #define __BATALLA_DIGITAL_H__
 #include "Tablero.h"
-#include "Celda.h"
-#include "Jugador.h"
-#include "Structs/Coordenadas.h"
+#include "./Celda.h"
+#include "./Jugador.h"
+#include "./Coordenadas.h"
 #include "./Enums.h"
 
 typedef Tablero<Celda*> Mapa;

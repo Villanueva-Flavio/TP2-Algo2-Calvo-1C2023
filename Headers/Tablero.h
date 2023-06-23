@@ -1,6 +1,6 @@
 #ifndef __TABLERO_H__
 #define __TABLERO_H__
-#include "Lista.h"
+#include "./Lista.h"
 
 template <class T> class Tablero {
     private:

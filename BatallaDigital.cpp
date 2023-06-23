@@ -16,7 +16,7 @@
 #include "Headers/Renderizador.h"
 #include "Headers/BatallaDigital.h"
 #include "Headers/Enums.h"
-#include "Headers/Structs/Coordenadas.h"
+#include "Headers/Coordenadas.h"
 
 using namespace std;
 

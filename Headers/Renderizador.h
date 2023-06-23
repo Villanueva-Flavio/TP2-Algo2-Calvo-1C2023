@@ -2,10 +2,10 @@
 #define __RENDERIZADOR_H__
 
 #include <map>
-#include "Celda.h"
+#include "./Celda.h"
 #include "../EasyBMP/EasyBMP.h"
-#include "./Structs/CoordenadaDouble.h"
-#include "./Structs/Coordenadas.h"
+#include "./CoordenadaDouble.h"
+#include "./Coordenadas.h"
 
 #define IZQUIERDA 0
 #define DERECHA 1

@@ -2,7 +2,7 @@
 #define __JUGADOR_H__
 
 #include <string>
-#include "Carta.h"
+#include "./Carta.h"
 #include "../EasyBMP/EasyBMP_DataStructures.h"
 
 typedef Lista<Carta*> Cartas;
