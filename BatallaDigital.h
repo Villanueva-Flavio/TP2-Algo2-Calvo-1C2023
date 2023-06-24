@@ -3,8 +3,8 @@
 #include "Tablero.h"
 #include "Celda.h"
 #include "Jugador.h"
-#include "Structs/Coordenadas.h"
-#include "./Enums.h"
+#include "Coordenadas.h"
+#include "Enums.h"
 
 typedef Tablero<Celda*> Mapa;
 typedef Lista<Jugador*> Jugadores;

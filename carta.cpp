@@ -1,6 +1,6 @@
-#include "./Headers/Carta.h"
-#include "./Headers/Tablero.h"
-#include "./Headers/Celda.h"
+#include "Carta.h"
+#include "Tablero.h"
+#include "Celda.h"
 
 #include <string>
 #include <fstream>

@@ -3,9 +3,7 @@
 
 #include <string>
 #include "Carta.h"
-#include "../EasyBMP/EasyBMP_DataStructures.h"
-
-typedef Lista<Carta*> Cartas;
+#include "EasyBMP/EasyBMP_DataStructures.h"
 
 class Jugador{
     private:
@@ -14,7 +12,7 @@ class Jugador{
         int minas;
         int armamentos;
         bool escudoActivo; 
-        Cartas* cartas;
+        Lista<Carta*>* cartas;
     public:
         //PRE: no tiene
         //POST: crea una isntancia de jugador

@@ -2,7 +2,7 @@
 #include "Tablero.h"
 #include "Celda.h"
 #include "Enums.h"
-#include "./Structs/Coordenadas.h"
+#include "Coordenadas.h"
 #include <map>
 
 #ifndef __CARTA_H__

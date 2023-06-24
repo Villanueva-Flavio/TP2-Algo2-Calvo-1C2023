@@ -1,9 +1,9 @@
 #include <sstream>
 #include <string>
 #include <iostream>
-#include "./Headers/Tablero.h"
-#include "./Headers/Renderizador.h"
-#include "./Headers/Enums.h"
+#include "Tablero.h"
+#include "Renderizador.h"
+#include "Enums.h"
 
 const RGBApixel BLANCO = {255, 255, 255, 0};
 const RGBApixel ARENA = {0, 215, 215, 0};

@@ -1,4 +1,4 @@
-#include "./Headers/Celda.h"
+#include "Celda.h"
 
 Celda::Celda() {
     this->tipo = CAPA_AIRE;

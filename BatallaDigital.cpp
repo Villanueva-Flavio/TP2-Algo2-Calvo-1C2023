@@ -4,13 +4,13 @@
 #include <cstdlib>
 #include <time.h>
 
-#include "Headers/Tablero.h"
-#include "Headers/Celda.h"
-#include "Headers/Carta.h"
-#include "Headers/Renderizador.h"
-#include "Headers/BatallaDigital.h"
-#include "Headers/Enums.h"
-#include "Headers/Structs/Coordenadas.h"
+#include "Tablero.h"
+#include "Celda.h"
+#include "Carta.h"
+#include "Renderizador.h"
+#include "BatallaDigital.h"
+#include "Enums.h"
+#include "Coordenadas.h"
 
 using namespace std;
 
