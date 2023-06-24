@@ -146,7 +146,7 @@ int matrixPosStarter(int lado, int size){
     return (lado == IZQUIERDA)? 0 : (lado == DERECHA)? 0 : size-1;
 }
 
-void imprimirBMP(Coordenada imgSize, BMP* image, Mapa* tablero, MapaColores colores, int jugador){
+void imprimirBMP(Coordenada imgSize, BMP* image, Tablero<Celda*>* tablero, MapaColores colores, int jugador){
     RGBApixel color;
     Coordenada pixelOffset, matrixPos, pixelPos, aux;
     CoordenadaDouble pixel;

@@ -48,8 +48,30 @@ TipoCarta Carta::getTipoCarta() {
 }
 
 string Carta::getStringTipoCarta(){
-    mapaStringTipoDeCarta mapa = getMapaStringTipoDeCartas();
-    return mapa[this->carta];
+    string tipoDeCarta = "";
+
+    switch (this->carta)
+    {
+    case AVION_RADAR:
+        tipoDeCarta = "Avion Radar";
+        break;
+    case BARCO_MISIL:
+        tipoDeCarta = "Barco";
+        break;
+    case ATAQUE_QUIMICO:
+        tipoDeCarta = "Ataque Quimico";
+        break;
+    case BOMBARDEO:
+        tipoDeCarta = "Bombardeo";
+        break;
+    case OMITIR_TURNO:
+        tipoDeCarta = "Omitir Turno";
+        break;
+    default:
+        tipoDeCarta = "Escudo";
+        break;
+    }
+    return tipoDeCarta;
 }
 
 bool Carta::getCartaActiva() {
@@ -173,8 +195,33 @@ void Carta::imprimirReporte(string reporte){
 }
 
 string Carta::getStringTipoFicha(TipoContenido tipo){
-    mapaTiposContenido mapaTiposContenido = this->getMapaTiposContenido();
-    return mapaTiposContenido[tipo];
+    string tipoDeCarta= "";
+
+    switch (tipo)
+    {
+    case SOLDADO:
+        tipoDeCarta= "soldado";
+        break;
+    case TANQUE:
+        tipoDeCarta= "tanque";
+        break;
+    case BARCO:
+        tipoDeCarta= "barco";
+        break;
+    case SUBMARINO:
+        tipoDeCarta= "submarino";
+        break;
+    case AVION:
+        tipoDeCarta= "avion";
+        break;
+    case MINA_FICHA:
+        tipoDeCarta= "mina";
+        break;
+    default:
+        tipoDeCarta= "vacio";
+        break;
+    }
+    return tipoDeCarta;
 }
 
 int Carta::getTurnosInactiva(Coordenada centro, Coordenada punto){
@@ -205,37 +252,3 @@ void Carta::inactivarCelda(Tablero<Celda*>* tablero, Coordenada punto, int turno
     tablero->getTData(punto.x,punto.y,punto.z)->getFicha()->setTipo(VACIO);
 }
 
-mapaTiposDeCartas Carta::getMapaTipoDeCartas(){
-    mapaTiposDeCartas mapa;
-    mapa[AVION_RADAR]=AVION_RADAR;
-    mapa[BARCO_MISIL]=BARCO_MISIL;
-    mapa[ATAQUE_QUIMICO]=ATAQUE_QUIMICO;
-    mapa[BOMBARDEO]=BOMBARDEO;
-    mapa[OMITIR_TURNO]=OMITIR_TURNO;
-    mapa[ESCUDO]=ESCUDO;
-    return mapa;
-}
-
-
-mapaTiposContenido Carta::getMapaTiposContenido(){
-    mapaTiposContenido mapa;
-    mapa[SOLDADO]="soldado";
-    mapa[TANQUE]="tanque";
-    mapa[BARCO]="barco";
-    mapa[SUBMARINO]="submarino";
-    mapa[AVION]="avion";
-    mapa[MINA_FICHA]="mina";
-    mapa[VACIO]="vacio";
-    return mapa;
-}
-
-mapaStringTipoDeCarta Carta::getMapaStringTipoDeCartas(){
-    mapaStringTipoDeCarta mapa;
-    mapa[AVION_RADAR]="Avion Radar";
-    mapa[BARCO_MISIL]="Barco";
-    mapa[ATAQUE_QUIMICO]="Ataque Quimico";
-    mapa[BOMBARDEO]="Bombardeo";
-    mapa[OMITIR_TURNO]="Omitir Turno";
-    mapa[ESCUDO]="Escudo";
-    return mapa;
-}

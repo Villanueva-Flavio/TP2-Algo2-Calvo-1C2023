@@ -16,31 +16,9 @@ using namespace std;
 
 #define CAPA_MAXIMA 5
 
-typedef map<string, Coordenada> MapaCoordenadas;
-
-MapaCoordenadas getMapaCoordenadas(){
-    MapaCoordenadas mapa;
-    
-    Coordenada coordW = {0, 0, 1};
-    Coordenada coordA = {-1, 0, 0};
-    Coordenada coordS = {0, 0, -1};
-    Coordenada coordD = {1, 0, 0};
-    
-    mapa["w"] = coordW;
-    mapa["a"] = coordA;
-    mapa["s"] = coordS;
-    mapa["d"] = coordD;
-    mapa["W"] = coordW;
-    mapa["A"] = coordA;
-    mapa["S"] = coordS;
-    mapa["D"] = coordD;
-    
-    return mapa;
-}
-
 BatallaDigital::BatallaDigital(int cantidad){
     this->mapa = new Mapa(cantidad*4, cantidad*4, cantidad*4);
-    this->jugadores = new Jugadores();
+    this->jugadores = new Lista<Jugador*>();
     this->omitirTurno=false;
     for(int i = 0; i < cantidad; i++){
         Jugador* jugador = new Jugador();
@@ -251,21 +229,36 @@ Coordenada BatallaDigital::obtenerCoordenadaCelda(){
     return aux;
 }
 
-mapaIndiceDeCartas BatallaDigital::getMapaIndiceDeCartas(){
-    mapaIndiceDeCartas mapa;
-    mapa[AVION_RADAR]=AVION_RADAR;
-    mapa[BARCO_MISIL]=BARCO_MISIL;
-    mapa[ATAQUE_QUIMICO]=ATAQUE_QUIMICO;
-    mapa[BOMBARDEO]=BOMBARDEO;
-    mapa[OMITIR_TURNO]=OMITIR_TURNO;
-    mapa[ESCUDO]=ESCUDO;
-    return mapa;
+TipoCarta BatallaDigital::obtenerTipoDeCarta(int indiceDeCarta){
+    TipoCarta tipo;
+    switch (indiceDeCarta)
+    {
+    case AVION_RADAR:
+        tipo = AVION_RADAR;
+        break;
+    case BARCO_MISIL:
+        tipo = BARCO_MISIL;
+        break;
+    case ATAQUE_QUIMICO:
+        tipo = ATAQUE_QUIMICO;
+        break;
+    case BOMBARDEO:
+        tipo = BOMBARDEO;
+        break;
+    case OMITIR_TURNO:
+        tipo = OMITIR_TURNO;
+        break;
+    default:
+        tipo = ESCUDO;
+        break;
+    }
+    return tipo;
 }
 
 Carta* BatallaDigital::generarCarta(){
     int indiceDeCarta = rand() % 5;
-    mapaIndiceDeCartas mapaIndiceCartas = this->getMapaIndiceDeCartas();
-    Carta* cartaGenerada= new Carta(mapaIndiceCartas[indiceDeCarta]);
+    TipoCarta tipo = obtenerTipoDeCarta(indiceDeCarta);
+    Carta* cartaGenerada= new Carta(tipo);
     return cartaGenerada;
 }
 
@@ -387,20 +380,59 @@ void BatallaDigital::procesarDireccion(Coordenada* coordenada){
     }
 }
 
+Coordenada obtenerCoordenadaDireccion(std::string direccion){
+    Coordenada coordenada;
+    coordenada.x= 0;
+    coordenada.y= 0;
+    coordenada.z= 0;
+
+    if(direccion == "w" || direccion == "W"){
+        coordenada.y = 1;
+    }else if(direccion == "a" || direccion == "A"){
+        coordenada.x = -1;
+    }else if(direccion == "s" || direccion == "S"){
+        coordenada.y = -1;
+    }else if(direccion == "d" || direccion == "D"){
+        coordenada.x = 1;
+    }else if(direccion == "r" || direccion == "R"){
+        coordenada.z = 1;
+    }else{
+        coordenada.z = -1;
+    }
+    
+    return coordenada;
+}
+
+bool BatallaDigital::direccionValida(std::string direccion){
+    bool valido = false;
+
+    if( direccion == "w" || direccion == "W" ||
+        direccion == "a" || direccion == "A" || 
+        direccion == "s" || direccion == "S" || 
+        direccion == "d" || direccion == "D" || 
+        direccion == "r" || direccion == "R" ||
+        direccion == "f" || direccion == "F"){
+            valido = true;
+    }
+
+    return valido;
+}
+
 void BatallaDigital::seleccionarDireccion(Coordenada* coordenada){
     string direccion;
-    MapaCoordenadas mapaCoordenadas = getMapaCoordenadas();
     cout << "Ingrese la direccion en la que desea mover la ficha (W - A - S - D | R - F): " << endl;
     cin >> direccion;
-    while(mapaCoordenadas.find(direccion) == mapaCoordenadas.end()){
+    while(!this->direccionValida(direccion)){
         cout << "Ingrese una direccion valida: " << endl ;
         cin >> direccion;
     }
-    coordenada->x += mapaCoordenadas[direccion].x;
-    coordenada->y += mapaCoordenadas[direccion].y;
-    coordenada->z += mapaCoordenadas[direccion].z;
+    Coordenada coordenadaDireccion = this->obtenerCoordenadaDireccion(direccion);
 
-    procesarDireccion(coordenada);
+    coordenada->x += coordenadaDireccion.x;
+    coordenada->y += coordenadaDireccion.y;
+    coordenada->z += coordenadaDireccion.z;
+
+    this->procesarDireccion(coordenada);
     
 }
 

@@ -8,10 +8,6 @@
 #ifndef __CARTA_H__
 #define __CARTA_H__
 
-typedef  std::map<int, TipoCarta> mapaTiposDeCartas;
-typedef  std::map<int, std::string> mapaStringTipoDeCarta;
-typedef  std::map<int, std::string> mapaTiposContenido;
-
 class Carta{
     private:
 
@@ -71,15 +67,6 @@ class Carta{
         //Pre: recibe un tablero y las Coordenadad de la celda 
         //Post: inactiva las celdas pasadas por coordenada
         void inactivarCelda(Tablero<Celda*>* tablero, Coordenada punto, int turnosInactiva);
-
-        //Post: devuleve un map de los tipos de cartas
-        mapaTiposDeCartas getMapaTipoDeCartas();
-
-        //Post: devuleve un map de los tipos de contenido de las fichas
-        mapaTiposContenido getMapaTiposContenido();
-
-        //Post: devuleve un map de los tipos de contenido de las fichas
-        mapaStringTipoDeCarta getMapaStringTipoDeCartas();
         
 };
 

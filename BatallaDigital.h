@@ -6,19 +6,28 @@
 #include "Coordenadas.h"
 #include "Enums.h"
 
-typedef Tablero<Celda*> Mapa;
-typedef Lista<Jugador*> Jugadores;
-typedef std::map<int, TipoCarta> mapaIndiceDeCartas;
 
 class BatallaDigital{
     private:
-        Mapa* mapa;
-        Jugadores* jugadores;
+        Tablero<Celda*>* mapa;
+        Lista<Jugador*>* jugadores;
         std::string tipoMapa;
         int cantidadJugadores;
         int turno;
         bool omitirTurno;
+
+    public:
+        BatallaDigital(int cantidad);
         
+        ~BatallaDigital();
+
+        //Post: Gestiona la carga del mapa y sus respectivas fichas
+        void cargarJuego();      
+
+        //Post: controla los turnos de cada uno de loos jugadores y salta a alguno en caso de que su turno se tenga que omitir
+        void jugar();
+
+    private:
 
         //PRE: el nombre del mapa pasado 'aux' no puede ser NULL y debe contener un valor valido
         //POST: carga el mapa en el tablero
@@ -39,6 +48,14 @@ class BatallaDigital{
         //PRE: 'coordenada' y 'jugador' deben estar inicializados
         //POST: Devuelve true si la coordenada es valida para mover la ficha
         bool sePuedeMover(Coordenada coordenada, int jugador);
+
+        //PRE: 'direccion' debe ser valida
+        //POST: devuelve la coordenada con la direccion a la que se desea mover la ficha
+        Coordenada obtenerCoordenadaDireccion(std::string direccion);
+
+        //Pre:recibe una direccion
+        //Post: devuelve true si es valida o false en caso contrario
+        bool direccionValida(std::string direccion);
 
         //POST: Le pide al usuario que ingrese una direccion, y aplica el cambio de coordenada
         void seleccionarDireccion(Coordenada* coordenada);
@@ -96,20 +113,6 @@ class BatallaDigital{
         //POST: Saca una foto del mapa en 3 angulos distintos, con las fichas del jugador seleccionado
         void sacarFoto(int jugador);
 
-
-    public:
-        BatallaDigital(int cantidad);
-        
-        ~BatallaDigital();
-
-        //Post: Gestiona la carga del mapa y sus respectivas fichas
-        void cargarJuego();      
-
-        //Post: controla los turnos de cada uno de loos jugadores y salta a alguno en caso de que su turno se tenga que omitir
-        void jugar();
-
-    private:
-
         //Post: Devuelve el tipo de mapa en string
         std::string consultarTipoDeMapa();
 
@@ -156,8 +159,8 @@ class BatallaDigital{
         //Post: devuelve de forma aleatoria un tipo de Carta
         Carta* generarCarta();
 
-        //Post: devuelve un mapa con los tipos de cartas existentes
-        mapaIndiceDeCartas getMapaIndiceDeCartas();
+        //Post: devuelve el tipo de carta dependiendo del indice que reciba
+        TipoCarta obtenerTipoDeCarta(int indiceDeCarta);
 
         //Pre: 'carta', 'jugador' y 'coordenada' deben contener un valor valido
         //Post: dependiendo del tipo de carta ejecuta la accion correspondiente
