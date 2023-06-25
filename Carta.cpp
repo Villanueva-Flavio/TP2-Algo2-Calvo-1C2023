@@ -121,20 +121,22 @@ void Carta::bombardearCeldas(Tablero<Celda*>* tablero, Coordenada centro){
     limiteSuperior.setCoordenadaY(2*radio);
     limiteSuperior.setCoordenadaZ(2*radio);
 
-    Coordenada limiteInferior = {centro.x -radio, centro.y - radio, centro.z - radio};
-
+    Coordenada limiteInferior;
     limiteInferior.setCoordenadaX(centro.getCoordenadaX() -radio);
     limiteInferior.setCoordenadaX(centro.getCoordenadaY() -radio);
     limiteInferior.setCoordenadaX(centro.getCoordenadaZ() -radio);
 
     for(int i= 0; i<this->cantidadBombas; i++){
-        Coordenada puntoAlAzar = {rand() % limiteSuperior.x + limiteInferior.x, rand() % limiteSuperior.y + limiteInferior.y, rand() % limiteSuperior.z +limiteInferior.z};
-        if(tablero->inRange(puntoAlAzar.x,puntoAlAzar.y,puntoAlAzar.z)){
+        Coordenada puntoAlAzar;
+        puntoAlAzar.setCoordenadaX(rand() % limiteSuperior.getCoordenadaX() + limiteInferior.getCoordenadaX());
+        puntoAlAzar.setCoordenadaY(rand() % limiteSuperior.getCoordenadaY() + limiteInferior.getCoordenadaY());
+        puntoAlAzar.setCoordenadaZ(rand() % limiteSuperior.getCoordenadaZ() +limiteInferior.getCoordenadaZ());
+        if(tablero->inRange(puntoAlAzar.getCoordenadaX(),puntoAlAzar.getCoordenadaY(),puntoAlAzar.getCoordenadaZ())){
             cout << "entro"<<endl;
-            int owner = tablero->getTData(puntoAlAzar.x,puntoAlAzar.y,puntoAlAzar.z)->getFicha()->getJugadorOwner();
-            string contenido = this->getStringTipoFicha(tablero->getTData(puntoAlAzar.x,puntoAlAzar.y,puntoAlAzar.z)->getFicha()->getTipo());
+            int owner = tablero->getTData(puntoAlAzar.getCoordenadaX(),puntoAlAzar.getCoordenadaY(),puntoAlAzar.getCoordenadaZ())->getFicha()->getJugadorOwner();
+            string contenido = this->getStringTipoFicha(tablero->getTData(puntoAlAzar.getCoordenadaX(),puntoAlAzar.getCoordenadaY(),puntoAlAzar.getCoordenadaZ())->getFicha()->getTipo());
             stringstream ss;
-            ss << "Posicion: (" << puntoAlAzar.x << "," << puntoAlAzar.y << "," << puntoAlAzar.z << ") - Contenido: " << contenido << " - Jugador: " << owner << "/";
+            ss << "Posicion: (" << puntoAlAzar.getCoordenadaX() << "," << puntoAlAzar.getCoordenadaY() << "," << puntoAlAzar.getCoordenadaZ() << ") - Contenido: " << contenido << " - Jugador: " << owner << "/";
             reporte += ss.str();
             this->inactivarCelda(tablero,puntoAlAzar,4);
         }
@@ -147,9 +149,9 @@ void Carta::obtenerReporte(Tablero<Celda*>* tablero,  Coordenada centro){
     int &radio = this->radioAccion; 
     string reporte = "";
 
-    for (int n= centro.x - radio; n < centro.x + radio ; n++){
-        for (int m= centro.y - radio; m < centro.y + radio ; m++){
-            for (int l = centro.z - radio; l < centro.z + radio ; l++){
+    for (int n= centro.getCoordenadaX() - radio; n < centro.getCoordenadaX() + radio ; n++){
+        for (int m= centro.getCoordenadaY() - radio; m < centro.getCoordenadaY() + radio ; m++){
+            for (int l = centro.getCoordenadaZ() - radio; l < centro.getCoordenadaZ() + radio ; l++){
                 if(tablero->inRange(n,m,l)){
 
                     if(tablero->getTData(n,m,l)->getFicha()->getTipo() != VACIO){
@@ -169,12 +171,12 @@ void Carta::obtenerReporte(Tablero<Celda*>* tablero,  Coordenada centro){
   
 void Carta::lanzarMisil(Tablero<Celda*>* tablero,  Coordenada centro){
     
-    if(tablero->inRange(centro.x,centro.y,centro.z)){
+    if(tablero->inRange(centro.getCoordenadaX(),centro.getCoordenadaY(),centro.getCoordenadaZ())){
 
-        int owner = tablero->getTData(centro.x,centro.y,centro.z)->getFicha()->getJugadorOwner();
-        string contenido = this->getStringTipoFicha(tablero->getTData(centro.x,centro.y,centro.z)->getFicha()->getTipo());
+        int owner = tablero->getTData(centro.getCoordenadaX(),centro.getCoordenadaY(),centro.getCoordenadaZ())->getFicha()->getJugadorOwner();
+        string contenido = this->getStringTipoFicha(tablero->getTData(centro.getCoordenadaX(),centro.getCoordenadaY(),centro.getCoordenadaZ())->getFicha()->getTipo());
         stringstream ss4;
-        ss4 << "Posicion: (" << centro.x << "," << centro.y << "," << centro.z << ") - Contenido: " << contenido << " - Jugador: " << owner << "/";
+        ss4 << "Posicion: (" << centro.getCoordenadaX() << "," << centro.getCoordenadaY() << "," << centro.getCoordenadaZ() << ") - Contenido: " << contenido << " - Jugador: " << owner << "/";
         string reporte = ss4.str();
         this->inactivarCelda(tablero,centro,4);
         this->imprimirReporte(reporte);
@@ -239,17 +241,20 @@ int Carta::getTurnosInactiva(Coordenada centro, Coordenada punto){
 
     int radio = this->radioAccion;
 
-    Coordenada distancia = {abs(centro.x - punto.x), abs(centro.y - punto.y), abs(centro.z - punto.z)};
+    Coordenada distancia;
+    distancia.setCoordenadaX(abs(centro.getCoordenadaX() - punto.getCoordenadaX()));
+    distancia.setCoordenadaY(abs(centro.getCoordenadaY() - punto.getCoordenadaY()));
+    distancia.setCoordenadaZ(abs(centro.getCoordenadaZ() - punto.getCoordenadaZ()));
     
-    if (distancia.x == radio || distancia.y == radio || distancia.z == radio) {
+    if (distancia.getCoordenadaX() == radio || distancia.getCoordenadaY() == radio || distancia.getCoordenadaZ() == radio) {
         return  1; 
-    } else if (distancia.x== radio-1 || distancia.y == radio-1 || distancia.z == radio-1) {
+    } else if (distancia.getCoordenadaX()== radio-1 || distancia.getCoordenadaY() == radio-1 || distancia.getCoordenadaZ() == radio-1) {
         return  2; 
-    } else if (distancia.x == radio-2 || distancia.y == radio-2 || distancia.z == radio-2) {
+    } else if (distancia.getCoordenadaX() == radio-2 || distancia.getCoordenadaY() == radio-2 || distancia.getCoordenadaZ() == radio-2) {
         return  4; 
-    } else if (distancia.x == radio-3 || distancia.y == radio-3 || distancia.z == radio-3) {
+    } else if (distancia.getCoordenadaX() == radio-3 || distancia.getCoordenadaY() == radio-3 || distancia.getCoordenadaZ() == radio-3) {
         return  6; 
-    } else if (distancia.x == radio-4 || distancia.y == radio-4 || distancia.z == radio-4) {
+    } else if (distancia.getCoordenadaX() == radio-4 || distancia.getCoordenadaY() == radio-4 || distancia.getCoordenadaZ() == radio-4) {
         return  8; 
     } else {
         return 10; 
@@ -258,8 +263,8 @@ int Carta::getTurnosInactiva(Coordenada centro, Coordenada punto){
 }
 
 void Carta::inactivarCelda(Tablero<Celda*>* tablero, Coordenada punto, int turnosInactiva){
-    tablero->getTData(punto.x,punto.y,punto.z)->setEstado(false);
-    tablero->getTData(punto.x,punto.y,punto.z)->setTurnosInactiva(4);
-    tablero->getTData(punto.x,punto.y,punto.z)->getFicha()->setTipo(VACIO);
+    tablero->getTData(punto.getCoordenadaX(),punto.getCoordenadaY(),punto.getCoordenadaZ())->setEstado(false);
+    tablero->getTData(punto.getCoordenadaX(),punto.getCoordenadaY(),punto.getCoordenadaZ())->setTurnosInactiva(4);
+    tablero->getTData(punto.getCoordenadaX(),punto.getCoordenadaY(),punto.getCoordenadaZ())->getFicha()->setTipo(VACIO);
 }
 
