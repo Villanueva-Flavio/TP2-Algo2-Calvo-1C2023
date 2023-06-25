@@ -17,7 +17,7 @@ using namespace std;
 #define CAPA_MAXIMA 5
 
 BatallaDigital::BatallaDigital(int cantidad){
-    this->mapa = new Mapa(cantidad*4, cantidad*4, cantidad*4);
+    this->mapa = new Tablero<Celda*>(cantidad*4, cantidad*4, cantidad*4);
     this->jugadores = new Lista<Jugador*>();
     this->omitirTurno=false;
     for(int i = 0; i < cantidad; i++){
@@ -380,7 +380,7 @@ void BatallaDigital::procesarDireccion(Coordenada* coordenada){
     }
 }
 
-Coordenada obtenerCoordenadaDireccion(std::string direccion){
+Coordenada BatallaDigital::obtenerCoordenadaDireccion(std::string direccion){
     Coordenada coordenada;
     coordenada.x= 0;
     coordenada.y= 0;

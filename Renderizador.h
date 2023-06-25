@@ -4,7 +4,6 @@
 #include <map>
 #include "Celda.h"
 #include "EasyBMP/EasyBMP.h"
-#include "CoordenadaDouble.h"
 #include "Coordenadas.h"
 
 #define IZQUIERDA 0
