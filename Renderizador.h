@@ -5,6 +5,7 @@
 #include "Celda.h"
 #include "EasyBMP/EasyBMP.h"
 #include "Coordenadas.h"
+#include "CoordenadasDouble.h"
 
 #define IZQUIERDA 0
 #define DERECHA 1
@@ -18,7 +19,7 @@ double gradosARadianes(double grados);
 
 void getAngulos(double angulos[6], int lado);
 
-void aplicarProyeccionIsometrica(Coordenada* pixel, int lado);
+void aplicarProyeccionIsometrica(CoordenadaDouble* pixel, int lado);
 
 bool coloresSonIguales(RGBApixel color1, RGBApixel color2);
 
