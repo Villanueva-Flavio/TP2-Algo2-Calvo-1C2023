@@ -83,11 +83,14 @@ void Carta::inactivarCeldas(Tablero<Celda*>* tablero, Coordenada centro){
     int radio = this->radioAccion; 
     string reporte = "";
 
-    for (int n= centro.x - radio; n < centro.x + radio ; n++){
-        for (int m= centro.y - radio; m < centro.y + radio ; m++){
-            for (int l = centro.z - radio; l < centro.z + radio ; l++){
+    for (int n= centro.getCoordenadaX() - radio; n < centro.getCoordenadaX() + radio ; n++){
+        for (int m= centro.getCoordenadaY() - radio; m < centro.getCoordenadaY() + radio ; m++){
+            for (int l = centro.getCoordenadaZ() - radio; l < centro.getCoordenadaZ() + radio ; l++){
                 if(tablero->inRange(n,m,l)){
-                    Coordenada punto = {n,m,l};
+                    Coordenada punto;
+                    punto.setCoordenadaX(n);
+                    punto.setCoordenadaY(m);
+                    punto.setCoordenadaZ(l);
                     int turnosInactiva = this->getTurnosInactiva(centro,punto);
 
                     if(tablero->getTData(n,m,l)->getFicha()->getTipo() == VACIO){
@@ -113,8 +116,16 @@ void Carta::bombardearCeldas(Tablero<Celda*>* tablero, Coordenada centro){
 
     int &radio = this->radioAccion; 
     string reporte = "";
-    Coordenada limiteSuperior = {2*radio,2*radio,2*radio};
+    Coordenada limiteSuperior;
+    limiteSuperior.setCoordenadaX(2*radio);
+    limiteSuperior.setCoordenadaY(2*radio);
+    limiteSuperior.setCoordenadaZ(2*radio);
+
     Coordenada limiteInferior = {centro.x -radio, centro.y - radio, centro.z - radio};
+
+    limiteInferior.setCoordenadaX(centro.getCoordenadaX() -radio);
+    limiteInferior.setCoordenadaX(centro.getCoordenadaY() -radio);
+    limiteInferior.setCoordenadaX(centro.getCoordenadaZ() -radio);
 
     for(int i= 0; i<this->cantidadBombas; i++){
         Coordenada puntoAlAzar = {rand() % limiteSuperior.x + limiteInferior.x, rand() % limiteSuperior.y + limiteInferior.y, rand() % limiteSuperior.z +limiteInferior.z};
