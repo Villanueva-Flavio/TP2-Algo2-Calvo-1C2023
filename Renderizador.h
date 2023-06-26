@@ -1,0 +1,53 @@
+#ifndef __RENDERIZADOR_H__
+#define __RENDERIZADOR_H__
+
+#include <map>
+<<<<<<< HEAD:Headers/Renderizador.h
+#include "./Celda.h"
+#include "../EasyBMP/EasyBMP.h"
+#include "./CoordenadaDouble.h"
+#include "./Coordenadas.h"
+=======
+#include "Celda.h"
+#include "EasyBMP/EasyBMP.h"
+#include "Coordenadas.h"
+#include "CoordenadasDouble.h"
+>>>>>>> main:Renderizador.h
+
+#define IZQUIERDA 0
+#define DERECHA 1
+#define ATRAS 2
+
+typedef std::map<Capa, RGBApixel> MapaColores;
+
+MapaColores getMap();
+
+double gradosARadianes(double grados);
+
+void getAngulos(double angulos[6], int lado);
+
+void aplicarProyeccionIsometrica(CoordenadaDouble* pixel, int lado);
+
+bool coloresSonIguales(RGBApixel color1, RGBApixel color2);
+
+bool colorEnRango(RGBApixel color);
+
+bool pixelEnRango(int px, int py, Coordenada imgSize);
+
+bool colorDisponible(RGBApixel color, MapaColores mapa);
+
+void setPlayerColor(RGBApixel* color, int jugador, MapaColores& mapa);
+
+int pixelSizeGet(RGBApixel color);
+
+bool pixelSizeEnRango(Coordenada pixelPos, Coordenada imgSize);
+
+void pintarEntidad(BMP* image, Coordenada pixelPos, RGBApixel color, Coordenada imgSize);
+
+Coordenada getPixelOffset(int lado, int size);
+
+RGBApixel getColor(Celda celda, MapaColores colores);
+
+void imprimirBMP(Coordenada imgSize, BMP* image, Tablero<Celda*>* tablero, MapaColores colores, int jugador);
+
+#endif

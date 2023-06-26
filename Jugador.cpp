@@ -1,9 +1,9 @@
 #include "iostream"
 #include <string>
 
-#include "./Headers/Jugador.h"
-#include "./Headers/Carta.h"
-#include "./Headers/Enums.h"
+#include "Jugador.h"
+#include "Carta.h"
+#include "Enums.h"
 
 using namespace std;
 
@@ -12,7 +12,7 @@ Jugador::Jugador() {
     this->soldados = 0;
     this->armamentos = 0;
     this->escudoActivo = false;
-    this->cartas = new Cartas();
+    this->cartas = new Lista<Carta*>();
 }
 
 Jugador:: ~Jugador(){

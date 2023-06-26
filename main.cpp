@@ -2,10 +2,10 @@
 #include <string>
 #include <ctime>
 #include <cstdlib>
-#include "./Headers/Tablero.h"
-#include "./Headers/Renderizador.h"
-#include "./Headers/Jugador.h"
-#include "./Headers/BatallaDigital.h"
+#include "Tablero.h"
+#include "Renderizador.h"
+#include "Jugador.h"
+#include "BatallaDigital.h"
 
 using namespace std;
 
