@@ -18,6 +18,12 @@ void Coordenada::setCoordenadaZ(int z){
     this->coordZ = z;
 }
 
+void Coordenada::setCoordenadas(int x, int y, int z){
+    this->coordX = x;
+    this->coordY = y;
+    this->coordZ = z;
+}
+
 int Coordenada::getCoordenadaX(){
     return this->coordX;
 }

@@ -1,15 +1,8 @@
 #include <string>
-<<<<<<< HEAD:Headers/Carta.h
-#include "./Tablero.h"
-#include "./Celda.h"
-#include "./Enums.h"
-#include "./Coordenadas.h"
-=======
 #include "Tablero.h"
 #include "Celda.h"
 #include "Enums.h"
 #include "Coordenadas.h"
->>>>>>> main:Carta.h
 #include <map>
 
 #ifndef __CARTA_H__

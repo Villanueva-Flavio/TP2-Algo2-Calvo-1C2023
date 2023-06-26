@@ -2,15 +2,8 @@
 #define __JUGADOR_H__
 
 #include <string>
-<<<<<<< HEAD:Headers/Jugador.h
-#include "./Carta.h"
-#include "../EasyBMP/EasyBMP_DataStructures.h"
-
-typedef Lista<Carta*> Cartas;
-=======
 #include "Carta.h"
 #include "EasyBMP/EasyBMP_DataStructures.h"
->>>>>>> main:Jugador.h
 
 class Jugador{
     private:

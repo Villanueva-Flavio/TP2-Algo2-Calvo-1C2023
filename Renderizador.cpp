@@ -159,9 +159,10 @@ void imprimirBMP(Coordenada imgSize, BMP* image, Tablero<Celda*>* tablero, MapaC
         matrixPos.setCoordenadaY(matrixPosStarter(lado, tablero->getTamanioY()));
         matrixPos.setCoordenadaZ(matrixPosStarter(lado, tablero->getTamanioZ()));
 
-        for(matrixPos.getCoordenadaX(); matrixPos.getCoordenadaX() < tablero->getTamanioX() && matrixPos.getCoordenadaX() >= 0; matrixPos.setCoordenadaX(matrixPos.getCoordenadaX() + aux.getCoordenadaX())){
-            for(matrixPos.getCoordenadaY(); matrixPos.getCoordenadaY() < tablero->getTamanioY() && matrixPos.getCoordenadaY() >= 0; matrixPos.setCoordenadaY(matrixPos.getCoordenadaY() + aux.getCoordenadaY())){
-                for(matrixPos.getCoordenadaZ(); matrixPos.getCoordenadaZ() < tablero->getTamanioZ() && matrixPos.getCoordenadaZ() >= 0; matrixPos.setCoordenadaZ(matrixPos.getCoordenadaZ() + aux.getCoordenadaZ())){
+        for(int i = matrixPos.getCoordenadaX(); i < tablero->getTamanioX() && i >= 0; i + aux.getCoordenadaX()){
+            for(int j = matrixPos.getCoordenadaY(); j < tablero->getTamanioY() && j >= 0; j + aux.getCoordenadaY()){
+                for(int k = matrixPos.getCoordenadaZ(); k < tablero->getTamanioZ() && k >= 0; k + aux.getCoordenadaZ()){
+                    matrixPos.setCoordenadas(i, j, k);
                     getPixel(&pixel, matrixPos);
                     aplicarProyeccionIsometrica(&pixel, lado);
                     pixelPos.setCoordenadaX(static_cast<int>(pixel.getCoordenadaX()) * 20 + pixelOffset.getCoordenadaX());

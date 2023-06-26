@@ -1,17 +1,10 @@
 #ifndef __BATALLA_DIGITAL_H__
 #define __BATALLA_DIGITAL_H__
 #include "Tablero.h"
-<<<<<<< HEAD:Headers/BatallaDigital.h
-#include "./Celda.h"
-#include "./Jugador.h"
-#include "./Coordenadas.h"
-#include "./Enums.h"
-=======
 #include "Celda.h"
 #include "Jugador.h"
 #include "Coordenadas.h"
 #include "Enums.h"
->>>>>>> main:BatallaDigital.h
 
 
 class BatallaDigital{
