@@ -177,19 +177,18 @@ void imprimirBMP(CoordenadaNew imgSize, BMP* image, Mapa* tablero, MapaColores c
         getAux(lado, &aux);
         pixelOffset = getPixelOffset(lado, tablero->getTamanioX());
 
-        int xStarter = matrixPosStarter(lado, tablero->getTamanioX());
+        /*int xStarter = matrixPosStarter(lado, tablero->getTamanioX());
         int yStarter = matrixPosStarter(lado, tablero->getTamanioY());
         int zStarter = matrixPosStarter(lado, tablero->getTamanioZ());
 
-        
-
-
-
-
-
         matrixPosBB.setCoordenadaX(xStarter);
         matrixPosBB.setCoordenadaY(yStarter);
-        matrixPosBB.setCoordenadaZ(zStarter);
+        matrixPosBB.setCoordenadaZ(zStarter);*/
+
+        matrixPosBB.setCoordenadaX(matrixPosStarter(lado, tablero->getTamanioX()));
+        matrixPosBB.setCoordenadaY(matrixPosStarter(lado, tablero->getTamanioY()));
+        matrixPosBB.setCoordenadaZ(matrixPosStarter(lado, tablero->getTamanioZ()));
+
 
         for(matrixPosBB.getCoordenadaX(); (matrixPosBB.getCoordenadaX() < tablero->getTamanioX() && matrixPosBB.getCoordenadaX() >= 0); matrixPosBB.setCoordenadaX((matrixPosBB.getCoordenadaX() + aux.x))){
             for(matrixPosBB.getCoordenadaY(); (matrixPosBB.getCoordenadaY() < tablero->getTamanioY() && matrixPosBB.getCoordenadaY() >= 0); matrixPosBB.setCoordenadaY((matrixPosBB.getCoordenadaY() + aux.y))){
