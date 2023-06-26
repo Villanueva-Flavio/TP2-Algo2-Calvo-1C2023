@@ -19,9 +19,14 @@ Carta::Carta(TipoCarta carta) {
     this->carta = carta;
 }
 
- void Carta::usarCarta(Tablero<Celda*>* tablero, Coordenada centro){
+ void Carta::usarCarta(Tablero<Celda*>* tablero, CoordenadaNew centroBB){
 
     this->cartaActiva = false;
+
+    Coordenada centro;
+    centro.x = centroBB.getCoordenadaX();
+    centro.y = centroBB.getCoordenadaY();
+    centro.z = centroBB.getCoordenadaZ();
 
     switch(this->carta){
         case AVION_RADAR:

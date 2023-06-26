@@ -4,6 +4,7 @@
 #include "Enums.h"
 #include "./Structs/Coordenadas.h"
 #include <map>
+#include "../CoordenadasNew.h"
 
 #ifndef __CARTA_H__
 #define __CARTA_H__
@@ -27,7 +28,7 @@ class Carta{
 
         //Pre: recibe como parametro el tablero y el centro de accion
         //Post:Dependiendo del tipo de carta desencadenara la accion de bombardear la zona, enviar un reporte al jugador o lanzar un ataque quimico
-        void usarCarta(Tablero<Celda*>* tablero, Coordenada centro);
+        void usarCarta(Tablero<Celda*>* tablero, CoordenadaNew centroBB);
 
         //Post:Permite saber cual es el tipo de carta
         TipoCarta getTipoCarta();

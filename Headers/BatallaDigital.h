@@ -5,20 +5,29 @@
 #include "Jugador.h"
 #include "Structs/Coordenadas.h"
 #include "./Enums.h"
-
-typedef Tablero<Celda*> Mapa;
-typedef Lista<Jugador*> Jugadores;
-typedef std::map<int, TipoCarta> mapaIndiceDeCartas;
+#include "../CoordenadasNew.h"
 
 class BatallaDigital{
     private:
-        Mapa* mapa;
-        Jugadores* jugadores;
+        Tablero<Celda*>* mapa;
+        Lista<Jugador*>* jugadores;
         std::string tipoMapa;
         int cantidadJugadores;
         int turno;
         bool omitirTurno;
+
+    public:
+        BatallaDigital(int cantidad);
         
+        ~BatallaDigital();
+
+        //Post: Gestiona la carga del mapa y sus respectivas fichas
+        void cargarJuego();      
+
+        //Post: controla los turnos de cada uno de loos jugadores y salta a alguno en caso de que su turno se tenga que omitir
+        void jugar();
+
+    private:
 
         //PRE: el nombre del mapa pasado 'aux' no puede ser NULL y debe contener un valor valido
         //POST: carga el mapa en el tablero
@@ -38,42 +47,50 @@ class BatallaDigital{
 
         //PRE: 'coordenada' y 'jugador' deben estar inicializados
         //POST: Devuelve true si la coordenada es valida para mover la ficha
-        bool sePuedeMover(Coordenada coordenada, int jugador);
+        bool sePuedeMover(CoordenadaNew coordenada, int jugador);
+
+        //PRE: 'direccion' debe ser valida
+        //POST: devuelve la coordenada con la direccion a la que se desea mover la ficha
+        CoordenadaNew obtenerCoordenadaDireccion(std::string direccion);
+
+        //Pre:recibe una direccion
+        //Post: devuelve true si es valida o false en caso contrario
+        bool direccionValida(std::string direccion);
 
         //POST: Le pide al usuario que ingrese una direccion, y aplica el cambio de coordenada
-        void seleccionarDireccion(Coordenada* coordenada);
+        void seleccionarDireccion(CoordenadaNew* coordenada);
 
         //PRE: 'coordenada' debe estar inicializada
         //POST: valida si la coordenada ingresada este dentro del rango permitido, de lo contrario solicita de vuelta una direccion
-        void procesarDireccion(Coordenada* coordenada);
+        void procesarDireccion(CoordenadaNew* coordenada);
 
         //PRE: 'coordenada' debe contener un valor valido
         //POST: Aplica escalar un punto si se choca con terreno en subida
-        void contarEscalado(Coordenada* coordenada);
+        void contarEscalado(CoordenadaNew* coordenada);
 
         //PRE: 'coordenada' debe estar inicializada
         //POST: Aplica gravedad si se choca con terreno en bajada
-        void aplicarGravedad(Coordenada* coordenada);
+        void aplicarGravedad(CoordenadaNew* coordenada);
 
         //PRE: 'c1' y 'c2' deben estar inicializadas
         //POST: remueve las fichas de las coordenadas recibidas
-        void removerAmbasFichas(Coordenada c1, Coordenada c2);
+        void removerAmbasFichas(CoordenadaNew c1, CoordenadaNew c2);
 
         //PRE: 'jugador' y 'coordenada' deben contener un valor valido
         //Post: Gestiona el movimiento de la ficha
-        void aplicarMovimiento(int jugador, Coordenada* coordenada);
+        void aplicarMovimiento(int jugador, CoordenadaNew* coordenada);
 
         //PRE: 'evento' debe estar inicializado, c1 y c2 deben contener valores validos
         //POST: Gestiona el evento de colision entre fichas (En la que al menos una muere)
-        void eventoColisionMortal(std::string evento, Coordenada c1, Coordenada c2);
+        void eventoColisionMortal(std::string evento, CoordenadaNew c1, CoordenadaNew c2);
 
         //PRE: c1 y c2 deben contener valores validos
         //POST: Gestiona el cambio de posicion de la ficha a la siguiente coordenada
-        void eventoDesplazamiento(Coordenada c1, Coordenada c2);
+        void eventoDesplazamiento(CoordenadaNew c1, CoordenadaNew c2);
 
         //PRE: 'coordenada' y 'jugador' deben contener valores validos
         //POST: Gestiona el evento correspondiente al movimiento de la ficha
-        void procesarEventos(Coordenada coordenada, int jugador);
+        void procesarEventos(CoordenadaNew coordenada, int jugador);
 
         //PRE: 'jugador' debe contener un valor valido
         //POST: Gestiona la interaccion del jugador en seleccionar la ficha y moverla
@@ -95,20 +112,6 @@ class BatallaDigital{
         //PRE: 'jugador' debe contener un valor valido
         //POST: Saca una foto del mapa en 3 angulos distintos, con las fichas del jugador seleccionado
         void sacarFoto(int jugador);
-
-
-    public:
-        BatallaDigital(int cantidad);
-        
-        ~BatallaDigital();
-
-        //Post: Gestiona la carga del mapa y sus respectivas fichas
-        void cargarJuego();      
-
-        //Post: controla los turnos de cada uno de loos jugadores y salta a alguno en caso de que su turno se tenga que omitir
-        void jugar();
-
-    private:
 
         //Post: Devuelve el tipo de mapa en string
         std::string consultarTipoDeMapa();
@@ -133,7 +136,7 @@ class BatallaDigital{
 
         //Pre: 'tipo' y 'pos' deben contener valores validos
         //Post: Devuelve True si es parte de la orilla de un lago o rio
-        bool esOrilla(std::string tipo, Coordenada pos);
+        bool esOrilla(std::string tipo, CoordenadaNew pos);
 
         // ----------Cargas de las fichas en el mapa------
 
@@ -146,34 +149,34 @@ class BatallaDigital{
 
         //Pre: 'coordenada' debe contener un valor valido y 'tipoDeFicha' debe estar inicializado
         //Post: Devuelve true si la celda esta vacia y se puede insertar la ficha
-        bool validarCeldaAInsertarFicha(Coordenada cordenada, TipoContenido tipoDeFicha);
+        bool validarCeldaAInsertarFicha(CoordenadaNew cordenada, TipoContenido tipoDeFicha);
 
         // ----------Cambio de turno ------
 
         //Post: almacena la coordenada de la celda a la que se quiere mover el usuario
-        Coordenada obtenerCoordenadaCelda();
+        CoordenadaNew obtenerCoordenadaCelda();
         
         //Post: devuelve de forma aleatoria un tipo de Carta
         Carta* generarCarta();
 
-        //Post: devuelve un mapa con los tipos de cartas existentes
-        mapaIndiceDeCartas getMapaIndiceDeCartas();
+        //Post: devuelve el tipo de carta dependiendo del indice que reciba
+        TipoCarta obtenerTipoDeCarta(int indiceDeCarta);
 
         //Pre: 'carta', 'jugador' y 'coordenada' deben contener un valor valido
         //Post: dependiendo del tipo de carta ejecuta la accion correspondiente
-        void ejecutarCartaElegida(Carta* carta, Jugador* jugador, Coordenada coordenada);
+        void ejecutarCartaElegida(Carta* carta, Jugador* jugador, CoordenadaNew coordenada);
         
         //Pre: 'coordenada' debe contener un valor valido
         //Post: valida el contenido de la celda seleccionada e inserta la mina si la casilla se encuentra vacia
         //en caso contrario deja vacia la ficha e inactiva la celda
-        void insertarMina(Coordenada coordenada);
+        void insertarMina(CoordenadaNew coordenada);
 
         //Post: reinicia el recorrido de la lista cuando se llega al limite de elementos
         void mantenerIndiceEnRango(int &indice);
 
         //Pre: 'jugador' y 'coordenada' deben contener un valor valido
         //Post:se genera una carta al azar y le da la opcion al usuario de usarla o no
-        void tomarCartaDeMazo(Jugador* jugador, Coordenada coordenada);
+        void tomarCartaDeMazo(Jugador* jugador, CoordenadaNew coordenada);
 
         //Pre: 'mensaje' debe estar inicializado
         //Post: se genera una carta al azar y le da la opcion al usuario de usarla o no
@@ -185,7 +188,7 @@ class BatallaDigital{
 
         //Pre: 'coordenada' debe contener un valor valido
         //Post: devuelve el indice de la carta solictado por el usuario
-        bool coordenadaEnRango(Coordenada coordenada);
+        bool coordenadaEnRango(CoordenadaNew coordenada);
 
         //Pre: 'indiceDeJugador' debe contener un valor valido
         //Post: devuelve el indice de la carta solictado por el usuario
