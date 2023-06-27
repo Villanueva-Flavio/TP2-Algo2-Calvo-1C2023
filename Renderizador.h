@@ -11,9 +11,10 @@
 #define DERECHA 1
 #define ATRAS 2
 
-typedef std::map<Capa, RGBApixel> MapaColores;
 
-MapaColores getMap();
+RGBApixel codigoColorSegunCelda(Capa capaCelda);
+
+bool capaExiste(Capa capaCelda);
 
 double gradosARadianes(double grados);
 
@@ -27,9 +28,9 @@ bool colorEnRango(RGBApixel color);
 
 bool pixelEnRango(int px, int py, Coordenada imgSize);
 
-bool colorDisponible(RGBApixel color, MapaColores mapa);
+//bool colorDisponible(RGBApixel color, MapaColores mapa);
 
-void setPlayerColor(RGBApixel* color, int jugador, MapaColores& mapa);
+//void setPlayerColor(RGBApixel* color, int jugador, MapaColores& mapa);
 
 int pixelSizeGet(RGBApixel color);
 
@@ -39,8 +40,8 @@ void pintarEntidad(BMP* image, Coordenada pixelPos, RGBApixel color, Coordenada 
 
 Coordenada getPixelOffset(int lado, int size);
 
-RGBApixel getColor(Celda celda, MapaColores colores);
+RGBApixel getColor(Celda celda);
 
-void imprimirBMP(Coordenada imgSize, BMP* image, Tablero<Celda*>* tablero, MapaColores colores, int jugador);
+void imprimirBMP(Coordenada imgSize, BMP* image, Tablero<Celda*>* tablero, int jugador);
 
 #endif

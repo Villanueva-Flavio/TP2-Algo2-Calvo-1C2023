@@ -37,9 +37,8 @@ std::string BatallaDigital::consultarTipoDeMapa(){
     cout << "\nSeleccione un tipo de mapa:\n";
     cout << "+------------------------------------+\n";
     cout << "|    Playa    -   Mar   -   Tierra   |\n";
-    cout << "|  Desierto   -   Rio   -   Lago     |\n";
+    cout << "|  Desierto                          |\n";
     cout << "+------------------------------------+\n";
-    cout << "Version Beta: Sin Rio y Lago" << endl;
     cout << "(Escriba su respuesta): ";
     cin >> this->tipoMapa;
     return this->tipoMapa;
@@ -65,39 +64,11 @@ void BatallaDigital::cargarPlaya(string tipo) {
     }    
 }
 
-/* bool BatallaDigital::esOrilla(string tipo, Coordenada pos){
-    CoordenadaDouble r;
-    double p = (tipo == "Lago")? 0.285:0.227;
-    double radioAjustado = 1+(p*(pow(this->mapa->getTamanioX()/4, 1/2.5)));
-    r.x = (tipo == "Lago")? pow(pos.x - mapa->getTamanioX()/2, 2) : 0;
-    r.y = pow(pos.y - mapa->getTamanioY()/2, 2);
-    r.z = pow(pos.y - mapa->getTamanioZ()/2, 2);
-    return ((double)(r.x + r.y + r.z) <= pow(this->mapa->getTamanioX(), radioAjustado));
-}
-
-void BatallaDigital::cargarRioLago(string tipo){
-    for(int x = 0; x < mapa->getTamanioX(); x++){
-        for(int y = 0; y < mapa->getTamanioY(); y++){
-            for(int z = 0; z < mapa->getTamanioZ(); z++){
-                Coordenada pos = {x, y, z};
-                (z >= 5)? this->mapa->getTData(x, y, z)->setTipo(CAPA_AIRE) : this->mapa->getTData(x, y, z)->setTipo(CAPA_AGUA);
-                if(esOrilla(tipo, pos)){
-                    this->mapa->getTData(x, y, CAPA_MAXIMA-1)->setTipo(CAPA_PASTO);
-                }
-            }
-            mapa->getTData(x, y, 0)->setTipo(CAPA_ARENA);
-        }
-    }
-} */
-
 void BatallaDigital::cargarMapaEspecificado(string aux){
     if(aux == "Playa"){
         this->cargarPlaya(aux);
     }else if(aux == "Mar" || aux == "Tierra" || aux == "Desierto"){
         this->cargarTerrenoPlano(aux);
-    }else if(aux == "Rio" || aux == "Lago"){
-        /* this->cargarRioLago(aux); */
-        // A IMPLEMENTAR
     }
 }
 
@@ -599,7 +570,7 @@ void BatallaDigital::sacarFoto(int jugador){
 
     BMP *image = new BMP();
     image->SetSize(imgSize.getCoordenadaX(), imgSize.getCoordenadaY());
-    imprimirBMP(imgSize, image, this->mapa, getMap(), jugador);
+    imprimirBMP(imgSize, image, this->mapa,jugador);
     image->WriteToFile("Partida.bmp");
     delete image;
 }

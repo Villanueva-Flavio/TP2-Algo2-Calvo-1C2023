@@ -20,21 +20,6 @@ const RGBApixel MINA = {50, 50, 50, 0};
 const RGBApixel FUEGO = {12, 92, 232, 0};
 const RGBApixel JUGADOR = {0, 0, 0, 0};
 
-typedef std::map<Capa, RGBApixel> MapaColores;
-
-MapaColores getMap(){
-    MapaColores mapa;
-    mapa[CAPA_ARENA] = ARENA;
-    mapa[CAPA_AGUA] = AGUA;
-    mapa[CAPA_PASTO] = PASTO;
-    mapa[CAPA_TIERRA] = TIERRA;
-    mapa[CAPA_BORDE] = BORDE;
-    mapa[CAPA_MINA] = MINA;
-    mapa[CAPA_FUEGO] = FUEGO;
-    mapa[FICHA_JUGADOR] = JUGADOR;
-    mapa[FICHA_MINA] = MINA;
-    return mapa;
-}
 
 double gradosARadianes(double grados){
     return grados * 3.14159 / 180.0;
@@ -73,14 +58,14 @@ bool pixelEnRango(int px, int py, Coordenada imgSize){
     return px >= 0 && px < imgSize.getCoordenadaX() && py >= 0 && py < imgSize.getCoordenadaY();
 }
 
-bool colorDisponible(RGBApixel color, MapaColores mapa){
-    for(MapaColores::iterator it = mapa.begin(); it != mapa.end(); ++it){
-        if(coloresSonIguales(it->second, color)){
-            return false;
-        }
-    }
-    return true;
-}
+// bool colorDisponible(RGBApixel color, MapaColores mapa){
+//     for(MapaColores::iterator it = mapa.begin(); it != mapa.end(); ++it){
+//         if(coloresSonIguales(it->second, color)){
+//             return false;
+//         }
+//     }
+//     return true;
+// }
 
 
 int pixelSizeGet(RGBApixel color){
@@ -129,10 +114,53 @@ Coordenada getPixelOffset(int lado, int size){
     return pixelOffset;
 }
 
-RGBApixel getColor(Celda celda, MapaColores colores, bool esFicha){
+RGBApixel codigoColorSegunCelda(Capa capaCelda){
+    RGBApixel codigoColor;
+    switch (capaCelda)
+    {
+    case CAPA_ARENA:
+        codigoColor=ARENA;
+        break;
+    case CAPA_AGUA:
+        codigoColor=AGUA;
+        break;
+    case CAPA_PASTO:
+        codigoColor=PASTO;
+        break;
+    case CAPA_TIERRA:
+        codigoColor=TIERRA;
+        break;
+    case CAPA_BORDE:
+        codigoColor=BORDE;
+        break;
+    case CAPA_MINA:
+        codigoColor=MINA;
+        break;
+    case CAPA_FUEGO:
+        codigoColor=FUEGO;
+        break;
+    case FICHA_JUGADOR:
+        codigoColor=JUGADOR;
+        break;
+    default:
+        codigoColor=MINA;
+        break;
+    }
+    return codigoColor;
+}
+
+bool capaExiste(Capa capaCelda){
+    if(capaCelda == CAPA_ARENA || capaCelda == CAPA_AGUA || capaCelda == CAPA_PASTO || capaCelda == CAPA_TIERRA ||capaCelda == FICHA_MINA 
+       || capaCelda == CAPA_BORDE || capaCelda == CAPA_MINA || capaCelda == CAPA_FUEGO || capaCelda == FICHA_JUGADOR){
+        return true;
+    }
+    return false;
+}
+
+RGBApixel getColor(Celda celda, bool esFicha){
     RGBApixel colorAux = (esFicha)? JUGADOR : BLANCO;
     if(coloresSonIguales(colorAux, BLANCO)){
-        colorAux = (colores.find(celda.getTipo()) != colores.end())? colores[celda.getTipo()] : colorAux;
+        colorAux = (capaExiste(celda.getTipo()))? codigoColorSegunCelda(celda.getTipo()) : colorAux;
     }
     return colorAux;
 }
@@ -157,7 +185,7 @@ int matrixPosStarter(int lado, int size){
     return (lado == IZQUIERDA)? 0 : (lado == DERECHA)? 0 : size-1;
 }
 
-void imprimirBMP(Coordenada imgSize, BMP* image, Tablero<Celda*>* tablero, MapaColores colores, int jugador){
+void imprimirBMP(Coordenada imgSize, BMP* image, Tablero<Celda*>* tablero, int jugador){
     RGBApixel color;
     int i = 0;
     Coordenada pixelPos, matrixPos, aux, pixelOffset;
@@ -179,7 +207,7 @@ void imprimirBMP(Coordenada imgSize, BMP* image, Tablero<Celda*>* tablero, MapaC
                     pixelPos.setCoordenadaX(static_cast<int>((pixel.getCoordenadaX()) * 20 + pixelOffset.getCoordenadaX())); 
                     pixelPos.setCoordenadaY(static_cast<int>((pixel.getCoordenadaY()) * 20 + pixelOffset.getCoordenadaY()));
                     esFicha = (tablero->getTData(matrixPos.getCoordenadaX(), matrixPos.getCoordenadaY(), matrixPos.getCoordenadaZ())->getFicha()->getJugadorOwner() == jugador && tablero->getTData(matrixPos.getCoordenadaX(), matrixPos.getCoordenadaY(), matrixPos.getCoordenadaZ())->getFicha()->getTipo() != MINA_FICHA);
-                    color = getColor(*tablero->getTData(matrixPos.getCoordenadaX(), matrixPos.getCoordenadaY(), matrixPos.getCoordenadaZ()), colores, esFicha);
+                    color = getColor(*tablero->getTData(matrixPos.getCoordenadaX(), matrixPos.getCoordenadaY(), matrixPos.getCoordenadaZ()), esFicha);
                     pintarEntidad(image, pixelPos, color, imgSize);
                     matrixPos.setCoordenadaZ(matrixPos.getCoordenadaZ() + aux.getCoordenadaZ());
                 }

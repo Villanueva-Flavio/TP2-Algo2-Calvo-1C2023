@@ -132,7 +132,6 @@ void Carta::bombardearCeldas(Tablero<Celda*>* tablero, Coordenada centro){
         puntoAlAzar.setCoordenadaY(rand() % limiteSuperior.getCoordenadaY() + limiteInferior.getCoordenadaY());
         puntoAlAzar.setCoordenadaZ(rand() % limiteSuperior.getCoordenadaZ() +limiteInferior.getCoordenadaZ());
         if(tablero->inRange(puntoAlAzar.getCoordenadaX(),puntoAlAzar.getCoordenadaY(),puntoAlAzar.getCoordenadaZ())){
-            cout << "entro"<<endl;
             int owner = tablero->getTData(puntoAlAzar.getCoordenadaX(),puntoAlAzar.getCoordenadaY(),puntoAlAzar.getCoordenadaZ())->getFicha()->getJugadorOwner();
             string contenido = this->getStringTipoFicha(tablero->getTData(puntoAlAzar.getCoordenadaX(),puntoAlAzar.getCoordenadaY(),puntoAlAzar.getCoordenadaZ())->getFicha()->getTipo());
             stringstream ss;
