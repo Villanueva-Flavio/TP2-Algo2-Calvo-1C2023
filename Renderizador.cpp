@@ -189,21 +189,14 @@ void imprimirBMP(CoordenadaNew imgSize, BMP* image, Mapa* tablero, MapaColores c
         matrixPosBB.setCoordenadaY(matrixPosStarter(lado, tablero->getTamanioY()));
         matrixPosBB.setCoordenadaZ(matrixPosStarter(lado, tablero->getTamanioZ()));
 
+        while (matrixPosBB.getCoordenadaX() < tablero->getTamanioX() && matrixPosBB.getCoordenadaX() >= 0) {
+            while (matrixPosBB.getCoordenadaY() < tablero->getTamanioY() && matrixPosBB.getCoordenadaY() >= 0) {
+                while (matrixPosBB.getCoordenadaZ() < tablero->getTamanioZ() && matrixPosBB.getCoordenadaZ() >= 0) {
 
-        for(matrixPosBB.getCoordenadaX(); (matrixPosBB.getCoordenadaX() < tablero->getTamanioX() && matrixPosBB.getCoordenadaX() >= 0); matrixPosBB.setCoordenadaX((matrixPosBB.getCoordenadaX() + aux.x))){
-            for(matrixPosBB.getCoordenadaY(); (matrixPosBB.getCoordenadaY() < tablero->getTamanioY() && matrixPosBB.getCoordenadaY() >= 0); matrixPosBB.setCoordenadaY((matrixPosBB.getCoordenadaY() + aux.y))){
-                for(matrixPosBB.getCoordenadaZ(); (matrixPosBB.getCoordenadaZ() < tablero->getTamanioZ() && matrixPosBB.getCoordenadaZ() >= 0); matrixPosBB.setCoordenadaZ((matrixPosBB.getCoordenadaZ() + aux.z))){
-        
-        
         /*for(matrixPos.x = matrixPosStarter(lado, tablero->getTamanioX()); matrixPos.x < tablero->getTamanioX() && matrixPos.x >= 0; matrixPos.x += aux.x){
             for(matrixPos.y =  matrixPosStarter(lado, tablero->getTamanioY()); matrixPos.y < tablero->getTamanioY() && matrixPos.y >= 0; matrixPos.y += aux.y){
                 for(matrixPos.z = matrixPosStarter(lado, tablero->getTamanioZ()); matrixPos.z < tablero->getTamanioZ() && matrixPos.z >= 0; matrixPos.z += aux.z){
                 */ 
-                    std::cout<<"\nprimer tope: " << tablero->getTamanioX();
-                    std::cout<<"\n" << i << "- MatrixPosBB coord X: " << matrixPosBB.getCoordenadaX(); 
-                    std::cout<<"\n" << i << "- MatrixPosBB coord Y: " << matrixPosBB.getCoordenadaY(); 
-                    std::cout<<"\n" << i << "- MatrixPosBB coord Z: " << matrixPosBB.getCoordenadaZ(); 
-                    i++;
                     getPixel(&pixel, matrixPosBB);
                     aplicarProyeccionIsometrica(&pixel, lado);
                     pixelPos.setCoordenadaX(static_cast<int>((pixel.getCoordenadaX()) * 20 + pixelOffset.x)); 
@@ -211,8 +204,13 @@ void imprimirBMP(CoordenadaNew imgSize, BMP* image, Mapa* tablero, MapaColores c
                     esFicha = (tablero->getTData(matrixPosBB.getCoordenadaX(), matrixPosBB.getCoordenadaY(), matrixPosBB.getCoordenadaZ())->getFicha()->getJugadorOwner() == jugador && tablero->getTData(matrixPosBB.getCoordenadaX(), matrixPosBB.getCoordenadaY(), matrixPosBB.getCoordenadaZ())->getFicha()->getTipo() != MINA_FICHA);
                     color = getColor(*tablero->getTData(matrixPosBB.getCoordenadaX(), matrixPosBB.getCoordenadaY(), matrixPosBB.getCoordenadaZ()), colores, esFicha);
                     pintarEntidad(image, pixelPos, color, imgSize);
+                    matrixPosBB.setCoordenadaZ(matrixPosBB.getCoordenadaZ() + aux.z);
                 }
+                matrixPosBB.setCoordenadaZ(matrixPosStarter(lado, tablero->getTamanioZ()));
+                matrixPosBB.setCoordenadaY(matrixPosBB.getCoordenadaY() + aux.y);
             }
+            matrixPosBB.setCoordenadaY(matrixPosStarter(lado, tablero->getTamanioY()));
+            matrixPosBB.setCoordenadaX(matrixPosBB.getCoordenadaX() + aux.x);
         }
     }
 }
