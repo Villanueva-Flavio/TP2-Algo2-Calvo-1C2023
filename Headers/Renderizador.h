@@ -4,8 +4,8 @@
 #include <map>
 #include "Celda.h"
 #include "../EasyBMP/EasyBMP.h"
-#include "./Structs/CoordenadaDouble.h"
-#include "./Structs/Coordenadas.h"
+//#include "./Structs/CoordenadaDouble.h"
+//#include "./Structs/Coordenadas.h"
 #include "../CoordenadasDoubleNew.h"
 #include "../CoordenadasNew.h"
 
@@ -22,7 +22,7 @@ double gradosARadianes(double grados);
 
 void getAngulos(double angulos[6], int lado);
 
-void aplicarProyeccionIsometrica(CoordenadaDoubleNew* pixel, int lado);
+void aplicarProyeccionIsometrica(CoordenadaDouble* pixel, int lado);
 
 bool coloresSonIguales(RGBApixel color1, RGBApixel color2);
 
@@ -44,6 +44,6 @@ Coordenada getPixelOffset(int lado, int size);
 
 RGBApixel getColor(Celda celda, MapaColores colores);
 
-void imprimirBMP(CoordenadaNew imgSize, BMP* image, Mapa* tablero, MapaColores colores, int jugador);
+void imprimirBMP(Coordenada imgSize, BMP* image, Mapa* tablero, MapaColores colores, int jugador);
 
 #endif

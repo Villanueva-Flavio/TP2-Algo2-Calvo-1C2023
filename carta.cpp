@@ -10,6 +10,7 @@
 #include <sstream>
 
 
+
 using namespace std;
 
 Carta::Carta(TipoCarta carta) {
@@ -19,11 +20,11 @@ Carta::Carta(TipoCarta carta) {
     this->carta = carta;
 }
 
- void Carta::usarCarta(Tablero<Celda*>* tablero, CoordenadaNew centroBB){
+ void Carta::usarCarta(Tablero<Celda*>* tablero, Coordenada centroBB){
 
     this->cartaActiva = false;
 
-    Coordenada centro;
+    CoordenadaOld centro;
     centro.x = centroBB.getCoordenadaX();
     centro.y = centroBB.getCoordenadaY();
     centro.z = centroBB.getCoordenadaZ();
@@ -61,7 +62,7 @@ bool Carta::getCartaActiva() {
     return this->cartaActiva;
 }
 
-void Carta::inactivarCeldas(Tablero<Celda*>* tablero, Coordenada centro){
+void Carta::inactivarCeldas(Tablero<Celda*>* tablero, CoordenadaOld centro){
 
     int radio = this->radioAccion; 
     string reporte = "";
@@ -70,7 +71,7 @@ void Carta::inactivarCeldas(Tablero<Celda*>* tablero, Coordenada centro){
         for (int m= centro.y - radio; m < centro.y + radio ; m++){
             for (int l = centro.z - radio; l < centro.z + radio ; l++){
                 if(tablero->inRange(n,m,l)){
-                    Coordenada punto = {n,m,l};
+                    CoordenadaOld punto = {n,m,l};
                     int turnosInactiva = this->getTurnosInactiva(centro,punto);
 
                     if(tablero->getTData(n,m,l)->getFicha()->getTipo() == VACIO){
@@ -92,15 +93,15 @@ void Carta::inactivarCeldas(Tablero<Celda*>* tablero, Coordenada centro){
 
     this->imprimirReporte(reporte);
 }
-void Carta::bombardearCeldas(Tablero<Celda*>* tablero, Coordenada centro){
+void Carta::bombardearCeldas(Tablero<Celda*>* tablero, CoordenadaOld centro){
 
     int &radio = this->radioAccion; 
     string reporte = "";
-    Coordenada limiteSuperior = {2*radio,2*radio,2*radio};
-    Coordenada limiteInferior = {centro.x -radio, centro.y - radio, centro.z - radio};
+    CoordenadaOld limiteSuperior = {2*radio,2*radio,2*radio};
+    CoordenadaOld limiteInferior = {centro.x -radio, centro.y - radio, centro.z - radio};
 
     for(int i= 0; i<this->cantidadBombas; i++){
-        Coordenada puntoAlAzar = {rand() % limiteSuperior.x + limiteInferior.x, rand() % limiteSuperior.y + limiteInferior.y, rand() % limiteSuperior.z +limiteInferior.z};
+        CoordenadaOld puntoAlAzar = {rand() % limiteSuperior.x + limiteInferior.x, rand() % limiteSuperior.y + limiteInferior.y, rand() % limiteSuperior.z +limiteInferior.z};
         if(tablero->inRange(puntoAlAzar.x,puntoAlAzar.y,puntoAlAzar.z)){
             cout << "entro"<<endl;
             int owner = tablero->getTData(puntoAlAzar.x,puntoAlAzar.y,puntoAlAzar.z)->getFicha()->getJugadorOwner();
@@ -115,7 +116,7 @@ void Carta::bombardearCeldas(Tablero<Celda*>* tablero, Coordenada centro){
     this->imprimirReporte(reporte);
 }
 
-void Carta::obtenerReporte(Tablero<Celda*>* tablero,  Coordenada centro){
+void Carta::obtenerReporte(Tablero<Celda*>* tablero,  CoordenadaOld centro){
     int &radio = this->radioAccion; 
     string reporte = "";
 
@@ -139,7 +140,7 @@ void Carta::obtenerReporte(Tablero<Celda*>* tablero,  Coordenada centro){
     this->imprimirReporte(reporte);
 }
   
-void Carta::lanzarMisil(Tablero<Celda*>* tablero,  Coordenada centro){
+void Carta::lanzarMisil(Tablero<Celda*>* tablero,  CoordenadaOld centro){
     
     if(tablero->inRange(centro.x,centro.y,centro.z)){
 
@@ -182,11 +183,11 @@ string Carta::getStringTipoFicha(TipoContenido tipo){
     return mapaTiposContenido[tipo];
 }
 
-int Carta::getTurnosInactiva(Coordenada centro, Coordenada punto){
+int Carta::getTurnosInactiva(CoordenadaOld centro, CoordenadaOld punto){
 
     int radio = this->radioAccion;
 
-    Coordenada distancia = {abs(centro.x - punto.x), abs(centro.y - punto.y), abs(centro.z - punto.z)};
+    CoordenadaOld distancia = {abs(centro.x - punto.x), abs(centro.y - punto.y), abs(centro.z - punto.z)};
     
     if (distancia.x == radio || distancia.y == radio || distancia.z == radio) {
         return  1; 
@@ -204,7 +205,7 @@ int Carta::getTurnosInactiva(Coordenada centro, Coordenada punto){
 
 }
 
-void Carta::inactivarCelda(Tablero<Celda*>* tablero, Coordenada punto, int turnosInactiva){
+void Carta::inactivarCelda(Tablero<Celda*>* tablero, CoordenadaOld punto, int turnosInactiva){
     tablero->getTData(punto.x,punto.y,punto.z)->setEstado(false);
     tablero->getTData(punto.x,punto.y,punto.z)->setTurnosInactiva(4);
     tablero->getTData(punto.x,punto.y,punto.z)->getFicha()->setTipo(VACIO);

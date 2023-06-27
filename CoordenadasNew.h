@@ -1,13 +1,13 @@
 #ifndef __COORDENADAS_NEW_H__
 #define __COORDENADAS_NEW_H__
 
-class CoordenadaNew{
+class Coordenada{
     private:
         int coordX,coordY,coordZ;
 
     public:
         //post: inicializa las coordenadas en el origen
-        CoordenadaNew();
+        Coordenada();
 
         //pre: 'x' debe esta inicializado
         //post: asigna el valor recibido a 'coordX'

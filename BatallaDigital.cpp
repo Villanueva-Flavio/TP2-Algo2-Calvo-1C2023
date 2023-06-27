@@ -117,7 +117,7 @@ void BatallaDigital::cargarCantidadesDeFichasAJugadores(){
     }    
 }
 
-bool BatallaDigital::validarCeldaAInsertarFicha(CoordenadaNew cordenada, TipoContenido tipoDeFicha) {
+bool BatallaDigital::validarCeldaAInsertarFicha(Coordenada cordenada, TipoContenido tipoDeFicha) {
     TipoContenido tipo = this->mapa->getTData(cordenada.getCoordenadaX(),cordenada.getCoordenadaY(),cordenada.getCoordenadaZ())->getFicha()->getTipo();
     Capa capa = this->mapa->getTData(cordenada.getCoordenadaX(),cordenada.getCoordenadaY(),cordenada.getCoordenadaZ())->getTipo();
 
@@ -130,7 +130,7 @@ bool BatallaDigital::validarCeldaAInsertarFicha(CoordenadaNew cordenada, TipoCon
 }
 
 void BatallaDigital::cargarFichaDelTipo(int cantidadDeCarga, TipoContenido tipoDeFicha, int jugadorOwner){
-    CoordenadaNew cordenada;
+    Coordenada cordenada;
     for (int i = 0; i <= cantidadDeCarga; i++){
         do{
             cordenada.setCoordenadaX(rand()% this->mapa->getTamanioX());
@@ -220,8 +220,8 @@ void BatallaDigital::inactivarCelda(Celda* celda){
 
 //------------------- ---------------------- 
 
-CoordenadaNew BatallaDigital::obtenerCoordenadaCelda(){
-    CoordenadaNew aux;
+Coordenada BatallaDigital::obtenerCoordenadaCelda(){
+    Coordenada aux;
     int x=0, y=0, z=0;
     do{ 
         cout << "Ingrese coordenada en formato 'x y z': ";
@@ -267,8 +267,8 @@ Carta* BatallaDigital::generarCarta(){
     return cartaGenerada;
 }
 
-void BatallaDigital::ejecutarCartaElegida(Carta* carta, Jugador* jugador,CoordenadaNew coordenada){
-    CoordenadaNew coordenadaMisil;
+void BatallaDigital::ejecutarCartaElegida(Carta* carta, Jugador* jugador,Coordenada coordenada){
+    Coordenada coordenadaMisil;
     switch(carta->getTipoCarta()){
         case OMITIR_TURNO:
             this->omitirTurno = true;
@@ -286,7 +286,7 @@ void BatallaDigital::ejecutarCartaElegida(Carta* carta, Jugador* jugador,Coorden
     }
 }
 
-void BatallaDigital::insertarMina(CoordenadaNew coordenada){
+void BatallaDigital::insertarMina(Coordenada coordenada){
     Celda* celdaSelecionada = this->mapa->getTData(coordenada.getCoordenadaX(),coordenada.getCoordenadaY(),coordenada.getCoordenadaZ());
     if(celdaSelecionada->getEstado()){
         if(celdaSelecionada->getFicha()->getJugadorOwner() != -1 || celdaSelecionada->getFicha()->getTipo() == MINA_FICHA){
@@ -326,7 +326,7 @@ int BatallaDigital::obtenerIndiceDeCarta(Jugador* jugador){
     return indiceDeCarta-1;
 }
 
-void BatallaDigital::tomarCartaDeMazo(Jugador* jugador, CoordenadaNew coordenada){
+void BatallaDigital::tomarCartaDeMazo(Jugador* jugador, Coordenada coordenada){
     Carta*  carta = this->generarCarta();
     jugador->agregarCarta(carta);
     cout<<"Acaba de selecionar una carta del tipo: " << carta->getStringTipoCarta()<<endl;
@@ -378,15 +378,15 @@ void BatallaDigital::solicitarFichaAMover(int* indice, int jugador){
     *indice -= 1;
 }
 
-void BatallaDigital::procesarDireccion(CoordenadaNew* coordenada){
+void BatallaDigital::procesarDireccion(Coordenada* coordenada){
     if (!this->coordenadaEnRango(*coordenada)){
         cout << "La direccion a la que desea moverse esta fuera de rango" << endl;
         seleccionarDireccion(coordenada);
     }
 }
 
-CoordenadaNew BatallaDigital::obtenerCoordenadaDireccion(std::string direccion){
-    CoordenadaNew coordenada;
+Coordenada BatallaDigital::obtenerCoordenadaDireccion(std::string direccion){
+    Coordenada coordenada;
     coordenada.setCoordenadaX(0);
     coordenada.setCoordenadaY(0);
     coordenada.setCoordenadaZ(0);
@@ -423,7 +423,7 @@ bool BatallaDigital::direccionValida(std::string direccion){
     return valido;
 }
 
-void BatallaDigital::seleccionarDireccion(CoordenadaNew* coordenada){
+void BatallaDigital::seleccionarDireccion(Coordenada* coordenada){
     string direccion;
     cout << "Ingrese la direccion en la que desea mover la ficha (W - A - S - D | R - F): " << endl;
     cin >> direccion;
@@ -431,7 +431,7 @@ void BatallaDigital::seleccionarDireccion(CoordenadaNew* coordenada){
         cout << "Ingrese una direccion valida: " << endl ;
         cin >> direccion;
     }
-    CoordenadaNew coordenadaDireccion = this->obtenerCoordenadaDireccion(direccion);
+    Coordenada coordenadaDireccion = this->obtenerCoordenadaDireccion(direccion);
 
     coordenada->setCoordenadaX(coordenada->getCoordenadaX() + coordenadaDireccion.getCoordenadaX());
     coordenada->setCoordenadaY(coordenada->getCoordenadaY() + coordenadaDireccion.getCoordenadaY());
@@ -441,7 +441,7 @@ void BatallaDigital::seleccionarDireccion(CoordenadaNew* coordenada){
     
 }
 
-bool BatallaDigital::sePuedeMover(CoordenadaNew coordenada, int jugador){
+bool BatallaDigital::sePuedeMover(Coordenada coordenada, int jugador){
     TipoContenido tipo = this->mapa->getTData(coordenada.getCoordenadaX(), coordenada.getCoordenadaY(), coordenada.getCoordenadaZ())->getFicha()->getTipo();
     
     return(coordenada.getCoordenadaX() < 0 || 
@@ -455,20 +455,20 @@ bool BatallaDigital::sePuedeMover(CoordenadaNew coordenada, int jugador){
             false : true;
 }
 
-void BatallaDigital::aplicarGravedad(CoordenadaNew* coordenada){
+void BatallaDigital::aplicarGravedad(Coordenada* coordenada){
     while(coordenada->getCoordenadaZ() > 0 && this->mapa->getTData(coordenada->getCoordenadaX(), coordenada->getCoordenadaY(), coordenada->getCoordenadaZ() - 1)->getTipo() == CAPA_AIRE){
         coordenada->setCoordenadaZ(coordenada->getCoordenadaZ() -1);
     }
 }
 
-void BatallaDigital::contarEscalado(CoordenadaNew* coordenada){
+void BatallaDigital::contarEscalado(Coordenada* coordenada){
     int difAltura = 0;
     Capa capa = this->mapa->getTData(coordenada->getCoordenadaX(), coordenada->getCoordenadaY(), coordenada->getCoordenadaZ())->getTipo();
     difAltura = (capa == CAPA_PASTO || CAPA_AGUA == CAPA_TIERRA) ? 1 : 0;
     coordenada->setCoordenadaZ(coordenada->getCoordenadaZ() + difAltura);
 }
 
-void BatallaDigital::removerAmbasFichas(CoordenadaNew c1, CoordenadaNew c2){
+void BatallaDigital::removerAmbasFichas(Coordenada c1, Coordenada c2){
     int j1 = this->mapa->getTData(c1.getCoordenadaX(), c1.getCoordenadaY(), c1.getCoordenadaZ())->getFicha()->getJugadorOwner();
     int j2 = this->mapa->getTData(c2.getCoordenadaX(), c2.getCoordenadaY(), c2.getCoordenadaZ())->getFicha()->getJugadorOwner();
     TipoContenido tipoj1 = this->mapa->getTData(c2.getCoordenadaX(), c2.getCoordenadaY(), c2.getCoordenadaZ())->getFicha()->getTipo();
@@ -482,7 +482,7 @@ void BatallaDigital::removerAmbasFichas(CoordenadaNew c1, CoordenadaNew c2){
         this->jugadores->getLData(j2)->setArmamentos(this->jugadores->getLData(j2)->getArmamentos() - 1);
 }
 
-void BatallaDigital::aplicarMovimiento(int jugador, CoordenadaNew* coordenada){
+void BatallaDigital::aplicarMovimiento(int jugador, Coordenada* coordenada){
     int i = coordenada->getCoordenadaX();
     int j = coordenada->getCoordenadaY();
     int k = coordenada->getCoordenadaZ();
@@ -500,7 +500,7 @@ void BatallaDigital::aplicarMovimiento(int jugador, CoordenadaNew* coordenada){
     }
 }
 
-void BatallaDigital::eventoColisionMortal(string evento, CoordenadaNew c1, CoordenadaNew c2){
+void BatallaDigital::eventoColisionMortal(string evento, Coordenada c1, Coordenada c2){
     this->removerAmbasFichas(c1, c2);
     this->destruirFicha(this->mapa->getTData(c2.getCoordenadaX(), c2.getCoordenadaY(), c2.getCoordenadaZ())->getFicha());
     this->destruirFicha(this->mapa->getTData(c1.getCoordenadaX(), c1.getCoordenadaY(), c1.getCoordenadaZ())->getFicha());
@@ -509,7 +509,7 @@ void BatallaDigital::eventoColisionMortal(string evento, CoordenadaNew c1, Coord
     }
 }
 
-void BatallaDigital::eventoDesplazamiento(CoordenadaNew c1, CoordenadaNew c2){
+void BatallaDigital::eventoDesplazamiento(Coordenada c1, Coordenada c2){
     int ownerAux = this->mapa->getTData(c1.getCoordenadaX(), c1.getCoordenadaY(), c1.getCoordenadaZ())->getFicha()->getJugadorOwner();
     TipoContenido tipoAux = this->mapa->getTData(c1.getCoordenadaX(), c1.getCoordenadaY(), c1.getCoordenadaZ())->getFicha()->getTipo();
     this->mapa->getTData(c1.getCoordenadaX(), c1.getCoordenadaY(), c1.getCoordenadaZ())->getFicha()->setJugadorOwner(-1);
@@ -518,8 +518,8 @@ void BatallaDigital::eventoDesplazamiento(CoordenadaNew c1, CoordenadaNew c2){
     this->mapa->getTData(c2.getCoordenadaX(), c2.getCoordenadaY(), c2.getCoordenadaZ())->getFicha()->setTipo(tipoAux);
 }
 
-void BatallaDigital::procesarEventos(CoordenadaNew coordenada, int jugador){
-    CoordenadaNew aux = coordenada;
+void BatallaDigital::procesarEventos(Coordenada coordenada, int jugador){
+    Coordenada aux = coordenada;
     this->aplicarMovimiento(jugador, &coordenada);
     Ficha* fichaSrc = this->mapa->getTData(aux.getCoordenadaX(),aux.getCoordenadaY(),aux.getCoordenadaZ())->getFicha();
     Ficha* fichaDest = this->mapa->getTData(coordenada.getCoordenadaX(), coordenada.getCoordenadaY(), coordenada.getCoordenadaZ())->getFicha();
@@ -537,7 +537,7 @@ void BatallaDigital::procesarEventos(CoordenadaNew coordenada, int jugador){
 
 void BatallaDigital::moverFicha(int indice, int jugador){
     int contador = 0;
-    CoordenadaNew coordenada;
+    Coordenada coordenada;
     for(int i = 0; i < this->mapa->getTamanioX(); i++){
         for(int j = 0; j < this->mapa->getTamanioY(); j++){
             for(int k = 0; k < this->mapa->getTamanioZ(); k++){
@@ -594,7 +594,7 @@ void BatallaDigital::mensajeEmpate(){
 }
 
 void BatallaDigital::sacarFoto(int jugador){
-    CoordenadaNew imgSize;
+    Coordenada imgSize;
     imgSize.setCoordenadaX(this->mapa->getTamanioX() * 100);
     imgSize.setCoordenadaY(this->mapa->getTamanioY() * 70);
 
@@ -605,7 +605,7 @@ void BatallaDigital::sacarFoto(int jugador){
     delete image;
 }
 
-bool BatallaDigital::coordenadaEnRango(CoordenadaNew coordenada){
+bool BatallaDigital::coordenadaEnRango(Coordenada coordenada){
     return (coordenada.getCoordenadaX() >= 0 && coordenada.getCoordenadaX() < this->mapa->getTamanioX() && coordenada.getCoordenadaY() >= 0 && coordenada.getCoordenadaY() < this->mapa->getTamanioY() && coordenada.getCoordenadaZ() >= 0 && coordenada.getCoordenadaZ() < this->mapa->getTamanioZ());
 }
 
@@ -634,7 +634,7 @@ void BatallaDigital::jugar(){
         } else if(this->jugadorConFichasVivas(indiceDeJugador)){
             
             cout << "Elija la posicion para la mina " << endl;
-            CoordenadaNew coordenada = this-> obtenerCoordenadaCelda();
+            Coordenada coordenada = this-> obtenerCoordenadaCelda();
 
             this->insertarMina(coordenada);
             this->tomarCartaDeMazo(this->jugadores->getLData(indiceDeJugador), coordenada); 

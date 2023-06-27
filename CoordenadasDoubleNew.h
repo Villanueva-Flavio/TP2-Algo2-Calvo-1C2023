@@ -1,13 +1,13 @@
 #ifndef __COORDENADAS_DOUBLE_NEW_H__
 #define __COORDENADAS_DOUBLE_NEW_H__
 
-class CoordenadaDoubleNew{
+class CoordenadaDouble{
     private:
         double coordX, coordY, coordZ;
 
     public:
         //post: inicializa las coordenadas en el origen
-        CoordenadaDoubleNew();
+        CoordenadaDouble();
 
         //pre: 'x' debe esta inicializado
         //post: asigna el valor recibido a 'coordX'

@@ -1,31 +1,31 @@
 #include "CoordenadasNew.h"
 
-CoordenadaNew::CoordenadaNew(){
+Coordenada::Coordenada(){
     this->coordX = 0;
     this->coordY = 0;
     this->coordZ = 0;
 }
 
-void CoordenadaNew::setCoordenadaX(int x){
+void Coordenada::setCoordenadaX(int x){
     this->coordX = x;
 }
 
-void CoordenadaNew::setCoordenadaY(int y){
+void Coordenada::setCoordenadaY(int y){
     this->coordY = y;
 }
 
-void CoordenadaNew::setCoordenadaZ(int z){
+void Coordenada::setCoordenadaZ(int z){
     this->coordZ = z;
 }
 
-int CoordenadaNew::getCoordenadaX(){
+int Coordenada::getCoordenadaX(){
     return this->coordX;
 }
 
-int CoordenadaNew::getCoordenadaY(){
+int Coordenada::getCoordenadaY(){
     return this->coordY;
 }
 
-int CoordenadaNew::getCoordenadaZ(){
+int Coordenada::getCoordenadaZ(){
     return this->coordZ;
 }

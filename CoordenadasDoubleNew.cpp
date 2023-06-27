@@ -1,31 +1,31 @@
 #include "CoordenadasDoubleNew.h"
 
-CoordenadaDoubleNew::CoordenadaDoubleNew(){
+CoordenadaDouble::CoordenadaDouble(){
     this->coordX = 0;
     this->coordY = 0;
     this->coordZ = 0;
 }
 
-void CoordenadaDoubleNew::setCoordenadaX(double x){
+void CoordenadaDouble::setCoordenadaX(double x){
     this->coordX = x;
 }
 
-void CoordenadaDoubleNew::setCoordenadaY(double y){
+void CoordenadaDouble::setCoordenadaY(double y){
     this->coordY = y;
 }
 
-void CoordenadaDoubleNew::setCoordenadaZ(double z){
+void CoordenadaDouble::setCoordenadaZ(double z){
     this->coordZ = z;
 }
 
-double CoordenadaDoubleNew::getCoordenadaX(){
+double CoordenadaDouble::getCoordenadaX(){
     return this->coordX;
 }
 
-double CoordenadaDoubleNew::getCoordenadaY(){
+double CoordenadaDouble::getCoordenadaY(){
     return this->coordY;
 }
 
-double CoordenadaDoubleNew::getCoordenadaZ(){
+double CoordenadaDouble::getCoordenadaZ(){
     return this->coordZ;
 }

@@ -1,7 +1,7 @@
 #ifndef __COORDENADADOUBLE_H__
 #define __COORDENADADOUBLE_H__
 
-struct CoordenadaDouble{
+struct CoordenadaDoubleASD{
     double x, y, z;
 };
 

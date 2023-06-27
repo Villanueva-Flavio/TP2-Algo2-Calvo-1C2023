@@ -54,7 +54,7 @@ void getAngulos(double angulos[6], int lado){
     }
 }
 
-void aplicarProyeccionIsometrica(CoordenadaDoubleNew* pixel, int lado){
+void aplicarProyeccionIsometrica(CoordenadaDouble* pixel, int lado){
     double angulos[6];
     getAngulos(angulos, lado);
     pixel->setCoordenadaX((double)(gradosARadianes(angulos[0]) * pixel->getCoordenadaX() + gradosARadianes(angulos[1]) * pixel->getCoordenadaY() + gradosARadianes(angulos[2]) * pixel->getCoordenadaZ()));
@@ -69,7 +69,7 @@ bool colorEnRango(RGBApixel color){
     return color.Red >= 0 && color.Red <= 255 && color.Green >= 0 && color.Green <= 255 && color.Blue >= 0 && color.Blue <= 255;
 }
 
-bool pixelEnRango(int px, int py, CoordenadaNew imgSize){
+bool pixelEnRango(int px, int py, Coordenada imgSize){
     return px >= 0 && px < imgSize.getCoordenadaX() && py >= 0 && py < imgSize.getCoordenadaY();
 }
 
@@ -91,7 +91,7 @@ int pixelSizeGet(RGBApixel color){
     return resultado;
 }
 
-bool pixelSizeEnRango(CoordenadaNew pixelPos, CoordenadaNew imgSize, int pixelSize){
+bool pixelSizeEnRango(Coordenada pixelPos, Coordenada imgSize, int pixelSize){
     bool resultado = false;
     if(pixelEnRango(pixelPos.getCoordenadaX() + pixelSize, pixelPos.getCoordenadaY() + pixelSize, imgSize) && 
         pixelEnRango(pixelPos.getCoordenadaX() - pixelSize, pixelPos.getCoordenadaY() - pixelSize, imgSize) && 
@@ -102,7 +102,7 @@ bool pixelSizeEnRango(CoordenadaNew pixelPos, CoordenadaNew imgSize, int pixelSi
     return resultado;
 }
 
-void pintarEntidad(BMP* image, CoordenadaNew pixelPos, RGBApixel color, CoordenadaNew imgSize){
+void pintarEntidad(BMP* image, Coordenada pixelPos, RGBApixel color, Coordenada imgSize){
     /*Coordenada pixelPos;
     pixelPos.x = pixelPosBB.getCoordenadaX();
     pixelPos.y = pixelPosBB.getCoordenadaY();
@@ -124,8 +124,8 @@ void pintarEntidad(BMP* image, CoordenadaNew pixelPos, RGBApixel color, Coordena
 
 Coordenada getPixelOffset(int lado, int size){
     Coordenada pixelOffset;
-    pixelOffset.x = (lado == IZQUIERDA)? size*5 : (lado == DERECHA)? size*43 : size*55;
-    pixelOffset.y = (lado == IZQUIERDA)? size*37 : (lado == DERECHA)? size*31 : size*38;
+    pixelOffset.setCoordenadaX((lado == IZQUIERDA)? size*5 : (lado == DERECHA)? size*43 : size*55);
+    pixelOffset.setCoordenadaY((lado == IZQUIERDA)? size*37 : (lado == DERECHA)? size*31 : size*38);
     return pixelOffset;
 }
 
@@ -138,79 +138,56 @@ RGBApixel getColor(Celda celda, MapaColores colores, bool esFicha){
 }
 
 void getAux(int lado, Coordenada* aux){
-    aux->x = (lado == ATRAS)? -1: 1;
-    aux->y = (lado == ATRAS)? -1: 1;
-    aux->z = (lado == ATRAS)? -1: 1;
+    int valor = (lado == ATRAS) ? -1 : 1;
+    aux->setCoordenadaX(valor);
+    aux->setCoordenadaY(valor);
+    aux->setCoordenadaZ(valor);
 }
 
-void getPixel(CoordenadaDoubleNew* pixel, CoordenadaNew matrixPosBB){
+void getPixel(CoordenadaDouble* pixel, Coordenada matrixPos){
 
-    Coordenada matrixPos;
 
-    matrixPos.x = matrixPosBB.getCoordenadaX();
-    matrixPos.y = matrixPosBB.getCoordenadaY();
-    matrixPos.z = matrixPosBB.getCoordenadaZ();
 
-    pixel->setCoordenadaX((double)matrixPos.x);
-    pixel->setCoordenadaY((double)matrixPos.y);
-    pixel->setCoordenadaZ((double)matrixPos.z);
+    pixel->setCoordenadaX((double)matrixPos.getCoordenadaX());
+    pixel->setCoordenadaY((double)matrixPos.getCoordenadaY());
+    pixel->setCoordenadaZ((double)matrixPos.getCoordenadaZ());
 }
 
 int matrixPosStarter(int lado, int size){
     return (lado == IZQUIERDA)? 0 : (lado == DERECHA)? 0 : size-1;
 }
 
-void imprimirBMP(CoordenadaNew imgSize, BMP* image, Mapa* tablero, MapaColores colores, int jugador){
-    /*Coordenada imgSizeBB;
-
-    imgSizeBB.x = imgSize.getCoordenadaX();
-    imgSizeBB.y =imgSize.getCoordenadaY();
-    imgSizeBB.z =imgSize.getCoordenadaZ();*/
-    
+void imprimirBMP(Coordenada imgSize, BMP* image, Mapa* tablero, MapaColores colores, int jugador){
     RGBApixel color;
-    Coordenada pixelOffset, aux, coordenada, matrixPos;
     int i = 0;
-    CoordenadaNew pixelPos, matrixPosBB;
-    CoordenadaDoubleNew pixel;
+    Coordenada pixelPos, matrixPos, aux, pixelOffset;
+    CoordenadaDouble pixel;
     bool esFicha = false;
     for(int lado = 0; lado < 3; lado ++){
         getAux(lado, &aux);
         pixelOffset = getPixelOffset(lado, tablero->getTamanioX());
 
-        /*int xStarter = matrixPosStarter(lado, tablero->getTamanioX());
-        int yStarter = matrixPosStarter(lado, tablero->getTamanioY());
-        int zStarter = matrixPosStarter(lado, tablero->getTamanioZ());
+        matrixPos.setCoordenadaX(matrixPosStarter(lado, tablero->getTamanioX()));
+        matrixPos.setCoordenadaY(matrixPosStarter(lado, tablero->getTamanioY()));
+        matrixPos.setCoordenadaZ(matrixPosStarter(lado, tablero->getTamanioZ()));
 
-        matrixPosBB.setCoordenadaX(xStarter);
-        matrixPosBB.setCoordenadaY(yStarter);
-        matrixPosBB.setCoordenadaZ(zStarter);*/
-
-        matrixPosBB.setCoordenadaX(matrixPosStarter(lado, tablero->getTamanioX()));
-        matrixPosBB.setCoordenadaY(matrixPosStarter(lado, tablero->getTamanioY()));
-        matrixPosBB.setCoordenadaZ(matrixPosStarter(lado, tablero->getTamanioZ()));
-
-        while (matrixPosBB.getCoordenadaX() < tablero->getTamanioX() && matrixPosBB.getCoordenadaX() >= 0) {
-            while (matrixPosBB.getCoordenadaY() < tablero->getTamanioY() && matrixPosBB.getCoordenadaY() >= 0) {
-                while (matrixPosBB.getCoordenadaZ() < tablero->getTamanioZ() && matrixPosBB.getCoordenadaZ() >= 0) {
-
-        /*for(matrixPos.x = matrixPosStarter(lado, tablero->getTamanioX()); matrixPos.x < tablero->getTamanioX() && matrixPos.x >= 0; matrixPos.x += aux.x){
-            for(matrixPos.y =  matrixPosStarter(lado, tablero->getTamanioY()); matrixPos.y < tablero->getTamanioY() && matrixPos.y >= 0; matrixPos.y += aux.y){
-                for(matrixPos.z = matrixPosStarter(lado, tablero->getTamanioZ()); matrixPos.z < tablero->getTamanioZ() && matrixPos.z >= 0; matrixPos.z += aux.z){
-                */ 
-                    getPixel(&pixel, matrixPosBB);
+        while (matrixPos.getCoordenadaX() < tablero->getTamanioX() && matrixPos.getCoordenadaX() >= 0) {
+            while (matrixPos.getCoordenadaY() < tablero->getTamanioY() && matrixPos.getCoordenadaY() >= 0) {
+                while (matrixPos.getCoordenadaZ() < tablero->getTamanioZ() && matrixPos.getCoordenadaZ() >= 0) {
+                    getPixel(&pixel, matrixPos);
                     aplicarProyeccionIsometrica(&pixel, lado);
-                    pixelPos.setCoordenadaX(static_cast<int>((pixel.getCoordenadaX()) * 20 + pixelOffset.x)); 
-                    pixelPos.setCoordenadaY(static_cast<int>((pixel.getCoordenadaY()) * 20 + pixelOffset.y));
-                    esFicha = (tablero->getTData(matrixPosBB.getCoordenadaX(), matrixPosBB.getCoordenadaY(), matrixPosBB.getCoordenadaZ())->getFicha()->getJugadorOwner() == jugador && tablero->getTData(matrixPosBB.getCoordenadaX(), matrixPosBB.getCoordenadaY(), matrixPosBB.getCoordenadaZ())->getFicha()->getTipo() != MINA_FICHA);
-                    color = getColor(*tablero->getTData(matrixPosBB.getCoordenadaX(), matrixPosBB.getCoordenadaY(), matrixPosBB.getCoordenadaZ()), colores, esFicha);
+                    pixelPos.setCoordenadaX(static_cast<int>((pixel.getCoordenadaX()) * 20 + pixelOffset.getCoordenadaX())); 
+                    pixelPos.setCoordenadaY(static_cast<int>((pixel.getCoordenadaY()) * 20 + pixelOffset.getCoordenadaY()));
+                    esFicha = (tablero->getTData(matrixPos.getCoordenadaX(), matrixPos.getCoordenadaY(), matrixPos.getCoordenadaZ())->getFicha()->getJugadorOwner() == jugador && tablero->getTData(matrixPos.getCoordenadaX(), matrixPos.getCoordenadaY(), matrixPos.getCoordenadaZ())->getFicha()->getTipo() != MINA_FICHA);
+                    color = getColor(*tablero->getTData(matrixPos.getCoordenadaX(), matrixPos.getCoordenadaY(), matrixPos.getCoordenadaZ()), colores, esFicha);
                     pintarEntidad(image, pixelPos, color, imgSize);
-                    matrixPosBB.setCoordenadaZ(matrixPosBB.getCoordenadaZ() + aux.z);
+                    matrixPos.setCoordenadaZ(matrixPos.getCoordenadaZ() + aux.getCoordenadaZ());
                 }
-                matrixPosBB.setCoordenadaZ(matrixPosStarter(lado, tablero->getTamanioZ()));
-                matrixPosBB.setCoordenadaY(matrixPosBB.getCoordenadaY() + aux.y);
+                matrixPos.setCoordenadaZ(matrixPosStarter(lado, tablero->getTamanioZ()));
+                matrixPos.setCoordenadaY(matrixPos.getCoordenadaY() + aux.getCoordenadaY());
             }
-            matrixPosBB.setCoordenadaY(matrixPosStarter(lado, tablero->getTamanioY()));
-            matrixPosBB.setCoordenadaX(matrixPosBB.getCoordenadaX() + aux.x);
+            matrixPos.setCoordenadaY(matrixPosStarter(lado, tablero->getTamanioY()));
+            matrixPos.setCoordenadaX(matrixPos.getCoordenadaX() + aux.getCoordenadaX());
         }
     }
 }
