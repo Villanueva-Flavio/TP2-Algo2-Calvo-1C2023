@@ -131,9 +131,10 @@ RGBApixel getColor(Celda celda, MapaColores colores, bool esFicha){
 }
 
 void getAux(int lado, Coordenada* aux){
-    aux->setCoordenadaX((lado == ATRAS)? -1: 1);
-    aux->setCoordenadaY((lado == ATRAS)? -1: 1);
-    aux->setCoordenadaZ((lado == ATRAS)? -1: 1);
+    int valor = (lado == ATRAS) ? -1 : 1;
+    aux->setCoordenadaX(valor);
+    aux->setCoordenadaY(valor);
+    aux->setCoordenadaZ(valor);
 }
 
 void getPixel(CoordenadaDouble* pixel, Coordenada matrixPos){
@@ -147,6 +148,7 @@ int matrixPosStarter(int lado, int size){
 }
 
 void imprimirBMP(Coordenada imgSize, BMP* image, Tablero<Celda*>* tablero, MapaColores colores, int jugador){
+    
     RGBApixel color;
     Coordenada pixelOffset, matrixPos, pixelPos, aux;
     CoordenadaDouble pixel;
@@ -159,9 +161,9 @@ void imprimirBMP(Coordenada imgSize, BMP* image, Tablero<Celda*>* tablero, MapaC
         matrixPos.setCoordenadaY(matrixPosStarter(lado, tablero->getTamanioY()));
         matrixPos.setCoordenadaZ(matrixPosStarter(lado, tablero->getTamanioZ()));
 
-        for(matrixPos.getCoordenadaX(); matrixPos.getCoordenadaX() < tablero->getTamanioX() && matrixPos.getCoordenadaX() >= 0; matrixPos.setCoordenadaX(matrixPos.getCoordenadaX() + aux.getCoordenadaX())){
-            for(matrixPos.getCoordenadaY(); matrixPos.getCoordenadaY() < tablero->getTamanioY() && matrixPos.getCoordenadaY() >= 0; matrixPos.setCoordenadaY(matrixPos.getCoordenadaY() + aux.getCoordenadaY())){
-                for(matrixPos.getCoordenadaZ(); matrixPos.getCoordenadaZ() < tablero->getTamanioZ() && matrixPos.getCoordenadaZ() >= 0; matrixPos.setCoordenadaZ(matrixPos.getCoordenadaZ() + aux.getCoordenadaZ())){
+        while (matrixPos.getCoordenadaX() < tablero->getTamanioX() && matrixPos.getCoordenadaX() >= 0) {
+            while (matrixPos.getCoordenadaY() < tablero->getTamanioY() && matrixPos.getCoordenadaY() >= 0) {
+                while (matrixPos.getCoordenadaZ() < tablero->getTamanioZ() && matrixPos.getCoordenadaZ() >= 0) {
                     getPixel(&pixel, matrixPos);
                     aplicarProyeccionIsometrica(&pixel, lado);
                     pixelPos.setCoordenadaX(static_cast<int>(pixel.getCoordenadaX()) * 20 + pixelOffset.getCoordenadaX());
@@ -169,8 +171,13 @@ void imprimirBMP(Coordenada imgSize, BMP* image, Tablero<Celda*>* tablero, MapaC
                     esFicha = (tablero->getTData(matrixPos.getCoordenadaX(), matrixPos.getCoordenadaY(), matrixPos.getCoordenadaZ())->getFicha()->getJugadorOwner() == jugador && tablero->getTData(matrixPos.getCoordenadaX(), matrixPos.getCoordenadaY(), matrixPos.getCoordenadaZ())->getFicha()->getTipo() != MINA_FICHA);
                     color = getColor(*tablero->getTData(matrixPos.getCoordenadaX(), matrixPos.getCoordenadaY(), matrixPos.getCoordenadaZ()), colores, esFicha);
                     pintarEntidad(image, pixelPos, color, imgSize);
+                    matrixPos.setCoordenadaZ(matrixPos.getCoordenadaZ() + aux.getCoordenadaZ());
                 }
+            matrixPos.setCoordenadaZ(matrixPosStarter(lado, tablero->getTamanioZ()));
+            matrixPos.setCoordenadaY(matrixPos.getCoordenadaY() + aux.getCoordenadaY());
             }
+        matrixPos.setCoordenadaY(matrixPosStarter(lado, tablero->getTamanioY()));
+        matrixPos.setCoordenadaX(matrixPos.getCoordenadaX() + aux.getCoordenadaX());
         }
     }
 }
