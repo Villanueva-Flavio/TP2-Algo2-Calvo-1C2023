@@ -226,5 +226,8 @@ class BatallaDigital{
         //Post: inactiva la celda pasada por una cantidad definida de partidas
         void inactivarCelda(Celda* celda);
 
+        //Post: Imprime en consola un mensaje de victoria del jugador sobreviviente con su nombre
+        void mensajeGanador();
+
 };
 #endif

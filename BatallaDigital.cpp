@@ -630,6 +630,21 @@ void BatallaDigital::moverFicha(int indiceDeJugador){
     }
 }
 
+void BatallaDigital::mensajeGanador(){
+    int ganador;
+    for(int i = 0; i < this->jugadores->getSize(); i++){
+        if(this->jugadorConFichasVivas(i)){
+            ganador = i;
+        }
+    }
+    system("clear");
+    cout << "=====================================" << endl;
+    cout << "El ganador es el jugador " << this->jugadores->getLData(ganador)->getNombre() << endl;
+    cout << "=====================================" << endl;
+    cout << "Presione cualquier tecla para continuar" << endl;
+    cin.ignore();
+}
+
 void BatallaDigital::jugar(){
     int indiceDeJugador = 0;
     while(this->jugadoresConFichasVivas() > 1){
@@ -659,5 +674,7 @@ void BatallaDigital::jugar(){
     }
     if(this->jugadoresConFichasVivas() == 0){
         this->mensajeEmpate();
+    } else if(this->jugadoresConFichasVivas() == 1){
+        this->mensajeGanador();
     }
 }
